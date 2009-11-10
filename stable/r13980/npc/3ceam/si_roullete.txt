@@ -1,0 +1,36 @@
+prontera,166,74,3	script	Status Icon Roullete	803,{
+
+	mes "[SI Roullete]";
+	mes "How may I help you?~";
+	next;
+
+	if( select("Display Status Icon", "Remove Status Icons (^FF0000Logout^000000)") == 2 )
+	{
+		close2;
+		atcommand "@kick " + strcharinfo(0);
+		end;
+	}
+
+	mes "[SI Roullete]";
+	mes "Great! Where should I start?";
+	next;
+
+	input .@i;
+
+	if( !.@i )
+		close;
+
+	for( set .@i, .@i; .@i <= 9999; set .@i, .@i + 1 )
+	{
+		if( select("Keep Going - ^00B200" + .@i + "^000000", "Break - Cancel") == 2 )
+			close;
+		atcommand "@displaystatus " + .@i + " 1";
+		mes "This is SI Number ^FFAA00" + .@i + "^000000!";
+	}
+
+	mes "[SI Roullete]";
+	mes "We've reached the end.";
+	mes "Wow, you are so persistent~";
+	close;
+
+}

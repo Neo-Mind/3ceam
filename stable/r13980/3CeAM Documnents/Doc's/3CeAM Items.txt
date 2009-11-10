@@ -1,0 +1,69 @@
+===== 3CeAM Documnent ===================================
+= 3CeAM Items
+===== Description =======================================
+= Explains 3CeAM's edits to the item database and how
+= items for 3rd jobs work.
+===== By ================================================
+= Rytech
+===== Version ===========================================
+= 1.0
+=========================================================
+= 1.0 - Typed and completed the 3CeAM Info Doc. [Rytech]
+=========================================================
+
+================================
+Contents
+
+1. 3CeAM 3rd Jobs Item Handleing
+
+2. Item Database Edits
+
+3. 3rd Jobs Item Database
+
+4. New Item Settings
+
+================================
+
+===== 1. 3CeAM 3rd Jobs Item Handleing =====
+In 3CeAM, the item database has been edited to allow support for 3rd jobs. This was done to make all existing items
+compatible with the new jobs, as well as add in support for special 3rd class items and equips.
+
+Lets see how fimilar jobs handle items. Their's 2 things that set what jobs are able to use what item and equips.
+The Job masks, and the Upper setting. Their's masks for base 1st and 2nd jobs, as well as some extended jobs, but lets focus
+on the regular jobs. By setting a mask for a 1st or 2nd job and giveing a upper of 1, itl work for base jobs only. If the
+upper setting was set to 2, the item would be accessable to reborn jobs only, if set to 4, it would be accessable only to
+baby jobs. Adding these number together make items usable by many jobs, like 1 + 2 + 4 would make 7 and usable by all of
+the known jobs.
+
+So how does 3rd jobs handle items??? Since 3rd jobs use upper masks, they require upper settings as well.
+
+ 8: Base Third jobs
+16: Trans Third jobs
+
+Perty much explained here. 8 gives access to base version 3rd jobs, and 16 gives access to trans version 3rd jobs. One thing
+to remember is that a 3rd job is a 3rd job, no matter what version. When a equip comes out for them, the equip will work for
+both versions as they have the exact equipment permissions and behavior. So if you were to make a 3rd job only equip, the
+upper would have to be set to 24. So a item now that would be usable by every job would need a upper setting of 31.
+
+So how does it know what 3rd job to work for, and which not to work for? Use of job masks. If we wanted to make a
+Rune Knight only equip, we would give the item a Knight mask 0x00000080 and a upper of 24. The Knight mask was given to
+serve the same purpose as it would serve for a Lord Knight only item. Knight with a upper. If we wanted a Royal Guard only
+item, we would give the item a Crusader mask 0x00004000 and a upper of 24. Its kinda like the same thing as makeing a item
+for a Paladin, but with a different upper setting set.
+
+===== 2. Item Database Edits =====
+Ok thats cool. So since these new jobs have their own upper setting, would all of the items in the item_db need to have
+their upper setting changed??? The answer is yes, and one of our team member has allready done that.
+So the item_db.txt provided with this mod has been edited to allow all items to work with the 3rd jobs. However, this means
+that you will have to use the ones provided by us. Using the ones from eAthena's SVN or other sources will not work. Well
+they will, but the items wont be usable by the new jobs.
+
+===== 3. 3rd Jobs Item Database =====
+All items for the 3rd jobs have been added to the item_db2.txt file in the database. This makes it easier to add, find, and
+edit items. You must also use the item_db2.txt file provided through the 3CeAM team.
+
+===== 4. New Item Settings =====
+These are the new job masks and upper settings added to the item database
+
+ 8: Base Third jobs
+16: Trans Third jobs
