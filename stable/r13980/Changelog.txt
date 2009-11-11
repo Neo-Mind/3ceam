@@ -6,12 +6,19 @@
 //========================================
 
 11/11/2009
-	r1 [pakpil]
+	r3 [pakpil]
+	*Fixed a little mystake in clif_damage.
+	*Fixed mmo_char_tobuf to avoid a posible client crash when ussing some clints.
+
+11/11/2009
+	r2 [pakpil]
 	*Fixed Riding Wurg.
 	*Fixed Dragon Breath damage.
 	- Removed double damage calculation.
 	*Fixed Heat status change. 
 	-Until we get confirmation, you'll lose your mado when you HP reaches to 0 and you're HP/SP become 1;
+
+=================================================================================================================
 
 11/10/2009
 	r31 [Rytech]
