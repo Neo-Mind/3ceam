@@ -1544,9 +1544,10 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				}
 				break;
-			case RK_DRAGONBREATH:
-				if(sd)
-					wd.damage = (sd->status.hp + sd->status.sp*2) / 40; // Is an aproximation from official, need more tests [pakpil]
+			case RK_DRAGONBREATH: // Set according to the skilldesc [pakpil]
+				wd.damage = (status_get_hp(src) + status_get_sp(src)) / 40;	// Need official value. [pakpil]
+				if( sd )
+					 ATK_ADDRATE( 10 * pc_checkskill(sd,RK_DRAGONTRAINING));	// Need official value. [pakpil]
 				break;
 			case RK_PHANTOMTHRUST:
 				if(sd)
@@ -1960,11 +1961,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					if( distance_bl(src, target) >= 3 ) skillratio += 100 + 100 * skill_lv;
 					if(sd && sd->base_status.rhw.ele == ELE_FIRE)
 						skillratio *= 3/2; // if the weapon is endowed with fire elemet this skill deal 1.5 more damage. [pakpil]
-					break;
-				case RK_DRAGONBREATH: // Set according to the skilldesc [pakpil]
-					skillratio += status_get_hp(src) + status_get_sp(src) / 500;	// Need official value. [pakpil]
-					if( sd )
-						 skillratio += 10 * pc_checkskill(sd,RK_DRAGONTRAINING);	// Need official value. [pakpil]
 					break;
 				case RK_CRUSHSTRIKE:
 					skillratio += 1400;

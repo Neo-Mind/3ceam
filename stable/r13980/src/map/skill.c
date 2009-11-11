@@ -6835,19 +6835,26 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case RA_WUGRIDER:
 		if( sd )
 		{
-			if( pc_iswarg(sd) )
-			{
-				pc_setoption(sd,sd->sc.option&~OPTION_WUG); // We remove the warg and we mount it
-				pc_setriding(sd, 1);
-			}
-			else 
 			if( pc_isridingwarg(sd) )
-			{
+			{ // Go to unmount.
 				pc_setriding(sd, 0);
 				pc_setoption(sd,sd->sc.option|OPTION_WUG); // We get back the unmounted version
 			}
+			else
+			{
+				if( !pc_iswarg(sd) )
+				{ // You must have a Warg to mount on it.
+					clif_skill_fail(sd,skillid,0,0);
+					return 0;
+				}
+				else if( pc_iswarg(sd) )
+				{ // Go to mount
+					pc_setoption(sd,sd->sc.option&~OPTION_WUG); // We remove the warg and we mount it
+					pc_setriding(sd, 1);
+				}
+			}
+			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
 		}
-		clif_skill_nodamage(src, bl, skillid, skilllv, 1);
 		break;
 
 	case RA_WUGDASH:

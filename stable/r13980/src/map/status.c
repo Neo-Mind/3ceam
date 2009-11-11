@@ -926,6 +926,13 @@ int status_damage(struct block_list *src,struct block_list *target,int hp, int s
 	//Non-zero: Standard death. Clear status, cancel move/attack, etc
 	//&2: Also remove object from map.
 	//&4: Also delete object from memory.
+	if( sc && sc->data[SC_OVERHEAT] && sc->option&OPTION_RIDING_MADO )
+	{ // If you are mounting a mado, you'll loose you mado first.
+		status_change_end(target,SC_OVERHEAT,-1);
+		if( target->type == BL_PC )
+			pc_setoption((TBL_PC*)target,sc->option&~OPTION_RIDING_MADO);
+		return hp+sp;
+	}
 	switch (target->type) {
 		case BL_PC:  flag = pc_dead((TBL_PC*)target,src); break;
 		case BL_MOB: flag = mob_dead((TBL_MOB*)target, src, flag&4?3:0); break;
@@ -8163,10 +8170,18 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 			status_change_end(bl, SC_OVERHEAT, -1);
 		else
 		{
-			status_zap(bl, status->max_hp / 50, 0);
-			clif_specialeffect(bl, 730, AREA);
-			sc_timer_next((sce->val2 * 1000) + tick, status_change_timer, bl->id, data);
-			return 0;
+			if( status_zap(bl, status->max_hp / 50, 0) )
+			{
+				clif_specialeffect(bl, 730, AREA);
+				sc_timer_next((sce->val2 * 1000) + tick, status_change_timer, bl->id, data);
+				return 0;
+			}
+			else
+			{
+				status_change_end(bl, SC_OVERHEAT, -1);
+				pc_setriding(sd,0);
+				return 0;
+			}
 		}
 		break;
 

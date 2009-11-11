@@ -6672,8 +6672,10 @@ int pc_setfalcon(TBL_PC* sd, int flag)
 int pc_setwarg(TBL_PC* sd, int flag)
 {
 	if( flag ){
-		if( (pc_checkskill(sd,RA_WUGMASTERY)>0) && !(pc_isfalcon(sd)) )
+		if( (pc_checkskill(sd,RA_WUGMASTERY)>0) && !(pc_isfalcon(sd)) && !(pc_iswarg(sd)) && !(pc_isridingwarg(sd)) )
 			pc_setoption(sd,sd->sc.option|OPTION_WUG);
+	} else if( pc_isridingwarg(sd) ) {
+		pc_setoption(sd,sd->sc.option&~OPTION_RIDING_WUG);
 	} else if( pc_iswarg(sd) ){
 		pc_setoption(sd,sd->sc.option&~OPTION_WUG); // remove warg
 	}
@@ -6696,35 +6698,34 @@ int pc_setriding(TBL_PC* sd, int flag)
 		return -1;
 	}
 	
-	if( flag )
+	switch( class_ )
 	{
-		switch( class_ )
-		{
-			case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
-			case JOB_LORD_KNIGHT: case JOB_PALADIN:
-				option = OPTION_RIDING;
-				skillnum = KN_RIDING;
-				break;
-			case JOB_RUNE_KNIGHT: case JOB_RUNE_KNIGHT2: case JOB_RUNE_KNIGHT_T:  case JOB_RUNE_KNIGHT_T2:
-				option = (pc_isriding(sd))?OPTION_RIDING_DRAGON:((flag==2)?OPTION_BLACK_DRAGON:(flag==3)?OPTION_WHITE_DRAGON:(flag==4)?OPTION_BLUE_DRAGON:(flag==5)?OPTION_RED_DRAGON:OPTION_GREEN_DRAGON);
-				skillnum = RK_DRAGONTRAINING;
-				break;
-			case JOB_RANGER: case JOB_RANGER2: case JOB_RANGER_T: case JOB_RANGER_T2:
-				option = OPTION_RIDING_WUG;
-				skillnum = RA_WUGRIDER;
-				break;
-			case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
-				option = (sd->status.sex)?OPTION_MADO_M:OPTION_MADO_F;
-				skillnum = NC_MADOLICENCE;
-				break;
-			default:
-				return -1;
-		}
-		
+		case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
+		case JOB_LORD_KNIGHT: case JOB_PALADIN:
+			option = OPTION_RIDING;
+			skillnum = KN_RIDING;
+			break;
+		case JOB_RUNE_KNIGHT: case JOB_RUNE_KNIGHT2: case JOB_RUNE_KNIGHT_T:  case JOB_RUNE_KNIGHT_T2:
+			option = (pc_isriding(sd))?OPTION_RIDING_DRAGON:((flag==2)?OPTION_BLACK_DRAGON:(flag==3)?OPTION_WHITE_DRAGON:(flag==4)?OPTION_BLUE_DRAGON:(flag==5)?OPTION_RED_DRAGON:OPTION_GREEN_DRAGON);
+			skillnum = RK_DRAGONTRAINING;
+			break;
+		case JOB_RANGER: case JOB_RANGER2: case JOB_RANGER_T: case JOB_RANGER_T2:
+			option = OPTION_RIDING_WUG;
+			skillnum = RA_WUGRIDER;
+			break;
+		case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
+			option = (sd->status.sex)?OPTION_MADO_M:OPTION_MADO_F;
+			skillnum = NC_MADOLICENCE;
+			break;
+		default:
+			return -1;
+	}
+	if( flag )
+	{		
 		if( pc_checkskill(sd,skillnum) > 0 ) // Check if you have the necessary skill to mount.
 			pc_setoption(sd, sd->sc.option|option);
 	}
-	else if( pc_isriding(sd) )
+	else if( pc_isriding(sd) || pc_isridingdragon(sd) || pc_isridingwarg(sd) || pc_isridingmado(sd) || pc_isridinggryphon(sd) )
 	{
 		pc_setoption(sd, sd->sc.option&~option);
 	}
