@@ -6,6 +6,17 @@
 //========================================
 
 11/11/2009
+	r4 [pakpil]
+	*Fixed RA_AIMEDBOLT.
+	-Number of hits depends on the target's size: small = 2 hits, medium = 3 hits & large = 4 hits.
+	-When used against an immobile status target (Ankle Snare, Electric Shocker, Warg Bite effect), deals a huge amount of damage.
+	-Deals additional damage based on the size of the target.
+	-The damage is divided between the number of hits.
+	*Fixed WL_RADIUS.
+	-Test says that this skill only work with expecifics Warlock's skills.
+	*Added messed code in r3. Sry :/
+
+11/11/2009
 	r3 [pakpil]
 	*Fixed a little mystake in clif_damage.
 	*Fixed mmo_char_tobuf to avoid a posible client crash when ussing some clints.

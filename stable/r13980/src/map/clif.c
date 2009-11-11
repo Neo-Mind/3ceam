@@ -3827,6 +3827,9 @@ int clif_damage(struct block_list* src, struct block_list* dst, unsigned int tic
 	struct status_change *sc;
 	int i = 0, cmd = 0x8a;
 
+	nullpo_retr(0, src);
+	nullpo_retr(0, dst);
+
 #if PACKETVER >= 20071113
 	if( src->type == BL_MOB )
 	{
@@ -3835,8 +3838,6 @@ int clif_damage(struct block_list* src, struct block_list* dst, unsigned int tic
 	}
 #endif
 
-	nullpo_retr(0, src);
-	nullpo_retr(0, dst);
 
 	type = clif_calc_delay(type,div,damage+damage2,ddelay);
 	sc = status_get_sc(dst);

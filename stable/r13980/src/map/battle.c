@@ -495,16 +495,6 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 			if( sce->val2 <= 0 )
 				status_change_end(bl, SC_HAGALAZ, -1);
 		}
-		
-		if( skill_num == RA_AIMEDBOLT )
-		{
-				status_change_end(bl, SC_STUN, -1);
-				status_change_end(bl, SC_STOP, -1);
-				status_change_end(bl, SC_ANKLE, -1);
-				status_change_end(bl, SC_STONE, -1);
-				status_change_end(bl, SC_SLEEP, -1);
-				status_change_end(bl, SC_ELECTRICSHOCKER, -1);
-		}
 
 		if( (sce = sc->data[SC_WEAPONBLOCKING]) && flag&BF_WEAPON && sd )
 		{
@@ -1190,14 +1180,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 
 			case RA_AIMEDBOLT: 
 				//Number of hits was based on size of monster. [Jobbie]
-				if(!(tsc && (tsc->data[SC_STUN] || tsc->data[SC_STOP] ||
-					tsc->data[SC_ANKLE] || tsc->data[SC_FREEZE] ||
-					tsc->data[SC_STONE] || tsc->data[SC_SLEEP] ||
-					tsc->data[SC_ELECTRICSHOCKER])))
-				
-					wd.div_ = 1; // 1 hit if status is not immobile.
-				else
-					wd.div_= (wd.div_>0?tstatus->size+2:-(tstatus->size+1));
+				wd.div_= -(tstatus->size + 2);
  				break;
 
 			case SR_FALLENEMPIRE:
@@ -1977,7 +1960,16 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 100 + 50 * skill_lv;
 					break;
 				case RA_AIMEDBOLT:
-					skillratio += 100 + 20 * skill_lv;	// The damage for imoble targets and sizes is listed on the ro.thisisafuntime.com website. Gotta add this later. [Rytech]
+					skillratio += 100 + 20 * skill_lv;
+					if(tsc && (tsc->data[SC_STUN] || tsc->data[SC_STOP] ||
+						tsc->data[SC_ANKLE] || tsc->data[SC_FREEZE] ||
+						tsc->data[SC_STONE] || tsc->data[SC_SLEEP] ||
+						tsc->data[SC_ELECTRICSHOCKER]) )
+					{
+						if( tstatus->size = 0 ) skillratio += 600 + (60 * skill_lv);
+						else if( tstatus->size = 1 ) skillratio += 1600 + (160 * skill_lv);
+						else skillratio += 3000 + (300 * skill_lv);
+					}
 					break;
 				case RA_CLUSTERBOMB:
 					skillratio = 100 * skill_lv - 100;

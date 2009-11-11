@@ -234,7 +234,7 @@ int skill_get_range2 (struct block_list *bl, int id, int lv)
 		range *=-1;
 	}
 
-	if(pc_checkskill((TBL_PC*)bl, WL_RADIUS))
+	if(pc_checkskill((TBL_PC*)bl, WL_RADIUS) && id >= WL_WHITEIMPRISON && id <= WL_FREEZE_SP )
 		range = range + (pc_checkskill((TBL_PC*)bl, WL_RADIUS));
 
 	//TODO: Find a way better than hardcoding the list of skills affected by AC_VULTURE
@@ -1023,6 +1023,18 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 			case 1: sc_start(bl, SC_FREEZING, 100, skilllv,skill_get_time(WL_TETRAVORTEX, pc_checkskill(sd, WL_TETRAVORTEX))); break;
 			case 2: sc_start(bl, SC_STUN, 100, skilllv,skill_get_time(WL_TETRAVORTEX, pc_checkskill(sd, WL_TETRAVORTEX))); break;
 			case 3: sc_start(bl, SC_BLEEDING,100, skilllv,skill_get_time(WL_TETRAVORTEX, pc_checkskill(sd, WL_TETRAVORTEX))); break;
+		}
+		break;
+		
+	case RA_AIMEDBOLT:
+		if( tsc )
+		{
+				status_change_end(bl, SC_STUN, -1);
+				status_change_end(bl, SC_STOP, -1);
+				status_change_end(bl, SC_ANKLE, -1);
+				status_change_end(bl, SC_STONE, -1);
+				status_change_end(bl, SC_SLEEP, -1);
+				status_change_end(bl, SC_ELECTRICSHOCKER, -1);
 		}
 		break;
 	case RA_ELECTRICSHOCKER:
@@ -11513,7 +11525,7 @@ int skill_castfix (struct block_list *bl, int skill_id, int skill_lv)
 		}
 	}
 
-	if( sd && pc_checkskill(sd,WL_RADIUS) )
+	if( sd && pc_checkskill(sd,WL_RADIUS)  && skill_id >= WL_WHITEIMPRISON && skill_id <= WL_FREEZE_SP )
 		time = (time/100) * 92 + (pc_checkskill(sd,WL_RADIUS) * 2);
 
 	// config cast time multiplier
