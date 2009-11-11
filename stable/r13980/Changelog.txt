@@ -6,6 +6,10 @@
 //========================================
 
 11/11/2009
+	r5 [pakpil]
+	*Added file "upgrade_eAitemdb_to_3CeAMitemdb.sql" into sql-files to be able to update item_db and item_db2 tables in SQL.
+
+11/11/2009
 	r4 [pakpil]
 	*Fixed RA_AIMEDBOLT.
 	-Number of hits depends on the target's size: small = 2 hits, medium = 3 hits & large = 4 hits.
