@@ -6492,6 +6492,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		case SC_FEAR:
 			val2 = 1; // Stop walking
 			val4 = tick / 1000;
+			tick = 1000;
 			break;
 		case SC_BURNING:
 			status_damage(bl,bl,status->max_hp*3/100,0,0,0);

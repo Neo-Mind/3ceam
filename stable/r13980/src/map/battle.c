@@ -1527,10 +1527,13 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				}
 				break;
-			case RK_DRAGONBREATH: // Set according to the skilldesc [pakpil]
-				wd.damage = (status_get_hp(src) + status_get_sp(src)) / 40;	// Need official value. [pakpil]
+			case RK_DRAGONBREATH:
+				wd.damage = (status_get_max_hp(src) * 80 / 1000) + (status_get_max_sp(src) * 180 / 100);
 				if( sd )
 					 ATK_ADDRATE( 10 * pc_checkskill(sd,RK_DRAGONTRAINING));	// Need official value. [pakpil]
+				break;
+			case RK_CRUSHSTRIKE:
+				wd.damage = sstatus->rhw.atk * 10; // Still need official value. [pakpil]
 				break;
 			case RK_PHANTOMTHRUST:
 				if(sd)
@@ -1925,15 +1928,12 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 100 *(skill_lv-1);
 					break;
 				case RK_SONICWAVE:
-					skillratio += 400 + 100 * skill_lv;
-					if( sd )
-						skillratio += 20 * sd->status.base_level / 4; // Still need oficial value. [pakpil]
+					skillratio += (400 + 100 * skill_lv) + (20 * status_get_lv(src) / 4);	// Still need oficial level based damage value. [pakpil]
 					break;
 				case RK_HUNDREDSPEAR:
-					skillratio += 500 + 40 * skill_lv;
+					skillratio += (500 + 40 * skill_lv) + (20 * status_get_lv(src) / 4);	// Still need oficial level based damage value [pakpil]
 					if( sd )
 						skillratio += 50 * pc_checkskill(sd,LK_SPIRALPIERCE);
-						skillratio += 20 * sd->status.base_level / 4; // Still need oficial values. [pakpil]
 					break;
 				case RK_WINDCUTTER:
 					skillratio += 100 + 50 * skill_lv;

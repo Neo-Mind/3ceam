@@ -3564,7 +3564,7 @@ int pc_isUseitem(struct map_session_data *sd,int n)
 	
 	//Not usable by upper class. [Skotlex]
 	if(!(
-		(1<<(sd->class_&JOBL_UPPER?1:(sd->class_&JOBL_BABY?2:(sd->class_&JOBL_THIRD_UPPER)?4:0)))&item->class_upper
+		(1<<(sd->class_&JOBL_BABY?2:(sd->class_&JOBL_THIRD_BASE)?3:(sd->class_&JOBL_THIRD_UPPER)?4:(sd->class_&JOBL_UPPER)?1:0))&item->class_upper
 	))
 		return 0;
 

@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+11/12/2009
+	r6 [pakpil]
+	*Fixed RK_WINDCUTTER, RK_PHANTOMTHRUST, RK_SONICWAVE, RK_HUNDREDSPEAR, RK_STORMBLAST, RK_CRUSHSTRIKE and RK_DRAGONBREATH.
+	*Added messed issue in the item use check.
+
 11/11/2009
 	r5 [pakpil]
 	*Added file "upgrade_eAitemdb_to_3CeAMitemdb.sql" into sql-files to be able to update item_db and item_db2 tables in SQL.

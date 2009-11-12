@@ -2157,6 +2157,9 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 			map_foreachinrange(battle_damage_area,bl,2,BL_CHAR,tick,bl,dmg.amotion,sstatus->dmotion,rdamage);
 		}
 	}
+	
+	if( damage > 0 && skillid == RK_CRUSHSTRIKE ) // Your weapon will not be broken if you miss.
+			skill_break_equip(src,EQP_WEAPON,10000,BCT_SELF);
 
 	if (!(flag&2) &&
 		(
@@ -3570,8 +3573,6 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 	case RK_CRUSHSTRIKE:
 		sc_start(bl,SC_RAIDO,100,skilllv,skill_get_time(skillid,skilllv));
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
-		if(rand()%100 < 25)
-			skill_break_equip(bl,EQP_WEAPON,10000,BCT_SELF);
 		break;
 	case WL_DRAINLIFE:
 		{
@@ -8364,6 +8365,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 		break;
 
 	case RK_WINDCUTTER:
+	case RK_DRAGONBREATH:
 		i = skill_get_splash(skillid,skilllv);
 		clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 		map_foreachinarea(skill_area_sub,src->m,x-i,y-i,x+i,y+i,BL_CHAR,
