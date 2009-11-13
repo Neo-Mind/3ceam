@@ -994,7 +994,7 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 		break;
 	case RK_HUNDREDSPEAR:
 		if( rand()%100 < 100 + 3 * skilllv )
-			skill_castend_damage_id(src,bl,LK_SPIRALPIERCE,1,tick,0);
+			skill_castend_damage_id(src,bl,KN_SPEARBOOMERANG,1,tick,0);
 		break;
 	case RK_DRAGONBREATH:
 		if( rand()%100 < 5 + 5 * skilllv )

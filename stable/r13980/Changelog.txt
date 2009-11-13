@@ -6,6 +6,9 @@
 //========================================
 
 11/13/2009
+	r11 [Jobbie]
+	* Fixed RK_HUNDREDSPEAR casted spiral pierce instead of spear boomerang,
+	
 	r10 [Jobbie]
 	* iRO Wiki stated that chances of auto trigger of Warg strike and Warg bite skill is the same to blitz bits.
 
