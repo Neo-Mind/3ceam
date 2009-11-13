@@ -6752,13 +6752,13 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			sc_start4(bl,type,100,skilllv,80+20*skilllv+status_get_status_data(src)->matk_min,src->id,0,skill_get_time(skillid,skilllv)));
 		break;
 	case RK_DRAGONHOWLING:
-		if( flag&1 && rand()%100 < 50 + 6 * skilllv )
-			sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv));
+		if( flag&1)
+			sc_start(bl,type,(50 + 6 * skilllv),skilllv,skill_get_time(skillid,skilllv));
 		else
 		{
 			skill_area_temp[2] = 0;
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
-			map_foreachinrange(skill_area_sub, bl,
+			map_foreachinrange(skill_area_sub, src,
 				skill_get_splash(skillid,skilllv),BL_CHAR,
 				src,skillid,skilllv,tick,flag|BCT_ENEMY|SD_PREAMBLE|1,
 				skill_castend_nodamage_id);
@@ -6899,8 +6899,12 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 
 	case AB_EPICLESIS:
-		status_revive(bl, 100, 100);
-		clif_skill_nodamage(src, bl, skillid, skilllv, 0);
+		if( !status_isdead(bl) )
+			return 0;
+		if( bl->type != BL_PC )
+			return 0;
+		if( status_revive(bl,100,100) )
+			clif_skill_nodamage(src,bl,skillid,skilllv,0);
 		break;
 
 	case AB_CLEARANCE:
@@ -8365,9 +8369,9 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 		break;
 
 	case RK_WINDCUTTER:
+		clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 	case RK_DRAGONBREATH:
 		i = skill_get_splash(skillid,skilllv);
-		clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 		map_foreachinarea(skill_area_sub,src->m,x-i,y-i,x+i,y+i,BL_CHAR,
 			src,skillid,skilllv,tick,flag|BCT_ENEMY|1,
 			skill_castend_damage_id);
@@ -8414,7 +8418,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 						element = WLS_STONE;
 						break;
 				}
-				sc_start(src,i,100,element,tick);
+				sc_start(src,i,100,element,skill_get_time(skillid,skilllv));
 				clif_skill_nodamage(src, src, skillid, skilllv, 0);
 			}
 			else
@@ -8427,8 +8431,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 		if( sg )
 		{
 			int i = sg->unit->range;
-			//party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skillid, skilllv), src, ALL_RESURRECTION, skilllv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
-			map_foreachinarea(skill_area_sub, src->m, x-i, y-i, x+i, y+i, BL_CHAR, src, ALL_RESURRECTION, skilllv, tick, flag|BCT_ALL|1,skill_castend_nodamage_id);
+			map_foreachinarea(skill_area_sub, src->m, x-i, y-i, x+i, y+i, BL_CHAR, src, skillid, skilllv, tick, flag|BCT_ALL|1,skill_castend_nodamage_id);
 		}
 		break;
 

@@ -5,6 +5,14 @@
 // 	- Details.
 //========================================
 
+11/13/2009
+	r7 [pakpil]
+	*Fixed RK_DRAGONHOWLING.
+	*Fixed Fear status walking delay.
+	*Minor fix in wL_STASIS.
+	*Fixed AB_EPICLESIS that causes "incomplete resurrections".
+	*Fixed AB_RENOVATIO that causes damage instead heals.
+
 11/12/2009
 	r6 [pakpil]
 	*Fixed RK_WINDCUTTER, RK_PHANTOMTHRUST, RK_SONICWAVE, RK_HUNDREDSPEAR, RK_STORMBLAST, RK_CRUSHSTRIKE and RK_DRAGONBREATH.

@@ -6574,12 +6574,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			}
 			break;
 		case SC_RENOVATIO:
-			val1 = 500;	//HP amount
-			val2 = 5;	//seconds between heals
-			if( val2 < 1 ) val2 = 1;
-			if( (val4 = tick/(val2 * 1000)) < 1 )
-				val4 = 1;
-			tick = val2 * 1000;
+			val4 = 5; // seconds between heals
+			tick = 1000;
 			break;
 		case SC_PRAEFATIO:
 			val2 = status->max_hp * (val1 * 8 + 10) / 100; //%Max HP to absorb
@@ -7528,10 +7524,10 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 	case SC_CURSE:
 	case SC_SILENCE:
 	case SC_BLIND:
-	case SC_FEAR:
 		sc->opt2 &= ~(1<<(type-SC_POISON));
 		break;
 	case SC_DPOISON:
+	case SC_FEAR:
 		sc->opt2 &= ~OPT2_DPOISON;
 		break;
 	case SC_SIGNUMCRUCIS:
@@ -8086,7 +8082,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 	case SC_FEAR:
 		if( --(sce->val4) > 0 )
 		{
-			if( sce->val4 == 13 ) // Cannot walk during 2 senconds.
+			if( sce->val4 <= 13 ) // Cannot walk during 2 senconds.
 				sce->val2 = 0; // Enable walking.
 			sc_timer_next(1000+tick, status_change_timer, bl->id, data);
 			return 0;
@@ -8153,15 +8149,16 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 	case SC_RENOVATIO:
 		if( --(sce->val4) >= 0 )
 		{
-			int hp = 0;
-			hp = status->max_hp / 100 * 3;
-			if( status->hp < status->max_hp / 100 * 3 )
-				hp = status->hp;
+			if( bl->type == BL_MOB )
+			{
+				status_damage(bl,bl,sce->val1 * 150,0,clif_damage(bl,bl,tick,status->amotion,status->dmotion,sce->val1 * 150, 1, 0, 0),0);
+			}
 			else
-				hp = status->max_hp / 100 * 3;
-			status_fix_damage(bl, bl, hp, 0);
-			clif_damage(bl ,bl ,tick, 0, 0, hp, 0, 0, 0);
-			sc_timer_next((sce->val2 * 1000) + tick, status_change_timer, bl->id, data);
+			{
+				int hp = status->max_hp * 3 / 100;
+				status_heal(bl,hp,0,3);
+			}
+			sc_timer_next(5000 + tick, status_change_timer, bl->id, data);
 			return 0;
 		}
 		break;

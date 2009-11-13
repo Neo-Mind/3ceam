@@ -836,14 +836,14 @@ int battle_addmastery(struct map_session_data *sd,struct block_list *target,int 
 				damage += (skill * 4);
 			break;
 		case W_1HSPEAR:
-		case W_2HSPEAR:
-			if((skill = pc_checkskill(sd,KN_SPEARMASTERY)) > 0) {
+		case W_2HSPEAR:// is it fine here? [pakpil]
+			if((skill = pc_checkskill(sd,KN_SPEARMASTERY) * (pc_checkskill(sd,RK_DRAGONTRAINING))?2:1 ) > 0) {
 				if(!pc_isriding(sd))
 					damage += (skill * 4);
 				else
 					damage += (skill * 5);
 				if( pc_isridingdragon(sd) ) //While riding dragon you spear attack is increased.
-					damage += 5 * pc_checkskill(sd,KN_SPEARMASTERY);	//Steel need official value. [pakpil]
+					damage += 5 * pc_checkskill(sd,KN_SPEARMASTERY) * (pc_checkskill(sd,RK_DRAGONTRAINING))?2:1;	//Steel need official value. [pakpil]
 			}
 			break;
 		case W_1HAXE:
@@ -1530,14 +1530,14 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 			case RK_DRAGONBREATH:
 				wd.damage = (status_get_max_hp(src) * 80 / 1000) + (status_get_max_sp(src) * 180 / 100);
 				if( sd )
-					 ATK_ADDRATE( 10 * pc_checkskill(sd,RK_DRAGONTRAINING));	// Need official value. [pakpil]
+					wd.damage += wd.damage * (5 * pc_checkskill(sd,RK_DRAGONTRAINING)-1) / 100;
 				break;
 			case RK_CRUSHSTRIKE:
 				wd.damage = sstatus->rhw.atk * 10; // Still need official value. [pakpil]
 				break;
 			case RK_PHANTOMTHRUST:
 				if(sd)
-					wd.damage += wd.damage * pc_checkskill(sd,KN_SPEARMASTERY) / 100; // Still need official value [pakpil]
+					wd.damage += wd.damage * pc_checkskill(sd,KN_SPEARMASTERY) * (pc_checkskill(sd,RK_DRAGONTRAINING))?2:1 / 100; // Still need official value [pakpil]
 				break;
 			case WM_SATURDAY_NIGHT_FEVER:
 				wd.damage = 9999;
