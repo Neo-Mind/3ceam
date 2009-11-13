@@ -6,6 +6,10 @@
 //========================================
 
 11/13/2009
+	r9 [Jobbie]
+	* Updated the cooldowns and aftercast of some ranger skills.
+	* Fixed the one which i can say official behavior of RA_AIMEDBOLT Skill.
+	
 	r8 [LimitLine]
 	* Fixed Chain Lightning showing no animation.
 	* Cleaned up Earth Strain's code.

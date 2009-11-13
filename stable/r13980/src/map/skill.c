@@ -242,9 +242,9 @@ int skill_get_range2 (struct block_list *bl, int id, int lv)
 	{
 	case AC_SHOWER:			case MA_SHOWER:
 	case AC_DOUBLE:			case MA_DOUBLE:
-	case HT_BLITZBEAT:
-	case AC_CHARGEARROW:
-	case MA_CHARGEARROW:
+	case HT_BLITZBEAT:		case RA_ARROWSTORM:
+	case AC_CHARGEARROW:	case RA_AIMEDBOLT:
+	case MA_CHARGEARROW:	case RA_WUGBITE:
 	case SN_FALCONASSAULT:
 	case SN_SHARPSHOOTING:
 	case MA_SHARPSHOOTING:
@@ -1023,18 +1023,6 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 			case 1: sc_start(bl, SC_FREEZING, 100, skilllv,skill_get_time(WL_TETRAVORTEX, pc_checkskill(sd, WL_TETRAVORTEX))); break;
 			case 2: sc_start(bl, SC_STUN, 100, skilllv,skill_get_time(WL_TETRAVORTEX, pc_checkskill(sd, WL_TETRAVORTEX))); break;
 			case 3: sc_start(bl, SC_BLEEDING,100, skilllv,skill_get_time(WL_TETRAVORTEX, pc_checkskill(sd, WL_TETRAVORTEX))); break;
-		}
-		break;
-		
-	case RA_AIMEDBOLT:
-		if( tsc )
-		{
-				status_change_end(bl, SC_STUN, -1);
-				status_change_end(bl, SC_STOP, -1);
-				status_change_end(bl, SC_ANKLE, -1);
-				status_change_end(bl, SC_STONE, -1);
-				status_change_end(bl, SC_SLEEP, -1);
-				status_change_end(bl, SC_ELECTRICSHOCKER, -1);
 		}
 		break;
 	case RA_ELECTRICSHOCKER:

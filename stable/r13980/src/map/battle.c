@@ -496,6 +496,16 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 				status_change_end(bl, SC_HAGALAZ, -1);
 		}
 
+		/*FIXME: Finally added to remove the status of immobile when aimedbolt is used.
+				 But find a better place if it is not necessary to be placed here. [Jobbie]*/
+		if( skill_num == RA_AIMEDBOLT && !(tsc && (tsc->data[SC_STOP] ||
+			tsc->data[SC_ANKLE] || tsc->data[SC_ELECTRICSHOCKER])))
+		{
+				status_change_end(bl, SC_STOP, -1);
+				status_change_end(bl, SC_ANKLE, -1);
+				status_change_end(bl, SC_ELECTRICSHOCKER, -1);
+		}
+
 		if( (sce = sc->data[SC_WEAPONBLOCKING]) && flag&BF_WEAPON && sd )
 		{
 			if( rand()%100 <= sce->val2 )
@@ -1179,8 +1189,15 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				break;
 
 			case RA_AIMEDBOLT: 
-				//Number of hits was based on size of monster. [Jobbie]
-				wd.div_= -(tstatus->size + 2);
+				//Number of hits was based on size of monster.
+				//Ankle Snare, Electric Shocker, Warg Bite effect count as snared. [Jobbie]
+				if(!(tsc && (tsc->data[SC_STOP] ||
+					tsc->data[SC_ANKLE] || tsc->data[SC_ELECTRICSHOCKER] )))
+				{
+					wd.div_ = 1; // 1 hit if status is not immobile.
+				}else{
+					wd.div_= (wd.div_>0?tstatus->size+2:-(tstatus->size+1));
+				}
  				break;
 
 			case SR_FALLENEMPIRE:
@@ -1960,16 +1977,8 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 100 + 50 * skill_lv;
 					break;
 				case RA_AIMEDBOLT:
+					//Note: Multiple hits are already calculated into damage values. [Jobbie]
 					skillratio += 100 + 20 * skill_lv;
-					if(tsc && (tsc->data[SC_STUN] || tsc->data[SC_STOP] ||
-						tsc->data[SC_ANKLE] || tsc->data[SC_FREEZE] ||
-						tsc->data[SC_STONE] || tsc->data[SC_SLEEP] ||
-						tsc->data[SC_ELECTRICSHOCKER]) )
-					{
-						if( tstatus->size = 0 ) skillratio += 600 + (60 * skill_lv);
-						else if( tstatus->size = 1 ) skillratio += 1600 + (160 * skill_lv);
-						else skillratio += 3000 + (300 * skill_lv);
-					}
 					break;
 				case RA_CLUSTERBOMB:
 					skillratio = 100 * skill_lv - 100;
