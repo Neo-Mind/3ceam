@@ -617,14 +617,14 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 			}
 			// Automatic trigger of Warg Strike [Jobbie]
 			if (pc_iswarg(sd) && sd->status.weapon == W_BOW && (skill=pc_checkskill(sd,RA_WUGSTRIKE))>0 &&
-				rand()%1000 <= sstatus->luk*5/3 ) { // Need confirmation for the stats needed.
-				rate=(sd->status.job_level)/10; //Temporary Rate calculation. Need official info.
+				rand()%1000 <= sstatus->luk*10/3+1 ) {
+				rate=(sd->status.job_level+9)/10;
 				skill_castend_damage_id(src,bl,RA_WUGSTRIKE,(skill<rate)?skill:rate,tick,0);
 			}
 			// Automatic trigger of Warg Bite [Jobbie]
 			if (pc_iswarg(sd) && sd->status.weapon == W_BOW && (skill=pc_checkskill(sd,RA_WUGBITE))>0 &&
-				rand()%1000 <= sstatus->luk*5/3 ) { //Need confirmation for the stats needed.
-				rate=(sd->status.job_level)/10; //Temporary Rate calculation. Need official info.
+				rand()%1000 <= sstatus->luk*10/3+1 ) {
+				rate=(sd->status.job_level+9)/10;
 				skill_castend_damage_id(src,bl,RA_WUGBITE,(skill<rate)?skill:rate,tick,0);
 			}
 			// Gank

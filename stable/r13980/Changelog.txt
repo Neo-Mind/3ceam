@@ -6,6 +6,9 @@
 //========================================
 
 11/13/2009
+	r10 [Jobbie]
+	* iRO Wiki stated that chances of auto trigger of Warg strike and Warg bite skill is the same to blitz bits.
+
 	r9 [Jobbie]
 	* Updated the cooldowns and aftercast of some ranger skills.
 	* Fixed the one which i can say official behavior of RA_AIMEDBOLT Skill.
