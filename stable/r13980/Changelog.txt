@@ -6,6 +6,11 @@
 //========================================
 
 11/13/2009
+	r8 [LimitLine]
+	* Fixed Chain Lightning showing no animation.
+	* Cleaned up Earth Strain's code.
+	* Fixed Comet's cooldown. 18000 -> 180000
+
 	r7 [pakpil]
 	*Fixed RK_DRAGONHOWLING.
 	*Fixed Fear status walking delay.

@@ -360,14 +360,6 @@ int skill_chain_lightning_timer(int tid, unsigned int tick, int id, intptr data)
 int skill_chain_lightning_sub(struct block_list *bl, va_list ap);
 int skill_sub_chain_lightning(struct block_list *bl, intptr data);
 
-// Earth Strain Functions
-
-struct skill_earth_strain_struct
-{
-	int src_id, x, y, count, count2, delay, pos, space;
-};
-
-void skill_earth_strain(struct block_list *src, int x, int y, int delay, int count, int pos, int space);
 int skill_earth_strain_timer(int tid, unsigned int tick, int id, intptr data);
 int skill_fatalmenace_sub(struct block_list *bl, va_list ap);
 void skill_fatalmenace(struct block_list *src, struct block_list *target, int skilllv, unsigned int tick);

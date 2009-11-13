@@ -2717,6 +2717,10 @@ static int skill_timerskill(int tid, unsigned int tick, int id, intptr data)
 					skill_castend_damage_id(src, target, WL_CHAINLIGHTNING_ATK, skl->skill_lv, tick, SD_LEVEL);
 					break;
 
+				case WL_EARTHSTRAIN:
+					skill_unitsetting(src, skl->skill_id, skl->skill_lv, skl->x, skl->y, skl->flag);
+					break;
+
 				case WL_SUMMON_ATK_FIRE:					
 				case WL_SUMMON_ATK_WIND:
 				case WL_SUMMON_ATK_WATER:
@@ -3384,7 +3388,6 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		break;
 
 	case WL_CHAINLIGHTNING_ATK:
-		flag |= SD_ANIMATION;
 	case MG_SOULSTRIKE:
 	case NPC_DARKSTRIKE:
 	case MG_COLDBOLT:
@@ -8383,13 +8386,32 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 		break;
 
 	case WL_EARTHSTRAIN:
-		switch( map_calc_dir(src, x, y) )
 		{
-			case 0: skill_earth_strain(src, x, y, 250, 5, 1, skilllv); break;
-			case 2: skill_earth_strain(src, x, y, 250, 5, 2, skilllv); break;
-			case 4: skill_earth_strain(src, x, y, 250, 5, 3, skilllv); break;
-			case 6: skill_earth_strain(src, x, y, 250, 5, 4, skilllv); break;
-			default: if( sd ) clif_skill_fail(sd, skillid, 0, 0); return 0; break;
+			int i;
+			type = skill_get_unit_range(skillid, skilllv);
+			for( i = 1; i <= 5; i ++ )
+			{
+				switch( map_calc_dir(src, x, y) )
+				{
+					case 0:	// North
+						y += type;
+						break;
+					case 2:	// West
+						x -= type;
+						break;
+					case 4:	// South
+						y -= type;
+						break;
+					case 6:	// East
+						x += type;
+						break;
+					default:
+						if( sd )
+							clif_skill_fail(sd, skillid, 0, 0);
+						return 0;
+				}
+				skill_addtimerskill(src, gettick() + 250 * i, src->id, x, y, skillid, skilllv, 0, 0);
+			}
 		}
 		break;
 
@@ -14490,74 +14512,6 @@ void skill_init_unit_layout (void)
 		}
 		pos++;
 	}
-}
-
-/*======================================================
- *  Earth Strain functions.
- *-----------------------------------------------------*/
-
-void skill_earth_strain(struct block_list *src, int x, int y, int delay, int count, int pos, int space)
-{
-
-	struct skill_earth_strain_struct *ess = (struct skill_earth_strain_struct *)aCalloc(sizeof(struct skill_earth_strain_struct),1);
-	
-	ess->src_id = src->id;
-	ess->x = x;
-	ess->y = y;
-	ess->delay = delay;
-	ess->count = count;
-	ess->count2 = 0;
-	ess->pos = pos;
-
-	switch( space )
-	{
-		case 1: ess->space = 1; break;
-		case 2: ess->space = 1; break;
-		case 3: ess->space = 2; break;
-		case 4: ess->space = 2; break;
-		case 5: default: ess->space = 3; break;
-	}
-
-	add_timer(delay + gettick(), skill_earth_strain_timer, src->id, (intptr)ess);
-
-}
-
-int skill_earth_strain_timer(int tid, unsigned int tick, int id, intptr data)
-{
-
-	struct block_list *src;
-	struct map_session_data *sd;
-	struct skill_earth_strain_struct *ess = (struct skill_earth_strain_struct *)data;
-
-	src = map_id2bl(ess->src_id);
-	sd = map_id2sd(ess->src_id);
-
-	if( !ess || (ess && ess->count <= 0 ) || !src || !sd )
-	{	// If there's no Earth Strain session, or caster, or caster map_session_data, end.
-		if( ess )
-			aFree(ess);
-		return 0;
-	}
-
-	if( ess->count2 )
-	{
-		switch( ess->pos )
-		{
-			case 1: skill_unitsetting(src, WL_EARTHSTRAIN, pc_checkskill(sd, WL_EARTHSTRAIN), ess->x, src->y + ess->space * ess->count2, 0); break;
-			case 2: skill_unitsetting(src, WL_EARTHSTRAIN, pc_checkskill(sd, WL_EARTHSTRAIN), ess->x - ess->space * ess->count2, ess->y, 0); break;
-			case 3: skill_unitsetting(src, WL_EARTHSTRAIN, pc_checkskill(sd, WL_EARTHSTRAIN), ess->x, src->y - ess->space * ess->count2, 0); break;
-			case 4: skill_unitsetting(src, WL_EARTHSTRAIN, pc_checkskill(sd, WL_EARTHSTRAIN), ess->x + ess->space * ess->count2, ess->y, 0); break;
-			default: break;
-		}
-	}
-
-	ess->count --;
-	ess->count2 ++;
-
-	add_timer((ess->delay) + gettick(), skill_earth_strain_timer, src->id, data);
-
-	return 1;
-
 }
 
 int skill_fatalmenace_sub(struct block_list *bl, va_list ap)
