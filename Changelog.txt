@@ -5,8 +5,12 @@
 // 	- Details.
 //========================================
 
-11/14/2009
-	r12 [LimitLine]
+11/15/2009
+	r14 [LimitLine]
+	* Fixed changelog conflict. sorry.
+	* Added doc file regarding the rewrite branch.
+
+	r13 [LimitLine]
 	* Added rewritten Arch Bishop and Warlock skills to the trunk/rewrite folder.
 	- Things missing: Editted item_db.txt with support for third class bitmasks.
 		Current job system of stable/r13890, which is cleaner and more functional.
@@ -15,6 +19,9 @@
 		their respective /stable folder.
 	* Moved '3CeAM Docunments' folder to svn root.
 	* Added a general Changelog to svn root, which'll contain changes made to all branches.
+
+	r12 [Jobbie]
+	* Minor update for skill_cast_db related to Rune Knight.
 
 11/13/2009
 	r11 [Jobbie]
