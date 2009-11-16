@@ -1596,7 +1596,9 @@ int skill_break_equip (struct block_list *bl, unsigned short where, int rate, in
 				pc_unequipitem(sd, j, 3);
 			}
 		}
-		clif_equip_damaged(sd,j);
+#if PACKETVER >= 20070521
+		clif_equip_damaged(sd,i);
+#endif
 		clif_equiplist(sd);
 	}
 

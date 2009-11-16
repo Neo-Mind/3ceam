@@ -2317,7 +2317,7 @@
 5168,Bongun_Hat_,Bongun Hat,5,20,,300,,5,,1,0xFFFFFFFF,31,2,769,,0,0,139,{},{},{}
 5169,Bride_Mask,Bride Mask,5,30000,,500,,4,,1,0xFFFFFFFF,31,2,768,,40,1,223,{ if(BaseClass==Job_Taekwon){ bonus bLuk,2; bonus bCritical,5; } },{},{}
 5170,Feather_Beret,Feather Beret,5,30000,,600,,1,,0,0xFFFFFFFE,31,2,256,,0,1,224,{ bonus bMdef,1; bonus2 bSubRace,RC_DemiHuman,10; },{},{}
-5171,Valkyrie_Helm,Valkyrie Helm,5,100000,,1000,,5,,1,0xFFFFFFFE,2,2,256,,0,1,225,{ bonus bMdef,5; if(isequipped(2357,2421,2524)) bonus bAllStats,1; },{},{}
+5171,Valkyrie_Helm,Valkyrie Helm,5,100000,,1000,,5,,1,0xFFFFFFFE,26,2,256,,0,1,225,{ bonus bMdef,5; if(isequipped(2357,2421,2524)) bonus bAllStats,1; },{},{}
 5172,Beret,Beret,5,30000,,700,,0,,0,0xFFFFFFFF,31,2,256,,0,0,226,{ bonus2 bSubRace,RC_DemiHuman,10; },{},{}
 5173,Satto_Hat,Magistrate Hat,5,30000,,400,,3,,1,0xFFFFFFFF,31,2,256,,60,1,227,{ if(BaseClass==Job_Taekwon){ bonus bAgi,1; bonus bHPrecovRate,3; } },{},{}
 5174,Ayam,Ayam,5,30000,,400,,3,,1,0xFFFFFFFF,31,2,256,,60,1,228,{ if(BaseClass==Job_Taekwon){ bonus bInt,1; bonus bSPrecovRate,3; } },{},{}
