@@ -397,6 +397,7 @@ int skillnotok (int skillid, struct map_session_data *sd)
 			}
 			return 0;
 		case AL_TELEPORT:
+		case SC_DIMENSIONDOOR:
 			if(map[m].flag.noteleport) {
 				clif_skill_teleportmessage(sd,0);
 				return 1;
@@ -10007,12 +10008,15 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			break;
 
 		case UNT_DIMENSIONDOOR:
-			if( tstatus && tstatus->mode&MD_BOSS )
-				break;	// Shouldn't work on bosses. [LimitLine]
-			if( bl->type == BL_PC )
-				pc_setpos(tsd, map_id2index(sg->map), 0, 0, 3);
-			if( bl->type == BL_MOB )
-				unit_warp(bl, sg->map, 0, 0, 3);
+			if ( tsd && map[bl->m].flag.noteleport ) {
+				clif_skill_teleportmessage(tsd,0);
+				break;
+			}
+			if( tsd )
+				pc_randomwarp(tsd,3);		
+			//Skill don't work with mobs. [pakpil]	
+			if( bl->type == BL_MOB && battle_config.mob_warp&8 )
+				unit_warp(bl,-1,-1,-1,3);
 			break;
 			
 		case UNT_CHAOSPANIC:
