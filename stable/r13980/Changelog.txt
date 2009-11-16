@@ -6,6 +6,10 @@
 //========================================
 
 11/16/2009
+	r17 [pakpil]
+	*Fixed AB_EPICLESIS that caused map_server crashes when the caster was within the area when skill began.
+
+11/16/2009
 	r16 [pakpil]
 	*Fixed Valkyrie Helm's upper in item_db.txt
 	*Fixed client crashes produced when some equipment was broken.

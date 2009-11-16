@@ -2196,6 +2196,8 @@ int skill_area_sub (struct block_list *bl, va_list ap)
 
 	if(battle_check_target(src,bl,flag) > 0)
 	{
+		if( skill_id == AB_EPICLESIS && src->id == bl->id )
+			return 0;
 		// several splash skills need this initial dummy packet to display correctly
 		if (flag&SD_PREAMBLE && skill_area_temp[2] == 0)
 			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skill_id, skill_lv, 6); //Take a look on it [pakpil]
@@ -9999,7 +10001,7 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			clif_slide(bl, src->bl.x, src->bl.y);
 			clif_skill_poseffect(bl, sg->skill_id, sg->skill_lv, src->bl.x, src->bl.y, tick);
 			map_moveblock(bl, src->bl.x, src->bl.y, tick);
-			sc_start4(bl, type, 100, sg->skill_lv, 0, 0, sg->group_id, skill_get_time(sg->skill_id, sg->skill_lv));
+			sc_start4(bl, type, 100, sg->skill_lv, 0, 0, sg->group_id, sg->limit);
 			sg->val2 = 1;
 			sg->val3 = bl->id;
 			break;
