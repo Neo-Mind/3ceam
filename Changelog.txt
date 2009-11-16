@@ -6,6 +6,9 @@
 //========================================
 
 11/15/2009
+	r15 [LimitLine]
+	* Fixed Soul Expansion not doing doubled damage when under White Imprison.
+
 	r14 [LimitLine]
 	* Fixed changelog conflict. sorry.
 	* Added doc file regarding the rewrite branch.
