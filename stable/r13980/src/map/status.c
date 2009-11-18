@@ -6547,7 +6547,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 					case 3: val2 = ELE_WIND; break;
 					case 4: val2 = ELE_WATER; break;
 					default:
-						clif_skill_fail(sd, NC_SHAPESHIFT, 0, 0);
+						if( sd )
+							clif_skill_fail(sd, NC_SHAPESHIFT, 0, 0);
 						return 0;
 				}
 				tick = -1;
@@ -6748,10 +6749,10 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		break;
 		case SC_UNLUCKY_:
 		{
-			const enum sc_type types[] = { SC_POISON, SC_BLIND, SC_SILENCE };
+			const short sc[3] = { SC_POISON, SC_BLIND, SC_SILENCE };
+			sc_start(bl, sc[rand()%3], 100, val1, tick);
 			val2 = (val1 <= 2)?500:1000;
 			val4 = tick / 1000;
-			sc_start(bl, types[rand() % sizeof(types)], 100, val1, tick);
 		}		
 			break;
 		case SC_RAISINGDRAGON:

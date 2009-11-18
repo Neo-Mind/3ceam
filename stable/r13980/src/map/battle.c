@@ -324,8 +324,7 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 	if (skill_num == PA_PRESSURE)
 		return damage; //This skill bypass everything else.
 
-	if ( sd )
-		if( pc_isridingmado(sd) )
+	if ( sd && pc_isridingmado(sd) )
 			damage += 15 * pc_checkskill(sd, NC_MADOLICENCE);	// Is this supposed to go here? [LimitLine]
 
 	if (sd && tsd) {

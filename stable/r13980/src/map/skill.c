@@ -234,7 +234,7 @@ int skill_get_range2 (struct block_list *bl, int id, int lv)
 		range *=-1;
 	}
 
-	if(pc_checkskill((TBL_PC*)bl, WL_RADIUS) && id >= WL_WHITEIMPRISON && id <= WL_FREEZE_SP )
+	if(bl->type == BL_PC && pc_checkskill((TBL_PC*)bl, WL_RADIUS) && id >= WL_WHITEIMPRISON && id <= WL_FREEZE_SP )
 		range = range + (pc_checkskill((TBL_PC*)bl, WL_RADIUS));
 
 	//TODO: Find a way better than hardcoding the list of skills affected by AC_VULTURE
@@ -7059,11 +7059,12 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 
 	case NC_ANALYZE:
-		if( sd )
 			if( !clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start2(bl, type, 40 + skilllv * 10, skilllv, src->id, skill_get_time(skillid, skilllv))) )
 			{
-				clif_skill_fail(sd, skillid, 0, 0);
+			
+				if( sd )
+					clif_skill_fail(sd, skillid, 0, 0);
 				return 0;
 			}
 			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
@@ -7364,7 +7365,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				break;
 
 			status_set_sp(bl, status->sp - sp_drain, 0);
-			status_set_sp(src, sd->status.sp + sp_gain, 2);
+			status_set_sp(src, sstatus->sp + sp_gain, 2);
 
 			clif_skill_nodamage(src,bl,skillid,skilllv,
 				sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)));

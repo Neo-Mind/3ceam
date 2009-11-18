@@ -6,6 +6,12 @@
 //========================================
 
 11/18/2009
+	r21 [pakpil]
+	* Fixed some skills that caused server crash when was used by clones and caused minor errors.
+	* Fixed WL_RADIUS.
+	- http://www.eathena.ws/board/index.php?showtopic=233391&view=findpost&p=1275732
+
+11/18/2009
 	r20 [pakpil]
 	* Fixed some issues that could cause server crash.
 	* Fixed RK_PHANTOMTHRUST addjusted to the official behavior bassed in tests in kRO RE.
