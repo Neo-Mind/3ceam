@@ -6,6 +6,11 @@
 //========================================
 
 11/18/2009
+	r20 [pakpil]
+	* Fixed some issues that could cause server crash.
+	* Fixed RK_PHANTOMTHRUST addjusted to the official behavior bassed in tests in kRO RE.
+
+11/18/2009
 	r19 [LimitLine]
 	* Fixed the "miss" message appearing whenever you attack. (Thanks to Spiritual_Kid)
 	- http://www.eathena.ws/board/index.php?s=&showtopic=233391&view=findpost&p=1275442

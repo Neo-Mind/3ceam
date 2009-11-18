@@ -6773,7 +6773,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			if( status_charge(bl,heal,0) )				
 				clif_skill_nodamage(src,bl,skillid,skilllv,
 					sc_start2(bl,type,100,skilllv,heal,skill_get_time(skillid,skilllv)));
-			else
+			else if( sd )
 				clif_skill_fail(sd,skillid,0,0);
 		}
 		break;
@@ -6794,7 +6794,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		{
 			short shields = (rand()%100 < 75)?2:4;
 			sc_start2(bl,type,100,skilllv,shields,skill_get_time(skillid,skilllv));
-			clif_millenniumshield(sd,shields);
+			if( sd )
+				clif_millenniumshield(sd,shields);
 			clif_skill_nodamage(src,bl,skillid,1,1);
 		}
 		break;

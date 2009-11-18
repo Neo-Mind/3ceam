@@ -1552,10 +1552,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 			case RK_CRUSHSTRIKE:
 				wd.damage = sstatus->rhw.atk * 10; // Still need official value. [pakpil]
 				break;
-			case RK_PHANTOMTHRUST:
-				if(sd)
-					wd.damage += wd.damage * pc_checkskill(sd,KN_SPEARMASTERY) * (pc_checkskill(sd,RK_DRAGONTRAINING))?2:1 / 100; // Still need official value [pakpil]
-				break;
 			case WM_SATURDAY_NIGHT_FEVER:
 				wd.damage = 9999;
 				wd.damage2 = 9999;
@@ -1970,8 +1966,14 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					if(sd)
 						skillratio += sd->status.base_level * 2 / 10;
 					break;
-				case RK_PHANTOMTHRUST:
-					skillratio += (80 + 20 * skill_lv) + (status_get_lv(src) * 2 / 19);
+				case RK_PHANTOMTHRUST: // Set according test in RE. [pakpil]
+					skillratio += 25 * (skill_lv - 1);
+					if( sd )
+					{
+						skillratio += 25 * (pc_checkskill(sd,KN_SPEARMASTERY)-1);
+						if( pc_isridingdragon(sd) )
+							skillratio += 50;
+					}
 					break;
 				case RA_ARROWSTORM:
 					skillratio += 100 + 50 * skill_lv;
@@ -3744,8 +3746,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 			damage -= rdamage;
 			map_foreachinrange(battle_damage_area,target,2,BL_CHAR,tick,target,wd.amotion,sstatus->dmotion,rdamage,tstatus->race);
 		}
-		else
-		if( rdamage > 0 )
+		else if( rdamage > 0 )
 		{
 			rdelay = clif_damage(src, src, tick, wd.amotion, sstatus->dmotion, rdamage, 1, 4, 0);
 			//Use Reflect Shield to signal this kind of skill trigger. [Skotlex]
