@@ -3745,6 +3745,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 			map_foreachinrange(battle_damage_area,target,2,BL_CHAR,tick,target,wd.amotion,sstatus->dmotion,rdamage,tstatus->race);
 		}
 		else
+		if( rdamage > 0 )
 		{
 			rdelay = clif_damage(src, src, tick, wd.amotion, sstatus->dmotion, rdamage, 1, 4, 0);
 			//Use Reflect Shield to signal this kind of skill trigger. [Skotlex]

@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+11/18/2009
+	r19 [LimitLine]
+	* Fixed the "miss" message appearing whenever you attack. (Thanks to Spiritual_Kid)
+	- http://www.eathena.ws/board/index.php?s=&showtopic=233391&view=findpost&p=1275442
+
 11/16/2009
 	r18 [pakpil]
 	*Fixed SC_DIMENSIONDOOR adjusting its behavior to the official. This skill don't work with mobs.

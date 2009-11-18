@@ -5,6 +5,25 @@
 // 	- Details.
 //========================================
 
+11/18/2009
+	r19 [LimitLine]
+	* Fixed the "miss" message appearing whenever you attack. (Thanks to Spiritual_Kid)
+	- http://www.eathena.ws/board/index.php?s=&showtopic=233391&view=findpost&p=1275442
+
+11/16/2009
+	r18 [pakpil]
+	*Fixed SC_DIMENSIONDOOR adjusting its behavior to the official. This skill don't work with mobs.
+	-Added a new value in conf/mob.conf to Enable that mobs'll teleport when standing in Dimensional Doors portals.
+
+11/16/2009
+	r17 [pakpil]
+	*Fixed AB_EPICLESIS that caused map_server crashes when the caster was within the area when skill began.
+
+11/16/2009
+	r16 [pakpil]
+	*Fixed Valkyrie Helm's upper in item_db.txt
+	*Fixed client crashes produced when some equipment was broken.
+
 11/15/2009
 	r15 [LimitLine]
 	* Fixed Soul Expansion not doing doubled damage when under White Imprison.
