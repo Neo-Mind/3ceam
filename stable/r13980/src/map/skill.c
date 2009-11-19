@@ -3953,7 +3953,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 
 	case SR_GATEOFHELL:
 		if( !(sc && sc->data[SC_COMBO] && sc->data[SC_COMBO]->val1 == SR_FALLENEMPIRE) )
-			status_zap(&sd->bl, 0, status_get_max_sp(&sd->bl) / 10);
+			status_zap(src, 0, status_get_max_sp(src) / 10);
 		else
 			status_change_end(src, SC_COMBO, -1);
 		if( sd )
@@ -7413,22 +7413,29 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case SR_POWERVELOCITY:
 		{
 			int i;
-			if(dstsd && (dstsd->spiritball <= 5))
+			if( !dstsd )
 			{
-				for(i = 0; i < 5; i++)
-					pc_addspiritball(dstsd,skill_get_time(CH_SOULCOLLECT,skilllv),5);
-			}else{
-				return 0;
-			}
-
-			if(!dstsd){
-				if(sd)
+				if( sd )
 					clif_skill_fail(sd,skillid,0,0);
 				break;
 			}
-
-			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
-			pc_delspiritball(sd, sd->spiritball, 0);
+			else
+			{
+				if( dstsd->spiritball <= 5 )
+				{
+					for(i = 0; i < 5; i++)
+						pc_addspiritball(dstsd,skill_get_time(CH_SOULCOLLECT,skilllv),5);
+					clif_skill_nodamage(src, bl, skillid, skilllv, 1);
+					if( sd )
+						pc_delspiritball(sd, sd->spiritball, 0);
+				}			
+				else
+				{
+					if( sd )
+						clif_skill_fail(sd,skillid,0,0);
+					return 0;
+				}
+			}
 		}
 		break;
 

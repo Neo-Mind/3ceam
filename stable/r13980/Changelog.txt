@@ -5,6 +5,12 @@
 // 	- Details.
 //========================================
 
+11/19/2009
+	r22 [pakpil]
+	* Fixed some skills that caused server crash when was used by clones.
+	* Fixed SC_MANHOLE & SC_DIMENSIONDOOR that officialy can't be placed near/on targets.
+	* Minor fix to give support to the new options in clones.
+
 11/18/2009
 	r21 [pakpil]
 	* Fixed some skills that caused server crash when was used by clones and caused minor errors.
