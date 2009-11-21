@@ -4587,7 +4587,7 @@ int atcommand_mount(const int fd, struct map_session_data* sd, const char* comma
 			if( pc_isridingmado(sd) )
 				riding_flag = 1;
 			msg[0] = 710; msg[1] = 712; msg[2] = 711; msg[3] = 713;
-			option = (sd->status.sex)?OPTION_MADO_M:OPTION_MADO_F;
+			option = OPTION_MADO;
 			skillnum = NC_MADOLICENCE;
 			break;
 		case JOB_ROYAL_GUARD: case JOB_ROYAL_GUARD2: case JOB_ROYAL_GUARD_T: case JOB_ROYAL_GUARD_T2:

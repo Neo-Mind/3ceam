@@ -6714,7 +6714,7 @@ int pc_setriding(TBL_PC* sd, int flag)
 			skillnum = RA_WUGRIDER;
 			break;
 		case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
-			option = (sd->status.sex)?OPTION_MADO_M:OPTION_MADO_F;
+			option = OPTION_MADO;
 			skillnum = NC_MADOLICENCE;
 			break;
 		default:
