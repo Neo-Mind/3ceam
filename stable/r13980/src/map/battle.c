@@ -1980,6 +1980,14 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				case RA_AIMEDBOLT:
 					//Note: Multiple hits are already calculated into damage values. [Jobbie]
 					skillratio += 100 + 20 * skill_lv;
+					if(tsc && (tsc->data[SC_STOP] || tsc->data[SC_ANKLE] || 
+						tsc->data[SC_ELECTRICSHOCKER]))
+						switch(tstatus->size)
+						{
+							case 0: skillratio = skillratio*2; break;
+							case 1: skillratio = skillratio*3; break;
+							case 2: skillratio = skillratio*4; break;
+						}
 					break;
 				case RA_CLUSTERBOMB:
 					skillratio = 100 * skill_lv - 100;

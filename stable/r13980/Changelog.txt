@@ -5,6 +5,12 @@
 // 	- Details.
 //========================================
 
+11/21/2009
+	r23 [Jobbie]
+	* Applied the bonus damage of RA_AIMEDBOLT skill based on target size when it is immobile.
+	* Updated AB_CLEARANCE it is a self target skill and only party members can be targeted. Cannot target self.
+	- RE has a official bug of this skill only one target can be cleared. But 3CeAM implements it according to description.
+
 11/19/2009
 	r22 [pakpil]
 	* Fixed some skills that caused server crash when was used by clones.
