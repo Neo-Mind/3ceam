@@ -2008,6 +2008,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				case NC_BOOSTKNUCKLE:
 					skillratio += (100 + 100 * skill_lv) + status_get_dex(src) + status_get_lv(src);	// Need the official value. [Rytech]
+					break;
 				case NC_PILEBUNKER:
 					skillratio += (200 + 100 * skill_lv) + status_get_str(src) + status_get_lv(src);	// Need the official value. [Rytech]
 					if( rand()%100 <= 5 + 15 * skill_lv )
@@ -3006,12 +3007,13 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						break;
 					case AB_ADORAMUS:
 						skillratio += 400 + 100 * skill_lv;
-					if( sd )
-						skillratio += sd->status.base_level;	// Whats the official value? [Rytech]
+						if( sd )
+							skillratio += sd->status.base_level;	// Whats the official value? [Rytech]
 						break;
 					case AB_RENOVATIO:
-						skillratio = 500;	// Fixed Damage - Is this even needed? [LimitLine]
-						break;			//Also says damage depends on casters level. Base level maybe? Also, is damage delt in a %? [Rytech]
+						if( sd )
+							skillratio = (int)((15*sd->status.base_level)+(1.5*sd->status.int_));//Damage calculation from iRO wiki. [Jobbie]
+						break;
 					case AB_DUPLELIGHT_MAGIC:
 						skillratio += 100 + 20 * skill_lv;
 						break;
