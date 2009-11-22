@@ -6,6 +6,9 @@
 //========================================
 
 11/22/2009
+	r26 [Jobbie]
+	* Fixed items for Mechanic exclusive jobs that cannot be equipped.
+
 	r25 [Jobbie]
 	* Updated AB_EPICLESIS requirement added holy water.
 	* Updated damage calculation of Renovatio based on info in iRO wiki.
