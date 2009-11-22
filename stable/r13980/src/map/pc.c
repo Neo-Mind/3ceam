@@ -6701,7 +6701,8 @@ int pc_setriding(TBL_PC* sd, int flag)
 	switch( class_ )
 	{
 		case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
-		case JOB_LORD_KNIGHT: case JOB_PALADIN:
+		case JOB_LORD_KNIGHT: case JOB_PALADIN: case JOB_ROYAL_GUARD: case JOB_ROYAL_GUARD2: 
+		case JOB_ROYAL_GUARD_T: case JOB_ROYAL_GUARD_T2:
 			option = OPTION_RIDING;
 			skillnum = KN_RIDING;
 			break;
