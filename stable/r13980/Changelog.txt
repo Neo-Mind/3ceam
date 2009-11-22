@@ -6,6 +6,9 @@
 //========================================
 
 11/22/2009
+	r28 [Jobbie]
+	* Updated job bonus for 3-2 Class taken from http://www.ragnarok.co.kr
+
 	r27 [Jobbie]
 	* Fixed pc_setriding where Royal Guard couldn't mount Gryphon when setriding script command executed on a script.
 	* Fixed Enchant Blade causes map server to crash when used to a mob.
