@@ -99,7 +99,6 @@ int char_name_option = 0; // Option to know which letters/symbols are authorised
 char unknown_char_name[NAME_LENGTH] = "Unknown"; // Name to use when the requested name cannot be determined
 #define TRIM_CHARS "\032\t\x0A\x0D " //The following characters are trimmed regardless because they cause confusion and problems on the servers. [Skotlex]
 char char_name_letters[1024] = ""; // list of letters/symbols used to authorise or not a name of a character. by [Yor]
-short char_rename = 1;
 
 int char_per_account = 0; //Maximum charas per account (default unlimited) [Sirius]
 int char_del_level = 0; //From which level u can delete character [Lupus]
@@ -133,7 +132,6 @@ struct char_session_data {
 	char new_name[NAME_LENGTH];
 };
 
-int char_num, char_max;
 int max_connect_user = 0;
 int gm_allow_level = 99;
 int autosave_interval = DEFAULT_AUTOSAVE_INTERVAL;
@@ -812,6 +810,7 @@ int memitemdata_to_sql(const struct item items[], int max, int id, int tableswit
 	return 0;
 }
 
+#define MAX_CHAR_BUF 110 //Max size (for WFIFOHEAD calls)
 int mmo_char_tobuf(uint8* buf, struct mmo_charstatus* p);
 
 #ifndef TXT_SQL_CONVERT
@@ -1192,7 +1191,7 @@ int rename_char_sql(struct char_session_data *sd, int char_id)
 	if( !mmo_char_fromsql(char_id, &char_dat, false) ) // Only the short data is needed.
 		return 2;
 
-	if( char_dat.rename >= char_rename )
+	if( char_dat.rename == 0 )
 		return 1;
 
 	Sql_EscapeStringLen(sql_handle, esc_name, sd->new_name, strnlen(sd->new_name, NAME_LENGTH));
@@ -1204,7 +1203,7 @@ int rename_char_sql(struct char_session_data *sd, int char_id)
 		return 4;
 	}
 
-	if( SQL_ERROR == Sql_Query(sql_handle, "UPDATE `%s` SET `name` = '%s', `rename` = '%d' WHERE `char_id` = '%d'", char_db, esc_name, ++char_dat.rename, char_id) )
+	if( SQL_ERROR == Sql_Query(sql_handle, "UPDATE `%s` SET `name` = '%s', `rename` = '%d' WHERE `char_id` = '%d'", char_db, esc_name, --char_dat.rename, char_id) )
 	{
 		Sql_ShowDebug(sql_handle);
 		return 3;
@@ -1539,14 +1538,16 @@ int count_users(void)
 
 /// Writes char data to the buffer in the format used by the client.
 /// Used in packets 0x6b (chars info) and 0x6d (new char info)
-/// Returns the size (106-108 or 110-112)
-int mmo_char_tobuf(uint8* buf, struct mmo_charstatus* p)
+// Returns the size
+int mmo_char_tobuf(uint8* buffer, struct mmo_charstatus* p)
 {
-	int i = 0;
+	unsigned short offset = 0;
+	uint8* buf;
 
-	if( buf == NULL || p == NULL )
+	if( buffer == NULL || p == NULL )
 		return 0;
 
+	buf = WBUFP(buffer,0);
 	WBUFL(buf,0) = p->char_id;
 	WBUFL(buf,4) = min(p->base_exp, LONG_MAX);
 	WBUFL(buf,8) = p->zeny;
@@ -1559,45 +1560,41 @@ int mmo_char_tobuf(uint8* buf, struct mmo_charstatus* p)
 	WBUFL(buf,36) = p->manner;
 	WBUFW(buf,40) = min(p->status_point, SHRT_MAX);
 #if PACKETVER > 20081217
-	WBUFL(buf,42) = min(p->hp, LONG_MAX);
-	WBUFL(buf,46) = min(p->max_hp, LONG_MAX);
-	i = 4;
+	WBUFL(buf,42) = p->hp;
+	WBUFL(buf,46) = p->max_hp;
+	offset+=4;
+	buf = WBUFP(buffer,offset);
 #else
 	WBUFW(buf,42) = min(p->hp, SHRT_MAX);
- 	WBUFW(buf,44) = min(p->max_hp, SHRT_MAX);
+	WBUFW(buf,44) = min(p->max_hp, SHRT_MAX);
 #endif
-	WBUFW(buf,i + 46) = min(p->sp, SHRT_MAX);
-	WBUFW(buf,i + 48) = min(p->max_sp, SHRT_MAX);
-	WBUFW(buf,i + 50) = DEFAULT_WALK_SPEED; // p->speed;
-	WBUFW(buf,i + 52) = p->class_;
-	WBUFW(buf,i + 54) = p->hair;
-	WBUFW(buf,i + 56) = (p->option&0x0fe80020) ? 0 : p->weapon; //When the weapon is sent and your option is riding, the client crashes on login!?
-	WBUFW(buf,i + 58) = p->base_level;
-	WBUFW(buf,i + 60) = min(p->skill_point, SHRT_MAX);
-	WBUFW(buf,i + 62) = p->head_bottom;
-	WBUFW(buf,i + 64) = p->shield;
-	WBUFW(buf,i + 66) = p->head_top;
-	WBUFW(buf,i + 68) = p->head_mid;
-	WBUFW(buf,i + 70) = p->hair_color;
-	WBUFW(buf,i + 72) = p->clothes_color;
-	memcpy(WBUFP(buf,i + 74), p->name, NAME_LENGTH);
-	WBUFB(buf,i + 98) = min(p->str, UCHAR_MAX);
-	WBUFB(buf,i + 99) = min(p->agi, UCHAR_MAX);
-	WBUFB(buf,i + 100) = min(p->vit, UCHAR_MAX);
-	WBUFB(buf,i + 101) = min(p->int_, UCHAR_MAX);
-	WBUFB(buf,i + 102) = min(p->dex, UCHAR_MAX);
-	WBUFB(buf,i + 103) = min(p->luk, UCHAR_MAX);
-	WBUFW(buf,i + 104) = p->slot;
-	if( char_rename )
-	{
-		if( p->rename < char_rename )
-			WBUFW(buf,i + 106) = 0;
-		else
-			WBUFW(buf,i + 106) = 1;
-		return i + 108;
-	} else {
-		return i + 106;
-	}
+	WBUFW(buf,46) = min(p->sp, SHRT_MAX);
+	WBUFW(buf,48) = min(p->max_sp, SHRT_MAX);
+	WBUFW(buf,50) = DEFAULT_WALK_SPEED; // p->speed;
+	WBUFW(buf,52) = p->class_;
+	WBUFW(buf,54) = p->hair;
+	WBUFW(buf,56) = p->option&0x20 ? 0 : p->weapon; //When the weapon is sent and your option is riding, the client crashes on login!?
+	WBUFW(buf,58) = p->base_level;
+	WBUFW(buf,60) = min(p->skill_point, SHRT_MAX);
+	WBUFW(buf,62) = p->head_bottom;
+	WBUFW(buf,64) = p->shield;
+	WBUFW(buf,66) = p->head_top;
+	WBUFW(buf,68) = p->head_mid;
+	WBUFW(buf,70) = p->hair_color;
+	WBUFW(buf,72) = p->clothes_color;
+	memcpy(WBUFP(buf,74), p->name, NAME_LENGTH);
+	WBUFB(buf,98) = min(p->str, UCHAR_MAX);
+	WBUFB(buf,99) = min(p->agi, UCHAR_MAX);
+	WBUFB(buf,100) = min(p->vit, UCHAR_MAX);
+	WBUFB(buf,101) = min(p->int_, UCHAR_MAX);
+	WBUFB(buf,102) = min(p->dex, UCHAR_MAX);
+	WBUFB(buf,103) = min(p->luk, UCHAR_MAX);
+	WBUFW(buf,104) = p->slot;
+#if PACKETVER >= 20061023
+	WBUFW(buf,106) = ( p->rename > 0 ) ? 0 : 1;
+	offset+=2;
+#endif
+	return 106+offset;
 }
 
 int mmo_char_send006b(int fd, struct char_session_data* sd)
@@ -1608,7 +1605,7 @@ int mmo_char_send006b(int fd, struct char_session_data* sd)
 		ShowInfo("Loading Char Data ("CL_BOLD"%d"CL_RESET")\n",sd->account_id);
 
 	j = 24; // offset
-	WFIFOHEAD(fd,j + MAX_CHARS*((PACKETVER<=20081217)?108:112));
+	WFIFOHEAD(fd,j + MAX_CHARS*MAX_CHAR_BUF);
 	WFIFOW(fd,0) = 0x6b;
 	memset(WFIFOP(fd,4), 0, 20); // unknown bytes
 	j+=mmo_chars_fromsql(sd, WFIFOP(fd,j));
@@ -2954,7 +2951,7 @@ int lan_subnetcheck(uint32 ip)
 int parse_char(int fd)
 {
 	int i, ch = 0;
-	char email[40];
+	char email[40];	
 	unsigned short cmd;
 	int map_fd;
 	struct char_session_data* sd;
@@ -3221,7 +3218,7 @@ int parse_char(int fd)
 				mmo_char_fromsql(i, &char_dat, false); //Only the short data is needed.
 
 				// send to player
-				WFIFOHEAD(fd,((PACKETVER <= 20081217)?110:114));
+				WFIFOHEAD(fd,2+MAX_CHAR_BUF);
 				WFIFOW(fd,0) = 0x6d;
 				len = 2 + mmo_char_tobuf(WFIFOP(fd,2), &char_dat);
 				WFIFOSET(fd,len);
@@ -3362,22 +3359,26 @@ int parse_char(int fd)
 			}
 			break;
 
-		// captcha code requst
+		// captcha code request (not implemented)
 		// R 07e5 <?>.w <aid>.l
 		case 0x7e5:
-		// captcha code check
-		// R 07e7 <len>.w <aid>.l <code>.b10 <?>.b14
-		case 0x7e7:
-		{
-			if (cmd == 0x7e5) RFIFOSKIP(fd,8); //This is to avoid conflict on the Hack
-			if (cmd == 0x7e7) RFIFOSKIP(fd,32); //This is to avoid conflict on the Hack
-
 			WFIFOHEAD(fd,5);
 			WFIFOW(fd,0) = 0x7e9;
 			WFIFOW(fd,2) = 5;
 			WFIFOB(fd,4) = 1;
 			WFIFOSET(fd,5);
-		}
+			RFIFOSKIP(fd,8);
+			break;
+
+		// captcha code check (not implemented)
+		// R 07e7 <len>.w <aid>.l <code>.b10 <?>.b14
+		case 0x7e7:
+			WFIFOHEAD(fd,5);
+			WFIFOW(fd,0) = 0x7e9;
+			WFIFOW(fd,2) = 5;
+			WFIFOB(fd,4) = 1;
+			WFIFOSET(fd,5);
+			RFIFOSKIP(fd,32);
 		break;
 
 		// log in as map-server
@@ -3926,8 +3927,6 @@ int char_config_read(const char* cfgName)
 			char_name_option = atoi(w2);
 		} else if (strcmpi(w1, "char_name_letters") == 0) {
 			strcpy(char_name_letters, w2);
-		} else if (strcmpi(w1, "char_rename") == 0) {
-			char_rename = atoi(w2);
 		} else if (strcmpi(w1, "chars_per_account") == 0) { //maxchars per account [Sirius]
 			char_per_account = atoi(w2);
 		} else if (strcmpi(w1, "char_del_level") == 0) { //disable/enable char deletion by its level condition [Lupus]

@@ -951,7 +951,7 @@ enum {
 	OPT1_SLEEP,
 	//Aegis uses OPT1 = 5 to identify undead enemies (which also grants them immunity to the other opt1 changes)
 	OPT1_STONEWAIT=6, //Petrifying
-	OPT1_BURNING,
+	OPT1_BURNING
 };
 
 //opt2: Stackable status changes.
@@ -1023,7 +1023,6 @@ enum {
 
 #define OPTION_CART (OPTION_CART1|OPTION_CART2|OPTION_CART3|OPTION_CART4|OPTION_CART5)
 #define OPTION_RIDING_DRAGON (OPTION_GREEN_DRAGON|OPTION_BLACK_DRAGON|OPTION_WHITE_DRAGON|OPTION_BLUE_DRAGON|OPTION_RED_DRAGON)
-#define OPTION_RIDING_MADO (OPTION_MADO)
 
 #define OPTION_MASK ~0x40
 

@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+11/23/2009
+	r29 [pakpil]
+	* Cleaned OPTION_MADO.
+	* Full update to eA r14162.
+
 11/22/2009
 	r28 [Jobbie]
 	* Updated job bonus for 3-2 Class taken from http://www.ragnarok.co.kr

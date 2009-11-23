@@ -792,8 +792,8 @@ int mob_setdelayspawn(struct mob_data *md)
 	if (md->spawn->delay2) //random variance
 		spawntime+= rand()%md->spawn->delay2;
 
-	if (spawntime < 5000) //Min respawn time (is it needed?)
-		spawntime = 5000;
+	if (spawntime < 500) //Min respawn time (is it needed?)
+		spawntime = 500;
 
 	if( md->spawn_timer != INVALID_TIMER )
 		delete_timer(md->spawn_timer, mob_delayspawn);
@@ -1954,6 +1954,7 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 	int i,temp,count,pnum=0,m=md->bl.m;
 	unsigned int mvp_damage, tick = gettick();
 	unsigned short flaghom = 1; // [Zephyrus] Does the mob only received damage from homunculus?
+	bool rebirth;
 
 	status = &md->status;
 
@@ -2220,7 +2221,7 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 				i_data = itemdb_search(ditem->item_data.nameid);
 				sprintf (message, msg_txt(541), (mvp_sd?mvp_sd->status.name:"???"), md->name, i_data->jname, (float)drop_rate/100);
 				//MSG: "'%s' won %s's %s (chance: %0.02f%%)"
-				intif_GMmessage(message,strlen(message)+1,0);
+				intif_broadcast(message,strlen(message)+1,0);
 			}
 			// Announce first, or else ditem will be freed. [Lance]
 			// By popular demand, use base drop rate for autoloot code. [Skotlex]
@@ -2346,7 +2347,7 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 				i_data = itemdb_exists(item.nameid);
 				sprintf (message, msg_txt(541), mvp_sd->status.name, md->name, i_data->jname, temp/100.);
 				//MSG: "'%s' won %s's %s (chance: %0.02f%%)"
-				intif_GMmessage(message,strlen(message)+1,0);
+				intif_broadcast(message,strlen(message)+1,0);
 			}
 
 			if((temp = pc_additem(mvp_sd,&item,1)) != 0) {
@@ -2370,7 +2371,8 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 	  	//Emperium destroyed by script. Discard mvp character. [Skotlex]
 		mvp_sd = NULL;
 
-	if( !md->sc.data[SC_KAIZEL] && !md->sc.data[SC_REBIRTH] )
+	rebirth =  ( md->sc.data[SC_KAIZEL] || (md->sc.data[SC_REBIRTH] && !md->state.rebirth) );
+	if( !rebirth )
 	{ // Only trigger event on final kill
 		md->status.hp = 0; //So that npc_event invoked functions KNOW that mob is dead
 		if( src )
@@ -2424,8 +2426,9 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 
 	if(!md->spawn) //Tell status_damage to remove it from memory.
 		return 5; // Note: Actually, it's 4. Oh well...
-	
-	mob_setdelayspawn(md); //Set respawning.
+
+	if( !rebirth )
+		mob_setdelayspawn(md); //Set respawning.
 	return 3; //Remove from map.
 }
 

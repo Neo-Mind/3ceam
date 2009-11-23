@@ -191,6 +191,33 @@ static void* create_online_char_data(DBKey key, va_list args)
 	return character;
 }
 
+void set_char_charselect(int account_id)
+{
+	struct online_char_data* character;
+
+	character = (struct online_char_data*)idb_ensure(online_char_db, account_id, create_online_char_data);
+
+	if( character->server > -1 )
+		server[character->server].users--;
+
+	character->char_id = -1;
+	character->server = -1;
+
+	if(character->waiting_disconnect != -1) {
+		delete_timer(character->waiting_disconnect, chardb_waiting_disconnect);
+		character->waiting_disconnect = -1;
+	}
+
+	if (login_fd > 0 && !session[login_fd]->flag.eof)
+	{
+		WFIFOHEAD(login_fd,6);
+		WFIFOW(login_fd,0) = 0x272b;
+		WFIFOL(login_fd,2) = account_id;
+		WFIFOSET(login_fd,6);
+	}
+
+}
+
 void set_char_online(int map_id, int char_id, int account_id)
 {
 	struct online_char_data* character;
@@ -198,14 +225,14 @@ void set_char_online(int map_id, int char_id, int account_id)
 	character = (struct online_char_data*)idb_ensure(online_char_db, account_id, create_online_char_data);
 	if( character->char_id != -1 && character->server > -1 && character->server != map_id )
 	{
-		//char == 99 <- Character logging in, so someone has logged in while one
-		//char is still on map-server, so kick him out, but don't print "error"
-		//as this is normal behaviour. [Skotlex]
-		if (char_id != 99)
-			ShowNotice("set_char_online: Character %d:%d marked in map server %d, but map server %d claims to have (%d:%d) online!\n",
-				character->account_id, character->char_id, character->server, map_id, account_id, char_id);
+		ShowNotice("set_char_online: Character %d:%d marked in map server %d, but map server %d claims to have (%d:%d) online!\n",
+			character->account_id, character->char_id, character->server, map_id, account_id, char_id);
 		mapif_disconnectplayer(server[character->server].fd, character->account_id, character->char_id, 2);
 	}
+
+	//Update state data
+	character->char_id = char_id;
+	character->server = map_id;
 
 	if( character->server > -1 )
 		server[character->server].users++;
@@ -213,12 +240,6 @@ void set_char_online(int map_id, int char_id, int account_id)
 	if(character->waiting_disconnect != -1) {
 		delete_timer(character->waiting_disconnect, chardb_waiting_disconnect);
 		character->waiting_disconnect = -1;
-	}
-
-	//If user is NOT at char screen, delete entry [Kevin]
-	if(character->char_id != -1)
-	{
-		idb_remove(online_char_db, account_id);
 	}
 
 	if (login_fd > 0 && !session[login_fd]->flag.eof)
@@ -1691,16 +1712,19 @@ int count_users(void)
 	return users;
 }
 
-/// Writes char data to the buffer in the format used by the client.
-/// Used in packets 0x6b (chars info) and 0x6d (new char info)
-/// Returns the size (106 or 108)
-int mmo_char_tobuf(uint8* buf, struct mmo_charstatus* p)
+// Writes char data to the buffer in the format used by the client.
+// Used in packets 0x6b (chars info) and 0x6d (new char info)
+// Returns the size
+#define MAX_CHAR_BUF 110 //Max size (for WFIFOHEAD calls)
+int mmo_char_tobuf(uint8* buffer, struct mmo_charstatus* p)
 {
-	int i = 0;
+	unsigned short offset = 0;
+	uint8* buf;
 
-	if( buf == NULL || p == NULL )
+	if( buffer == NULL || p == NULL )
 		return 0;
 
+	buf = WBUFP(buffer,0);
 	WBUFL(buf,0) = p->char_id;
 	WBUFL(buf,4) = min(p->base_exp, LONG_MAX);
 	WBUFL(buf,8) = p->zeny;
@@ -1713,37 +1737,41 @@ int mmo_char_tobuf(uint8* buf, struct mmo_charstatus* p)
 	WBUFL(buf,36) = p->manner;
 	WBUFW(buf,40) = min(p->status_point, SHRT_MAX);
 #if PACKETVER > 20081217
-	WBUFL(buf,42) = min(p->hp, LONG_MAX);
-	WBUFL(buf,46) = min(p->max_hp, LONG_MAX);
-	i = 4;
+	WBUFL(buf,42) = p->hp;
+	WBUFL(buf,46) = p->max_hp;
+	offset+=4;
+	buf = WBUFP(buffer,offset);
 #else
 	WBUFW(buf,42) = min(p->hp, SHRT_MAX);
- 	WBUFW(buf,44) = min(p->max_hp, SHRT_MAX);
+	WBUFW(buf,44) = min(p->max_hp, SHRT_MAX);
 #endif
-	WBUFW(buf,i + 46) = min(p->sp, SHRT_MAX);
-	WBUFW(buf,i + 48) = min(p->max_sp, SHRT_MAX);
-	WBUFW(buf,i + 50) = DEFAULT_WALK_SPEED; // p->speed;
-	WBUFW(buf,i + 52) = p->class_;
-	WBUFW(buf,i + 54) = p->hair;
-	WBUFW(buf,i + 56) = (p->option&0x0fe80020) ? 0 : p->weapon; //When the weapon is sent and your option is riding, the client crashes on login!?
-	WBUFW(buf,i + 58) = p->base_level;
-	WBUFW(buf,i + 60) = min(p->skill_point, SHRT_MAX);
-	WBUFW(buf,i + 62) = p->head_bottom;
-	WBUFW(buf,i + 64) = p->shield;
-	WBUFW(buf,i + 66) = p->head_top;
-	WBUFW(buf,i + 68) = p->head_mid;
-	WBUFW(buf,i + 70) = p->hair_color;
-	WBUFW(buf,i + 72) = p->clothes_color;
-	memcpy(WBUFP(buf,i + 74), p->name, NAME_LENGTH);
-	WBUFB(buf,i + 98) = min(p->str, UCHAR_MAX);
-	WBUFB(buf,i + 99) = min(p->agi, UCHAR_MAX);
-	WBUFB(buf,i + 100) = min(p->vit, UCHAR_MAX);
-	WBUFB(buf,i + 101) = min(p->int_, UCHAR_MAX);
-	WBUFB(buf,i + 102) = min(p->dex, UCHAR_MAX);
-	WBUFB(buf,i + 103) = min(p->luk, UCHAR_MAX);
-	WBUFW(buf,i + 104) = p->slot;
-	WBUFW(buf,i + 106) = 1;
-	return i + 108;
+	WBUFW(buf,46) = min(p->sp, SHRT_MAX);
+	WBUFW(buf,48) = min(p->max_sp, SHRT_MAX);
+	WBUFW(buf,50) = DEFAULT_WALK_SPEED; // p->speed;
+	WBUFW(buf,52) = p->class_;
+	WBUFW(buf,54) = p->hair;
+	WBUFW(buf,56) = p->option&0x20 ? 0 : p->weapon; //When the weapon is sent and your option is riding, the client crashes on login!?
+	WBUFW(buf,58) = p->base_level;
+	WBUFW(buf,60) = min(p->skill_point, SHRT_MAX);
+	WBUFW(buf,62) = p->head_bottom;
+	WBUFW(buf,64) = p->shield;
+	WBUFW(buf,66) = p->head_top;
+	WBUFW(buf,68) = p->head_mid;
+	WBUFW(buf,70) = p->hair_color;
+	WBUFW(buf,72) = p->clothes_color;
+	memcpy(WBUFP(buf,74), p->name, NAME_LENGTH);
+	WBUFB(buf,98) = min(p->str, UCHAR_MAX);
+	WBUFB(buf,99) = min(p->agi, UCHAR_MAX);
+	WBUFB(buf,100) = min(p->vit, UCHAR_MAX);
+	WBUFB(buf,101) = min(p->int_, UCHAR_MAX);
+	WBUFB(buf,102) = min(p->dex, UCHAR_MAX);
+	WBUFB(buf,103) = min(p->luk, UCHAR_MAX);
+	WBUFW(buf,104) = p->slot;
+#if PACKETVER >= 20061023
+	WBUFW(buf,106) = ( p->rename > 0 ) ? 0 : 1;
+	offset += 2;
+#endif
+	return 106+offset;
 }
 
 //----------------------------------------
@@ -1765,7 +1793,7 @@ int mmo_char_send006b(int fd, struct char_session_data* sd)
 		sd->found_char[i] = -1;
 
 	j = 24; // offset
-	WFIFOHEAD(fd,j + found_num*((PACKETVER<=20081217)?108:112));
+	WFIFOHEAD(fd,j + found_num*MAX_CHAR_BUF);
 	WFIFOW(fd,0) = 0x6b;
 	memset(WFIFOP(fd,4), 0, 20); // unknown bytes
 	for(i = 0; i < found_num; i++)
@@ -1956,7 +1984,7 @@ static void char_auth_ok(int fd, struct char_session_data *sd)
 	sd->auth = true;
 
 	// set char online on charserver
-	set_char_online(-1, 99, sd->account_id);
+	set_char_charselect(sd->account_id);
 
 	// continues when account data is received...
 }
@@ -2810,7 +2838,7 @@ int parse_frommap(int fd)
 			idb_put(auth_db, account_id, node);
 
 			//Set char to "@ char select" in online db [Kevin]
-			set_char_online(-3, 99, account_id);
+			set_char_charselect(account_id);
 
 			WFIFOHEAD(fd,7);
 			WFIFOW(fd,0) = 0x2b03;
@@ -3145,8 +3173,8 @@ int parse_frommap(int fd)
 				node->account_id == account_id &&
 				node->char_id == char_id &&
 				node->login_id1 == login_id1 &&
-				node->sex == sex &&
-				node->ip == ip )
+				node->sex == sex /*&&
+				node->ip == ip*/ )
 			{// auth ok
 				cd->sex = sex;
 
@@ -3327,8 +3355,8 @@ int parse_char(int fd)
 			if( node != NULL &&
 			    node->account_id == account_id &&
 				node->login_id1  == login_id1 &&
-				node->login_id2  == login_id2 &&
-				node->ip         == ipl )
+				node->login_id2  == login_id2 /*&&
+				node->ip         == ipl*/ )
 			{// authentication found (coming from map server)
 				idb_remove(auth_db, account_id);
 				char_auth_ok(fd, sd);
@@ -3497,7 +3525,7 @@ int parse_char(int fd)
 			{
 				int len;
 				// send to player
-				WFIFOHEAD(fd,((PACKETVER <= 20081217)?110:114));
+				WFIFOHEAD(fd,MAX_CHAR_BUF+2);
 				WFIFOW(fd,0) = 0x6d;
 				len = 2 + mmo_char_tobuf(WFIFOP(fd,2), &char_dat[i].status);
 				WFIFOSET(fd,len);
@@ -3637,22 +3665,26 @@ int parse_char(int fd)
 			RFIFOSKIP(fd,34);
 		break;
 
-		// captcha code requst
+		// captcha code request (not implemented)
 		// R 07e5 <?>.w <aid>.l
 		case 0x7e5:
-		// captcha code check
-		// R 07e7 <len>.w <aid>.l <code>.b10 <?>.b14
-		case 0x7e7:
-		{
-			if (cmd == 0x7e5) RFIFOSKIP(fd,8); //This is to avoid conflict on the Hack
-			if (cmd == 0x7e7) RFIFOSKIP(fd,32); //This is to avoid conflict on the Hack
-
 			WFIFOHEAD(fd,5);
 			WFIFOW(fd,0) = 0x7e9;
 			WFIFOW(fd,2) = 5;
 			WFIFOB(fd,4) = 1;
 			WFIFOSET(fd,5);
-		}
+			RFIFOSKIP(fd,8);
+			break;
+
+		// captcha code check (not implemented)
+		// R 07e7 <len>.w <aid>.l <code>.b10 <?>.b14
+		case 0x7e7:
+			WFIFOHEAD(fd,5);
+			WFIFOW(fd,0) = 0x7e9;
+			WFIFOW(fd,2) = 5;
+			WFIFOB(fd,4) = 1;
+			WFIFOSET(fd,5);
+			RFIFOSKIP(fd,32);
 		break;
 
 		// login as map-server

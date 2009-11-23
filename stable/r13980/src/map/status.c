@@ -802,7 +802,7 @@ int status_damage(struct block_list *src,struct block_list *target,int hp, int s
 
 	status = status_get_status_data(target);
 
-	if (status == &dummy_status || !status->hp)
+	if( status == &dummy_status || (!status->hp && hp) )
 		return 0; //Invalid targets: no damage or dead
 
 // Let through. battle.c/skill.c have the whole logic of when it's possible or
@@ -816,7 +816,7 @@ int status_damage(struct block_list *src,struct block_list *target,int hp, int s
 	{
 		if( !sp )
 			return 0;
-		hp = 0;
+		hp = 1;
 	}
 
 	if( hp && !(flag&1) ) {
@@ -926,11 +926,11 @@ int status_damage(struct block_list *src,struct block_list *target,int hp, int s
 	//Non-zero: Standard death. Clear status, cancel move/attack, etc
 	//&2: Also remove object from map.
 	//&4: Also delete object from memory.
-	if( sc && sc->data[SC_OVERHEAT] && sc->option&OPTION_RIDING_MADO )
+	if( sc && sc->data[SC_OVERHEAT] && sc->option&OPTION_MADO )
 	{ // If you are mounting a mado, you'll loose you mado first.
 		status_change_end(target,SC_OVERHEAT,-1);
 		if( target->type == BL_PC )
-			pc_setoption((TBL_PC*)target,sc->option&~OPTION_RIDING_MADO);
+			pc_setoption((TBL_PC*)target,sc->option&~OPTION_MADO);
 		return hp+sp;
 	}
 	switch (target->type) {
@@ -2069,6 +2069,7 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 		if(first && sd->inventory_data[index]->equip_script)
 	  	{	//Execute equip-script on login
 			run_script(sd->inventory_data[index]->equip_script,0,sd->bl.id,0);
+			sd->state.script_parsed |= sd->status.inventory[index].equip;
 			if (!calculating)
 				return 1;
 		}
@@ -7074,6 +7075,9 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			sce->val2 = 2*status->max_hp/100;// Temp 2% hp used. Need official hp draining value. [Jobbie]
 			break;
 	}
+
+	if( sd && sd->ontouch.npc_id )
+		npc_touchnext_areanpc(sd,false);
 
 	return 1;
 }

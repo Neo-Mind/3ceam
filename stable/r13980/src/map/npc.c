@@ -118,17 +118,21 @@ int npc_enable_sub(struct block_list *bl, va_list ap)
 	{
 		char name[NAME_LENGTH*2+3];
 
-		if (nd->sc.option&OPTION_INVISIBLE)	// –³Œø‰»‚³‚ê‚Ä‚¢‚é
+		if (nd->sc.option&OPTION_INVISIBLE)
 			return 1;
 
 		if(sd->areanpc_id==nd->bl.id)
 			return 1;
 		sd->areanpc_id=nd->bl.id;
 
-		snprintf(name, ARRAYLENGTH(name), "%s::OnTouch", nd->exname); // exname to be specific. exname is the unique identifier for script events. [Lance]
-		npc_event(sd,name,0);
+		snprintf(name, ARRAYLENGTH(name), "%s::%s", nd->exname, script_config.ontouch_name);
+		if( npc_event(sd,name,0) > 0 )
+		{
+			snprintf(name, ARRAYLENGTH(name), "%s::%s", nd->exname, script_config.ontouch2_name); // exname to be specific. exname is the unique identifier for script events. [Lance]
+			npc_event(sd,name,0);
+		}
+
 	}
-	//aFree(name);
 	return 0;
 }
 
@@ -477,7 +481,7 @@ int npc_timerevent(int tid, unsigned int tick, int id, intptr data)
 	}
 
 	// Run the script
-	run_script(nd->u.scr.script,te->pos,nd->u.scr.rid,nd->bl.id);
+	run_script(nd->u.scr.script,te->pos,nd->u.scr.rid,nd->bl.id);	
 	
 	nd->u.scr.rid = old_rid; // Attached-rid should be restored anyway.
 	if( sd )
@@ -524,7 +528,7 @@ int npc_timerevent_start(struct npc_data* nd, int rid)
 	else if( nd->u.scr.timerid != -1 )
 		return 0;
 
-	// Arrange for the next event	
+	// Arrange for the next event		
 	ted = ers_alloc(timer_event_ers, struct timer_event_data);
 	ted->next = j; // Set event index
 	ted->time = nd->u.scr.timer_event[j].timer;
@@ -566,7 +570,7 @@ int npc_timerevent_stop(struct npc_data* nd)
 
 	// Delete timer
 	td = get_timer(*tid);
-	if( td && td->data )
+	if( td && td->data ) 
 		ers_free(timer_event_ers, (void*)td->data);
 	delete_timer(*tid,npc_timerevent);
 	*tid = -1;
@@ -719,26 +723,49 @@ int npc_event(struct map_session_data* sd, const char* eventname, int mob_kill)
 	struct event_data* ev = (struct event_data*)strdb_get(ev_db, eventname);
 	struct npc_data *nd;
 	int xs,ys;
+	bool ontouch = false;
 	char mobevent[100];
+	char name[NAME_LENGTH*2+3];
 
-	if (sd == NULL) {
+	if( sd == NULL )
+	{
 		nullpo_info(NLP_MARK);
 		return 0;
 	}
 
-	if (ev == NULL && eventname && strcmp(((eventname)+strlen(eventname)-9),"::OnTouch") == 0)
-		return 1;
+	snprintf(name, ARRAYLENGTH(name), "::%s", script_config.ontouch_name);
+	if( eventname && strcmp(((eventname)+strlen(eventname)-strlen(script_config.ontouch_name)-2),name) == 0 )
+	{
+		if( ev == NULL || !ev->nd )
+			return 1;
+		if( pc_ishiding(sd) )
+			return 0;
+		if( ev->nd->touching_id )
+			return 0;
+		ontouch = true;
+	}
+	else
+	{
+		snprintf(name, ARRAYLENGTH(name), "::%s", script_config.ontouch2_name);
+		if( ev == NULL && eventname && strcmp(((eventname)+strlen(eventname)-strlen(script_config.ontouch2_name)-2),name) == 0 )
+			return 1;
+	}
 
-	if (ev == NULL || (nd = ev->nd) == NULL) {
-		if (mob_kill) {
-			strcpy( mobevent, eventname);
-			strcat( mobevent, "::OnMyMobDead");
+	if( ev == NULL || (nd = ev->nd) == NULL )
+	{
+		if (mob_kill)
+		{
+			strcpy(mobevent, eventname);
+			strcat(mobevent, "::OnMyMobDead");
 			ev = (struct event_data*)strdb_get(ev_db, mobevent);
-			if (ev == NULL || (nd = ev->nd) == NULL) {
+			if( ev == NULL || (nd = ev->nd) == NULL )
+			{
 				ShowError("npc_event: (mob_kill) event not found [%s]\n", mobevent);
 				return 0;
 			}
-		} else {
+		}
+		else
+		{
 			ShowError("npc_event: event not found [%s]\n", eventname);
 			return 0;
 		}
@@ -758,8 +785,62 @@ int npc_event(struct map_session_data* sd, const char* eventname, int mob_kill)
 				return 1;
 		}
 	}
-	
+
+	if( ontouch )
+	{
+		nd->touching_id = sd->bl.id;
+		sd->ontouch.npc_id = nd->bl.id;
+		sd->ontouch.x = xs;
+		sd->ontouch.y = ys;
+	}
+
 	return npc_event_sub(sd,ev,eventname);
+}
+
+int npc_touch_areanpc_sub(struct block_list *bl, va_list ap)
+{
+	struct map_session_data *sd;
+	int pc_id,npc_id;
+	char *name;
+
+	nullpo_retr(0,bl);
+	nullpo_retr(0,(sd = map_id2sd(bl->id)));
+
+	pc_id = va_arg(ap,int);
+	npc_id = va_arg(ap,int);
+	name = va_arg(ap,char*);
+
+	if( pc_ishiding(sd) )
+		return 0;
+	if( pc_id == sd->bl.id )
+		return 0;
+
+	sd->areanpc_id = npc_id;
+	npc_event(sd,name,0);
+
+	return 1;
+}
+
+int npc_touchnext_areanpc(struct map_session_data* sd, bool logout)
+{
+	struct npc_data *nd = map_id2nd(sd->ontouch.npc_id);
+	short xs = sd->ontouch.x ,ys = sd->ontouch.y;
+
+	if( !nd || nd->touching_id != sd->bl.id )
+		return 1;
+
+	if( sd->bl.m != nd->bl.m || 
+		sd->bl.x < nd->bl.x - xs || sd->bl.x > nd->bl.x + xs ||
+		sd->bl.y < nd->bl.y - ys || sd->bl.y > nd->bl.y + ys ||
+		pc_ishiding(sd) || logout )
+	{
+		char name[NAME_LENGTH*2+3];
+		memset(&sd->ontouch,0,sizeof(sd->ontouch));
+		nd->touching_id = 0;
+		snprintf(name, ARRAYLENGTH(name), "%s::%s", nd->exname, script_config.ontouch_name);
+		map_forcountinarea(npc_touch_areanpc_sub,nd->bl.m,nd->bl.m - xs,nd->bl.y - ys,nd->bl.x + xs,nd->bl.y + ys,1,BL_PC,sd->bl.id,nd->bl.id,name);
+	}
+	return 0;
 }
 
 /*==========================================
@@ -820,14 +901,22 @@ int npc_touch_areanpc(struct map_session_data* sd, int m, int x, int y)
 				return 1;
 			sd->areanpc_id = map[m].npc[i]->bl.id;
 
-			snprintf(name, ARRAYLENGTH(name), "%s::OnTouch", map[m].npc[i]->exname); // It goes here too. exname being the unique identifier. [Lance]
-
+			snprintf(name, ARRAYLENGTH(name), "%s::%s", map[m].npc[i]->exname, script_config.ontouch_name);
 			if( npc_event(sd,name,0) > 0 )
-			{// failed to run OnTouch event, so just click the npc
-				npc_click(sd,map[m].npc[i]);
+			{
+				snprintf(name, ARRAYLENGTH(name), "%s::%s", map[m].npc[i]->exname, script_config.ontouch2_name); // It goes here too. exname being the unique identifier. [Lance]
+				if( npc_event(sd,name,0) > 0 )
+				{// failed to run OnTouch event, so just click the npc
+					struct unit_data *ud = unit_bl2ud(&sd->bl);
+					if( ud && ud->walkpath.path_pos < ud->walkpath.path_len )
+					{ // Since walktimer always == -1 at this time, we stop walking manually. [Inkfish]
+						clif_fixpos(&sd->bl);
+						ud->walkpath.path_pos = ud->walkpath.path_len;
+					}
+					npc_click(sd,map[m].npc[i]);
+				}
 			}
 
-			pc_stop_walking(sd,1); //Make it stop walking!
 			break;
 		}
 	}
@@ -2307,7 +2396,6 @@ const char* npc_parse_duplicate(char* w1, char* w2, char* w3, char* w4, const ch
 int npc_duplicate4instance(struct npc_data *snd, int m)
 {
 	char newname[NAME_LENGTH];
-	int i = 0;
 
 	if( map[m].instance_id == 0 )
 		return 1;

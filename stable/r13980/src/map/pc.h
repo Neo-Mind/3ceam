@@ -133,7 +133,8 @@ struct map_session_data {
 		unsigned int bg_id;
 		unsigned skillonskill : 1;
 		unsigned short user_font;
-		unsigned short autobonus;
+		unsigned short script_parsed; //flag to indicate if the script of an autobonus is parsed. [Inkfish]
+		unsigned short autobonus; //flag to indicate if an autobonus is activated. [Inkfish]
 	} state;
 	struct {
 		unsigned char no_weapon_damage, no_magic_damage, no_misc_damage;
@@ -164,6 +165,10 @@ struct map_session_data {
 	unsigned char head_dir; //0: Look forward. 1: Look right, 2: Look left.
 	unsigned int client_tick;
 	int npc_id,areanpc_id,npc_shopid;
+	struct {
+		int npc_id;
+		short x,y;
+	} ontouch;
 	int npc_item_flag; //Marks the npc_id with which you can use items during interactions with said npc (see script command enable_itemuse)
 	int npc_menu; // internal variable, used in npc menu handling
 	int npc_amount;
@@ -393,6 +398,7 @@ struct map_session_data {
 	int avail_quests;
 	int quest_index[MAX_QUEST_DB];
 	struct quest quest_log[MAX_QUEST_DB];
+	bool save_quest;
 
 	// temporary debug [flaviojs]
 	const char* debug_file;
@@ -518,7 +524,7 @@ extern int duel_count;
 #define pc_isridingdragon(sd) ( (sd)->sc.option&OPTION_RIDING_DRAGON )
 #define pc_iswarg(sd)         ( (sd)->sc.option&OPTION_WUG )
 #define pc_isridingwarg(sd)   ( (sd)->sc.option&OPTION_RIDING_WUG )
-#define pc_isridingmado(sd)   ( (sd)->sc.option&OPTION_RIDING_MADO )
+#define pc_isridingmado(sd)   ( (sd)->sc.option&OPTION_MADO )
 #define pc_isridinggryphon(sd) ( (sd)->sc.option&OPTION_RIDING && ((sd)->class_&JOBL_THIRD) )
 #define pc_isinvisible(sd)    ( (sd)->sc.option&OPTION_INVISIBLE )
 #define pc_is50overweight(sd) ( (sd)->weight*100 >= (sd)->max_weight*battle_config.natural_heal_weight_rate )

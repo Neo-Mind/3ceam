@@ -216,7 +216,9 @@ struct Script_Config script_config = {
 	"OnPCLogoutEvent", //logout_event_name
 	"OnPCLoadMapEvent", //loadmap_event_name
 	"OnPCBaseLvUpEvent", //baselvup_event_name
-	"OnPCJobLvUpEvent" //joblvup_event_name
+	"OnPCJobLvUpEvent", //joblvup_event_name
+	"OnTouch_",	//ontouch_name (runs on first visible char to enter area, picks another char if the first char leaves)
+	"OnTouch",	//ontouch2_name (run whenever a char walks into the OnTouch area)
 };
 
 static jmp_buf     error_jump;
@@ -6084,6 +6086,9 @@ BUILDIN_FUNC(strcharinfo)
 			else
 				script_pushconststr(st,"");
 			break;
+		case 3:
+			script_pushconststr(st,map[sd->bl.m].name);
+			break;
 		default:
 			ShowWarning("buildin_strcharinfo: unknown parameter.\n");
 			script_pushconststr(st,"");
@@ -6229,7 +6234,7 @@ BUILDIN_FUNC(getbrokenid)
 
 	num=script_getnum(st,2);
 	for(i=0; i<MAX_INVENTORY; i++) {
-		if(sd->status.inventory[i].attribute==1){
+		if(sd->status.inventory[i].attribute){
 				brokencounter++;
 				if(num==brokencounter){
 					id=sd->status.inventory[i].nameid;
@@ -6258,7 +6263,7 @@ BUILDIN_FUNC(repair)
 
 	num=script_getnum(st,2);
 	for(i=0; i<MAX_INVENTORY; i++) {
-		if(sd->status.inventory[i].attribute==1){
+		if(sd->status.inventory[i].attribute){
 				repaircounter++;
 				if(num==repaircounter){
 					sd->status.inventory[i].attribute=0;
@@ -6434,7 +6439,7 @@ BUILDIN_FUNC(successrefitem)
 			log_pick_pc(sd, "N", sd->status.inventory[i].nameid, -1, &sd->status.inventory[i]);
 
 		sd->status.inventory[i].refine++;
-		pc_unequipitem(sd,i,2); // status calc will happen in pc_equipitem() below
+		pc_unequipitem(sd,i,2|4); // status calc will happen in pc_equipitem() below
 
 		clif_refine(sd->fd,0,i,sd->status.inventory[i].refine);
 		clif_delitem(sd,i,1);
@@ -6636,12 +6641,15 @@ BUILDIN_FUNC(autobonus)
 		return 0;
 	if( sd->state.autobonus&sd->status.inventory[current_equip_item_index].equip )
 		return 0;
+	if( sd->state.script_parsed&sd->status.inventory[current_equip_item_index].equip )
+		return 0;
 
-	bonus_script = parse_script(script_getstr(st,2), "autobonus bonus", 0, 0);
 	rate = script_getnum(st,3);
 	dur = script_getnum(st,4);
-
-	if( !bonus_script || !rate || !dur )
+	if( !rate || !dur )
+		return 0;
+	bonus_script = parse_script(script_getstr(st,2), "autobonus bonus", 0, 0);
+	if( !bonus_script )
 		return 0;
 
 	if( script_hasdata(st,5) )
@@ -6676,12 +6684,15 @@ BUILDIN_FUNC(autobonus2)
 		return 0;
 	if( sd->state.autobonus&sd->status.inventory[current_equip_item_index].equip )
 		return 0;
+	if( sd->state.script_parsed&sd->status.inventory[current_equip_item_index].equip )
+		return 0;
 
-	bonus_script = parse_script(script_getstr(st,2), "autobonus bonus", 0, 0);
 	rate = script_getnum(st,3);
 	dur = script_getnum(st,4);
-
-	if( !bonus_script || !rate || !dur )
+	if( !rate || !dur )
+		return 0;
+	bonus_script = parse_script(script_getstr(st,2), "autobonus2 bonus", 0, 0);
+	if( !bonus_script )
 		return 0;
 
 	if( script_hasdata(st,5) )
@@ -6715,13 +6726,16 @@ BUILDIN_FUNC(autobonus3)
 		return 0;
 	if( sd->state.autobonus&sd->status.inventory[current_equip_item_index].equip )
 		return 0;
+	if( sd->state.script_parsed&sd->status.inventory[current_equip_item_index].equip )
+		return 0;
 
-	bonus_script = parse_script(script_getstr(st,2), "autobonus bonus", 0, 0);
 	rate = script_getnum(st,3);
 	dur = script_getnum(st,4);
 	atk_type = ( script_isstring(st,5) ? skill_name2id(script_getstr(st,5)) : script_getnum(st,5) );
-
-	if( !bonus_script || !rate || !dur || !atk_type )
+	if( !rate || !dur || !atk_type )
+		return 0;
+	bonus_script = parse_script(script_getstr(st,2), "autobonus3 bonus", 0, 0);
+	if( !bonus_script )
 		return 0;
 
 	if( script_hasdata(st,6) )
@@ -6981,7 +6995,7 @@ BUILDIN_FUNC(setoption)
 		flag = script_getnum(st,3);
 	else if( !option ){// Request to remove everything.
 		flag = 0;
-		option = OPTION_CART|OPTION_FALCON|OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_WUG|OPTION_RIDING_WUG|OPTION_RIDING_MADO;
+		option = OPTION_CART|OPTION_FALCON|OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_WUG|OPTION_RIDING_WUG|OPTION_MADO;
 	}
 	if( flag ){// Add option
 		if( option&OPTION_WEDDING && !battle_config.wedding_modifydisplay )
@@ -8151,63 +8165,77 @@ BUILDIN_FUNC(playerattached)
  *------------------------------------------*/
 BUILDIN_FUNC(announce)
 {
-	const char *str, *color=NULL;
-	int flag;
-	str=script_getstr(st,2);
-	flag=script_getnum(st,3);
-	if (script_hasdata(st,4))
-		color=script_getstr(st,4);
-
-	if(flag&0x0f){
-		struct block_list *bl=(flag&0x08)? map_id2bl(st->oid) :
-			(struct block_list *)script_rid2sd(st);
-		if( bl == NULL )
+	const char *mes       = script_getstr(st,2);
+	int         flag      = script_getnum(st,3);
+	const char *fontColor = script_hasdata(st,4) ? script_getstr(st,4) : NULL;
+	int         fontType  = script_hasdata(st,5) ? script_getnum(st,5) : 0x190; // default fontType (FW_NORMAL)
+	int         fontSize  = script_hasdata(st,6) ? script_getnum(st,6) : 12;    // default fontSize
+	int         fontAlign = script_hasdata(st,7) ? script_getnum(st,7) : 0;     // default fontAlign
+	int         fontY     = script_hasdata(st,8) ? script_getnum(st,8) : 0;     // default fontY
+	
+	if (flag&0x0f) // Broadcast source or broadcast region defined
+	{
+		send_target target;
+		struct block_list *bl = (flag&0x08) ? map_id2bl(st->oid) : (struct block_list *)script_rid2sd(st); // If bc_npc flag is set, use NPC as broadcast source
+		if (bl == NULL)
 			return 0;
-		if (color)
-			clif_announce(bl,str,(int)strlen(str)+1, strtol(color, (char **)NULL, 0),flag);
+		
+		flag &= 0x07;
+		target = (flag == 1) ? ALL_SAMEMAP :
+		         (flag == 2) ? AREA :
+		         (flag == 3) ? SELF :
+		                       ALL_CLIENT;
+		if (fontColor)
+			clif_broadcast2(bl, mes, (int)strlen(mes)+1, strtol(fontColor, (char **)NULL, 0), fontType, fontSize, fontAlign, fontY, target);
 		else
-			clif_GMmessage(bl,str,(int)strlen(str)+1,flag);
-	}else {
-		if (color)
-			intif_announce(str,(int)strlen(str)+1, strtol(color, (char **)NULL, 0), flag);
+			clif_broadcast(bl, mes, (int)strlen(mes)+1, flag&0xf0, target);
+	}
+	else
+	{
+		if (fontColor)
+			intif_broadcast2(mes, (int)strlen(mes)+1, strtol(fontColor, (char **)NULL, 0), fontType, fontSize, fontAlign, fontY);
 		else
-			intif_GMmessage(str,(int)strlen(str)+1,flag);
+			intif_broadcast(mes, (int)strlen(mes)+1, flag&0xf0);
 	}
 	return 0;
 }
 /*==========================================
  * 天の声アナウンス（特定マップ）
  *------------------------------------------*/
-static int buildin_mapannounce_sub(struct block_list *bl,va_list ap)
+static int buildin_announce_sub(struct block_list *bl, va_list ap)
 {
-	char *str, *color;
-	int len,flag;
-	str=va_arg(ap,char *);
-	len=va_arg(ap,int);
-	flag=va_arg(ap,int);
-	color=va_arg(ap,char *);
-	if (color)
-		clif_announce(bl,str,len, strtol(color, (char **)NULL, 0), flag|3);
+	char *mes       = va_arg(ap, char *);
+	int   len       = va_arg(ap, int);
+	int   type      = va_arg(ap, int);
+	char *fontColor = va_arg(ap, char *);
+	short fontType  = (short)va_arg(ap, int);
+	short fontSize  = (short)va_arg(ap, int);
+	short fontAlign = (short)va_arg(ap, int);
+	short fontY     = (short)va_arg(ap, int);
+	if (fontColor)
+		clif_broadcast2(bl, mes, len, strtol(fontColor, (char **)NULL, 0), fontType, fontSize, fontAlign, fontY, SELF);
 	else
-		clif_GMmessage(bl,str,len,flag|3);
+		clif_broadcast(bl, mes, len, type, SELF);
 	return 0;
 }
+
 BUILDIN_FUNC(mapannounce)
 {
-	const char *mapname,*str, *color=NULL;
-	int flag,m;
+	const char *mapname   = script_getstr(st,2);
+	const char *mes       = script_getstr(st,3);
+	int         flag      = script_getnum(st,4);
+	const char *fontColor = script_hasdata(st,5) ? script_getstr(st,5) : NULL;
+	int         fontType  = script_hasdata(st,6) ? script_getnum(st,6) : 0x190; // default fontType (FW_NORMAL)
+	int         fontSize  = script_hasdata(st,7) ? script_getnum(st,7) : 12;    // default fontSize
+	int         fontAlign = script_hasdata(st,8) ? script_getnum(st,8) : 0;     // default fontAlign
+	int         fontY     = script_hasdata(st,9) ? script_getnum(st,9) : 0;     // default fontY
+	int m;
 
-	mapname=script_getstr(st,2);
-	str=script_getstr(st,3);
-	flag=script_getnum(st,4);
-	if (script_hasdata(st,5))
-		color=script_getstr(st,5);
-
-	if( (m=map_mapname2mapid(mapname))<0 )
+	if ((m = map_mapname2mapid(mapname)) < 0)
 		return 0;
 
-	map_foreachinmap(buildin_mapannounce_sub,
-		m, BL_PC, str,strlen(str)+1,flag&0x10, color);
+	map_foreachinmap(buildin_announce_sub, m, BL_PC,
+			mes, strlen(mes)+1, flag&0xf0, fontColor, fontType, fontSize, fontAlign, fontY);
 	return 0;
 }
 /*==========================================
@@ -8215,25 +8243,25 @@ BUILDIN_FUNC(mapannounce)
  *------------------------------------------*/
 BUILDIN_FUNC(areaannounce)
 {
-	const char *map,*str,*color=NULL;
-	int flag,m;
-	int x0,y0,x1,y1;
+	const char *mapname   = script_getstr(st,2);
+	int         x0        = script_getnum(st,3);
+	int         y0        = script_getnum(st,4);
+	int         x1        = script_getnum(st,5);
+	int         y1        = script_getnum(st,6);
+	const char *mes       = script_getstr(st,7);
+	int         flag      = script_getnum(st,8);
+	const char *fontColor = script_hasdata(st,9) ? script_getstr(st,9) : NULL;
+	int         fontType  = script_hasdata(st,10) ? script_getnum(st,10) : 0x190; // default fontType (FW_NORMAL)
+	int         fontSize  = script_hasdata(st,11) ? script_getnum(st,11) : 12;    // default fontSize
+	int         fontAlign = script_hasdata(st,12) ? script_getnum(st,12) : 0;     // default fontAlign
+	int         fontY     = script_hasdata(st,13) ? script_getnum(st,13) : 0;     // default fontY
+	int m;
 
-	map=script_getstr(st,2);
-	x0=script_getnum(st,3);
-	y0=script_getnum(st,4);
-	x1=script_getnum(st,5);
-	y1=script_getnum(st,6);
-	str=script_getstr(st,7);
-	flag=script_getnum(st,8);
-	if (script_hasdata(st,9))
-		color=script_getstr(st,9);
-
-	if( (m=map_mapname2mapid(map))<0 )
+	if ((m = map_mapname2mapid(mapname)) < 0)
 		return 0;
 
-	map_foreachinarea(buildin_mapannounce_sub,
-		m,x0,y0,x1,y1,BL_PC, str,strlen(str)+1,flag&0x10, color);
+	map_foreachinarea(buildin_announce_sub, m, x0, y0, x1, y1, BL_PC,
+		mes, strlen(mes)+1, flag&0xf0, fontColor, fontType, fontSize, fontAlign, fontY);
 	return 0;
 }
 
@@ -12645,6 +12673,75 @@ BUILDIN_FUNC(checkchatting) // check chatting [Marka]
 	return 0;
 }
 
+BUILDIN_FUNC(searchitem)
+{
+	struct script_data* data = script_getdata(st, 2);
+	const char *itemname = script_getstr(st,3);
+	struct item_data *items[MAX_SEARCH];
+	int count;
+
+	char* name;
+	int32 start;
+	int32 id;
+	int32 i;
+	TBL_PC* sd = NULL;
+
+	if ((items[0] = itemdb_exists(atoi(itemname))))
+		count = 1;
+	else {
+		count = itemdb_searchname_array(items, ARRAYLENGTH(items), itemname);
+		if (count > MAX_SEARCH) count = MAX_SEARCH;
+	}
+
+	if (!count) {
+		script_pushint(st, 0);
+		return 0;
+	}
+
+	if( !data_isreference(data) )
+	{
+		ShowError("script:searchitem: not a variable\n");
+		script_reportdata(data);
+		st->state = END;
+		return 1;// not a variable
+	}
+
+	id = reference_getid(data);
+	start = reference_getindex(data);
+	name = reference_getname(data);
+	if( not_array_variable(*name) )
+	{
+		ShowError("script:searchitem: illegal scope\n");
+		script_reportdata(data);
+		st->state = END;
+		return 1;// not supported
+	}
+
+	if( not_server_variable(*name) )
+	{
+		sd = script_rid2sd(st);
+		if( sd == NULL )
+			return 0;// no player attached
+	}
+
+	if( is_string_variable(name) )
+	{// string array
+		ShowError("script:searchitem: not an integer array reference\n");
+		script_reportdata(data);
+		st->state = END;
+		return 1;// not supported
+	}
+
+	for( i = 0; i < count; ++start, ++i )
+	{// Set array
+		void* v = (void*)items[i]->nameid;
+		set_reg(st, sd, reference_uid(id, start), name, v, reference_getref(data));
+	}
+
+	script_pushint(st, count);
+	return 0;
+}
+
 int axtoi(const char *hexStg)
 {
 	int n = 0;         // position in string
@@ -13094,8 +13191,10 @@ BUILDIN_FUNC(awake)
 	struct linkdb_node *node = (struct linkdb_node *)sleep_db;
 
 	nd = npc_name2id(script_getstr(st, 2));
-	if( nd == NULL )
-		return 0;
+	if( nd == NULL ) {
+		ShowError("awake: NPC \"%s\" not found\n", script_getstr(st, 2));
+		return 1;
+	}
 
 	while( node )
 	{
@@ -13118,7 +13217,8 @@ BUILDIN_FUNC(awake)
 			delete_timer(tst->sleep.timer, run_script_timer);
 			node = script_erase_sleepdb(node);
 			tst->sleep.timer = INVALID_TIMER;
-			//tst->sleep.tick = 0;
+			if(tst->state != RERUNLINE)
+				tst->sleep.tick = 0;
 			run_script_main(tst);
 		}
 		else
@@ -13529,25 +13629,22 @@ BUILDIN_FUNC(checkquest)
 
 BUILDIN_FUNC(showevent)
 {
-	TBL_PC *sd = script_rid2sd(st);
-	struct npc_data *nd = map_id2nd(st->oid);
-	int state, color;
+  TBL_PC *sd = script_rid2sd(st);
+  struct npc_data *nd = map_id2nd(st->oid);
+  int state, color;
 
-	if( sd == NULL || nd == NULL )
-		return 0;
-	state = script_getnum(st, 2);
-	color = script_getnum(st, 3);
+  if( sd == NULL || nd == NULL )
+     return 0;
+  state = script_getnum(st, 2);
+  color = script_getnum(st, 3);
 
-	if(state < 0 || state > 2) // to prevent client crash
-		return 0;
+  if( color < 0 || color > 4 )
+     color = 0; // set default color
 
-	if( color < 0 || color > 4 )
-		color = 0; // set default color
-
-	clif_npc_show_event(sd, nd, state, color);
-
-	return 0;
+  clif_quest_show_event(sd, &nd->bl, state, color);
+  return 0;
 }
+
 /*==========================================
  * BattleGround System
  *------------------------------------------*/
@@ -13975,16 +14072,18 @@ BUILDIN_FUNC(instance_init)
 
 BUILDIN_FUNC(instance_announce)
 {
-	const char *str, *color=NULL;
-	int flag,instance_id,i;
+	int         instance_id = script_getnum(st,2);
+	const char *mes         = script_getstr(st,3);
+	int         flag        = script_getnum(st,4);
+	const char *fontColor   = script_hasdata(st,5) ? script_getstr(st,5) : NULL;
+	int         fontType    = script_hasdata(st,6) ? script_getnum(st,6) : 0x190; // default fontType (FW_NORMAL)
+	int         fontSize    = script_hasdata(st,7) ? script_getnum(st,7) : 12;    // default fontSize
+	int         fontAlign   = script_hasdata(st,8) ? script_getnum(st,8) : 0;     // default fontAlign
+	int         fontY       = script_hasdata(st,9) ? script_getnum(st,9) : 0;     // default fontY
+
+	int i;
 	struct map_session_data *sd;
 	struct party_data *p;
-	
-	instance_id = script_getnum(st,2);
-	str = script_getstr(st,3);
-	flag = script_getnum(st,4);
-	if( script_hasdata(st,5) )
-		color = script_getstr(st,5);
 
 	if( instance_id == 0 )
 	{
@@ -13999,7 +14098,8 @@ BUILDIN_FUNC(instance_announce)
 		return 0;
 		
 	for( i = 0; i < instance[instance_id].num_map; i++ )
-		map_foreachinmap(buildin_mapannounce_sub, instance[instance_id].map[i], BL_PC, str, strlen(str) + 1, flag&0x10, color);
+		map_foreachinmap(buildin_announce_sub, instance[instance_id].map[i], BL_PC,
+			mes, strlen(mes)+1, flag&0xf0, fontColor, fontType, fontSize, fontAlign, fontY);
 
 	return 0;
 }
@@ -14556,6 +14656,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(setcell,"siiiiii"),
 	BUILDIN_DEF(setwall,"siiiiis"),
 	BUILDIN_DEF(delwall,"s"),
+	BUILDIN_DEF(searchitem,"rs"),
 	BUILDIN_DEF(mercenary_create,"ii"),
 	BUILDIN_DEF(mercenary_heal,"ii"),
 	BUILDIN_DEF(mercenary_sc_start,"iii"),

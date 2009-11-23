@@ -447,7 +447,7 @@ int pc_makesavestatus(struct map_session_data *sd)
 
   	//Only copy the Cart/Peco/Falcon/Dragon/Warg options, the rest are handled via
 	//status change load/saving. [Skotlex]
-	sd->status.option = sd->sc.option&(OPTION_CART|OPTION_FALCON|OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_WUG|OPTION_RIDING_WUG|OPTION_RIDING_MADO);
+	sd->status.option = sd->sc.option&(OPTION_CART|OPTION_FALCON|OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_WUG|OPTION_RIDING_WUG|OPTION_MADO);
 		
 	if (sd->sc.data[SC_JAILED])
 	{	//When Jailed, do not move last point.
@@ -1096,7 +1096,7 @@ int pc_reg_received(struct map_session_data *sd)
 	intif_request_questlog(sd);
 #endif
 
-	if (!sd->state.connect_new && sd->fd)
+	if (sd->state.connect_new == 0 && sd->fd)
 	{	//Character already loaded map! Gotta trigger LoadEndAck manually.
 		sd->state.connect_new = 1;
 		clif_parse_LoadEndAck(sd->fd, sd);
@@ -1392,7 +1392,6 @@ int pc_calc_skilltree_normalize_job(struct map_session_data *sd)
 		c ^= (sd->class_&JOBL_THIRD_UPPER)?JOBL_THIRD_UPPER:JOBL_THIRD_BASE;
 		c |= JOBL_UPPER;
 	}
-
 	if (sd->class_&JOBL_UPPER) //Convert to Upper
 		c |= JOBL_UPPER;
 	else if (sd->class_&JOBL_BABY) //Convert to Baby
@@ -1528,7 +1527,7 @@ static int pc_bonus_autospell_onskill(struct s_autospell *spell, int max, short 
 				return 0;
 			rate += spell[i].rate;
 			break; 
-		}
+		}  
 	}
 
 	if( i == max )
@@ -1687,7 +1686,7 @@ int pc_delautobonus(struct map_session_data* sd, struct s_autobonus *autobonus,c
 
 	for( i = 0; i < max; i++ )
 	{
-		if( autobonus[i].active != INVALID_TIMER && ( !restore || (autobonus[i].pos && !(sd->state.autobonus&autobonus[i].pos)) ) )
+		if( autobonus[i].active != INVALID_TIMER && !(restore && sd->state.autobonus&autobonus[i].pos) )
 		{ // Logout / Unequipped an item with an activated bonus
 			delete_timer(autobonus[i].active,pc_endautobonus);
 			autobonus[i].active = INVALID_TIMER;
@@ -1701,6 +1700,9 @@ int pc_delautobonus(struct map_session_data* sd, struct s_autobonus *autobonus,c
 		}
 
 		if( sd->state.autocast )
+			continue;
+
+		if( autobonus[i].pos&sd->state.script_parsed && restore )
 			continue;
 
 		if( autobonus[i].bonus_script )
@@ -2304,7 +2306,7 @@ int pc_bonus(struct map_session_data *sd,int type,int val)
 	case SP_ADD_HEAL2_RATE:
 		if(sd->state.lr_flag != 2)
 			sd->add_heal2_rate += val;
- 		break;
+		break;
 	default:
 		ShowWarning("pc_bonus: unknown type %d %d !\n",type,val);
 		break;
@@ -3917,7 +3919,7 @@ int pc_steal_item(struct map_session_data *sd,struct block_list *bl, int lv)
 		i_data = itemdb_search(itemid);
 		sprintf (message, msg_txt(542), (sd->status.name != NULL)?sd->status.name :"GM", md->db->jname, i_data->jname, (float)md->db->dropitem[i].p/100);
 		//MSG: "'%s' stole %s's %s (chance: %0.02f%%)"
-		intif_GMmessage(message,strlen(message)+1,0);
+		intif_broadcast(message,strlen(message)+1,0);
 	}
 	return 1;
 }
@@ -5449,8 +5451,8 @@ int pc_resetskill(struct map_session_data* sd, int flag)
 			i &= ~OPTION_WUG;
 		if( i&OPTION_RIDING_WUG && pc_checkskill(sd, RA_WUGRIDER) )
 			i &= ~OPTION_RIDING_WUG;
-		if( i&OPTION_RIDING_MADO && (sd->class_ == MAPID_MECHANIC || sd->class_ == MAPID_MECHANIC_T) ) // You can equip a Mado w/o license.
-			i &= ~OPTION_RIDING_MADO;
+		if( i&OPTION_MADO && (sd->class_ == MAPID_MECHANIC || sd->class_ == MAPID_MECHANIC_T) ) // You can equip a Mado w/o license.
+			i &= ~OPTION_MADO;
 
 		if( i != sd->sc.option )
 			pc_setoption(sd, i);
@@ -5480,8 +5482,8 @@ int pc_resetskill(struct map_session_data* sd, int flag)
 		if( i == NV_BASIC && (sd->class_&MAPID_UPPERMASK) != MAPID_NOVICE && (sd->class_&MAPID_UPPERMASK) != MAPID_BABY )
 		{ // Official server does not include Basic Skill to be resetted. [Jobbie]
 			sd->status.skill[i].lv = 9;
- 			sd->status.skill[i].flag = 0;
- 			continue;
+			sd->status.skill[i].flag = 0;
+			continue;
 		}
 
 		if( inf2&INF2_QUEST_SKILL && !battle_config.quest_skill_learn )
@@ -6546,7 +6548,7 @@ int pc_setoption(struct map_session_data *sd,int type)
 		status_calc_pc(sd,0); //Mounting/Umounting affects walk and attack speeds.
 	}
 
-	if (type&OPTION_RIDING_MADO && !(p_type&OPTION_RIDING_MADO) && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
+	if (type&OPTION_MADO && !(p_type&OPTION_MADO) && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
 	{	//We are going to mount. [LimitLine]
 	//	pc_jobchange(sd, sd->class_&JOBL_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_UPPER?1:0, 0);
 		status->mech_hp = status->hp;
@@ -6564,7 +6566,7 @@ int pc_setoption(struct map_session_data *sd,int type)
 		clif_updatestatus(sd, SP_SP);
 		pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
 	}
-	else if (!(type&OPTION_RIDING_MADO) && p_type&OPTION_RIDING_MADO && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
+	else if (!(type&OPTION_MADO) && p_type&OPTION_MADO && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
 	{	//We are going to dismount.
 	//	pc_jobchange(sd, sd->class_&JOBL_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_UPPER?1:0);
 		status->mado_hp = status->hp;
@@ -6715,7 +6717,7 @@ int pc_setriding(TBL_PC* sd, int flag)
 			skillnum = RA_WUGRIDER;
 			break;
 		case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
-			option = OPTION_MADO;
+			option = (sd->status.sex)?OPTION_MADO_M:OPTION_MADO_F;
 			skillnum = NC_MADOLICENCE;
 			break;
 		default:
@@ -7362,6 +7364,7 @@ int pc_equipitem(struct map_session_data *sd,int n,int req_pos)
  * 0 - only unequip
  * 1 - calculate status after unequipping
  * 2 - force unequip
+ * 4 - ignore autobonus flags
  *------------------------------------------*/
 int pc_unequipitem(struct map_session_data *sd,int n,int flag)
 {
@@ -7437,8 +7440,13 @@ int pc_unequipitem(struct map_session_data *sd,int n,int flag)
 			status_change_end(&sd->bl, SC_ARMOR_RESIST, -1);
 	}
 
-	if( sd->state.autobonus&sd->status.inventory[n].equip )
-		sd->state.autobonus &= ~sd->status.inventory[n].equip; //Check for activated autobonus [Inkfish]
+	if( !(flag&4) )
+	{
+		if( sd->state.script_parsed&sd->status.inventory[n].equip )
+			sd->state.script_parsed &= ~sd->status.inventory[n].equip;
+		if( sd->state.autobonus&sd->status.inventory[n].equip )
+			sd->state.autobonus &= ~sd->status.inventory[n].equip; //Check for activated autobonus [Inkfish]
+	}
 
 	sd->status.inventory[n].equip=0;
 
@@ -7824,6 +7832,7 @@ int pc_autosave(int tid, unsigned int tick, int id, intptr data)
 		save_flag = 2;
 
 		chrif_save(sd,0);
+		break;
 	}
 	mapit_free(iter);
 
@@ -7862,7 +7871,7 @@ int map_day_timer(int tid, unsigned int tick, int id, intptr data)
 	night_flag = 0; // 0=day, 1=night [Yor]
 	map_foreachpc(pc_daynight_timer_sub);
 	strcpy(tmp_soutput, (data == 0) ? msg_txt(502) : msg_txt(60)); // The day has arrived!
-	intif_GMmessage(tmp_soutput, strlen(tmp_soutput) + 1, 0);
+	intif_broadcast(tmp_soutput, strlen(tmp_soutput) + 1, 0);
 	return 0;
 }
 
@@ -7883,7 +7892,7 @@ int map_night_timer(int tid, unsigned int tick, int id, intptr data)
 	night_flag = 1; // 0=day, 1=night [Yor]
 	map_foreachpc(pc_daynight_timer_sub);
 	strcpy(tmp_soutput, (data == 0) ? msg_txt(503) : msg_txt(59)); // The night has fallen...
-	intif_GMmessage(tmp_soutput, strlen(tmp_soutput) + 1, 0);
+	intif_broadcast(tmp_soutput, strlen(tmp_soutput) + 1, 0);
 	return 0;
 }
 
@@ -7996,7 +8005,7 @@ int duel_invite(const unsigned int did, struct map_session_data* sd, struct map_
 	
 	// "Blue -- Player %s invites you to PVP duel (@accept/@reject) --"
 	sprintf(output, msg_txt(374), sd->status.name);
-	clif_GMmessage((struct block_list *)target_sd, output, strlen(output)+1, 3);
+	clif_broadcast((struct block_list *)target_sd, output, strlen(output)+1, 0x10, SELF);
 	return 0;
 }
 

@@ -1563,7 +1563,7 @@ int atcommand_kami(const int fd, struct map_session_data* sd, const char* comman
 		}
 
 		sscanf(message, "%199[^\n]", atcmd_output);
-		intif_GMmessage(atcmd_output, strlen(atcmd_output) + 1, (*(command + 5) == 'b' || *(command + 5) == 'B') ? 0x10 : 0);
+		intif_broadcast(atcmd_output, strlen(atcmd_output) + 1, (*(command + 5) == 'b' || *(command + 5) == 'B') ? 0x10 : 0);
 	
 	} else {
 	
@@ -1577,7 +1577,7 @@ int atcommand_kami(const int fd, struct map_session_data* sd, const char* comman
 			return -1;
 		}
 	
-		intif_announce(atcmd_output, strlen(atcmd_output) + 1, color, 0);
+		intif_broadcast2(atcmd_output, strlen(atcmd_output) + 1, color, 0x190, 12, 0, 0);
 	}
 	return 0;
 }
@@ -2799,8 +2799,7 @@ int atcommand_produce(const int fd, struct map_session_data* sd, const char* com
 	if ((item_data = itemdb_searchname(item_name)) == NULL &&
 	    (item_data = itemdb_exists(atoi(item_name))) == NULL)
 	{
-		strcpy(atcmd_output, msg_txt(170)); // The item is not equipable.
-		clif_displaymessage(fd, atcmd_output);
+		clif_displaymessage(fd, msg_txt(170)); //This item is not an equipment.
 		return -1;
 	}
 	item_id = item_data->nameid;
@@ -4587,7 +4586,7 @@ int atcommand_mount(const int fd, struct map_session_data* sd, const char* comma
 			if( pc_isridingmado(sd) )
 				riding_flag = 1;
 			msg[0] = 710; msg[1] = 712; msg[2] = 711; msg[3] = 713;
-			option = OPTION_MADO;
+			option = (sd->status.sex)?OPTION_MADO_M:OPTION_MADO_F;
 			skillnum = NC_MADOLICENCE;
 			break;
 		case JOB_ROYAL_GUARD: case JOB_ROYAL_GUARD2: case JOB_ROYAL_GUARD_T: case JOB_ROYAL_GUARD_T2:
@@ -4813,31 +4812,12 @@ int atcommand_nuke(const int fd, struct map_session_data* sd, const char* comman
 	return 0;
 }
 
-
-/*==========================================
- *
- *------------------------------------------*/
-int atcommand_statuschange(const int fd, struct map_session_data* sd, const char* command, const char* message)
-{
-	int i, type, val1, val2, val3, val4, tick;
-	nullpo_retr(-1, sd);
-	
-	if (!message || !*message || (i = sscanf(message, "%d %d %d %d %d %d", &type, &val1, &val2, &val3, &val4, &tick)) < 0) {
-		clif_displaymessage(fd, "Please, enter a status type/flag (usage: @statuschange <type> <val1> <val2> <val3> <val4> <val5> <val6> <val7> <tick>).");
-		return -1;
-	}
-
-	status_change_start(&sd->bl, type, 100, val1, val2, val3, val4, tick, 0);
-
-	return 0;
-}
-
 /*==========================================
  * @tonpc
  *------------------------------------------*/
 int atcommand_tonpc(const int fd, struct map_session_data* sd, const char* command, const char* message)
 {
-	char npcname[NAME_LENGTH];
+	char npcname[NAME_LENGTH+1];
 	struct npc_data *nd;
 
 	nullpo_retr(-1, sd);
@@ -4867,7 +4847,7 @@ int atcommand_tonpc(const int fd, struct map_session_data* sd, const char* comma
  *------------------------------------------*/
 int atcommand_shownpc(const int fd, struct map_session_data* sd, const char* command, const char* message)
 {
-	char NPCname[NAME_LENGTH];
+	char NPCname[NAME_LENGTH+1];
 	nullpo_retr(-1, sd);
 
 	memset(NPCname, '\0', sizeof(NPCname));
@@ -4893,7 +4873,7 @@ int atcommand_shownpc(const int fd, struct map_session_data* sd, const char* com
  *------------------------------------------*/
 int atcommand_hidenpc(const int fd, struct map_session_data* sd, const char* command, const char* message)
 {
-	char NPCname[NAME_LENGTH];
+	char NPCname[NAME_LENGTH+1];
 	nullpo_retr(-1, sd);
 
 	memset(NPCname, '\0', sizeof(NPCname));
@@ -5494,7 +5474,7 @@ int atcommand_broadcast(const int fd, struct map_session_data* sd, const char* c
 	}
 
 	sprintf(atcmd_output, "%s: %s", sd->status.name, message);
-	intif_GMmessage(atcmd_output, strlen(atcmd_output) + 1, 0);
+	intif_broadcast(atcmd_output, strlen(atcmd_output) + 1, 0);
 
 	return 0;
 }
@@ -5515,7 +5495,7 @@ int atcommand_localbroadcast(const int fd, struct map_session_data* sd, const ch
 
 	sprintf(atcmd_output, "%s: %s", sd->status.name, message);
 
-	clif_GMmessage(&sd->bl, atcmd_output, strlen(atcmd_output) + 1, 1); // 1: ALL_SAMEMAP
+	clif_broadcast(&sd->bl, atcmd_output, strlen(atcmd_output) + 1, 0, ALL_SAMEMAP);
 
 	return 0;
 }
@@ -6150,62 +6130,17 @@ int atcommand_changegm(const int fd, struct map_session_data* sd, const char* co
  *------------------------------------------*/
 int atcommand_changeleader(const int fd, struct map_session_data* sd, const char* command, const char* message)
 {
-	struct party_data *p;
-	struct map_session_data *pl_sd;
-	int mi, pl_mi;
 	nullpo_retr(-1, sd);
-
-	if (sd->status.party_id == 0 || (p = party_search(sd->status.party_id)) == NULL)
-	{	//Need to be a party leader.
-		clif_displaymessage(fd, msg_txt(282));
-		return -1;
-	}
-	
-	if( map[sd->bl.m].flag.partylock )
-	{
-		clif_displaymessage(fd, "You cannot change party leaders on this map.");
-		return -1;
-	}
-
-	ARR_FIND( 0, MAX_PARTY, mi, p->data[mi].sd == sd );
-	if (mi == MAX_PARTY)
-		return -1; //Shouldn't happen
-
-	if (!p->party.member[mi].leader)
-	{	//Need to be a party leader.
-		clif_displaymessage(fd, msg_txt(282));
-		return -1;
-	}
 	
 	if (strlen(message)==0)
 	{
 		clif_displaymessage(fd, "Command usage: @changeleader <party member name>");
 		return -1;
 	}
-	
-	if((pl_sd=map_nick2sd((char *) message)) == NULL || pl_sd->status.party_id != sd->status.party_id) {
-		clif_displaymessage(fd, msg_txt(283));
-		return -1;
-	}
 
-	for (pl_mi = 0; pl_mi < MAX_PARTY && p->data[pl_mi].sd != pl_sd; pl_mi++);
-	
-	if (pl_mi == MAX_PARTY)
-		return -1; //Shouldn't happen
-
-	//Change leadership.
-	p->party.member[mi].leader = 0;
-	if (p->data[mi].sd->fd)
-		clif_displaymessage(p->data[mi].sd->fd, msg_txt(284));
-	p->party.member[pl_mi].leader = 1;
-	if (p->data[pl_mi].sd->fd)
-		clif_displaymessage(p->data[pl_mi].sd->fd, msg_txt(285));
-
-	intif_party_leaderchange(p->party.party_id,p->party.member[pl_mi].account_id,p->party.member[pl_mi].char_id);
-	//Update info.
-	clif_party_info(p,NULL);
-
-	return 0;
+	if (party_changeleader(sd, map_nick2sd((char *) message)))
+		return 0;
+	return -1;
 }
 
 /*==========================================
@@ -7055,7 +6990,7 @@ int atcommand_gmotd(const int fd, struct map_session_data* sd, const char* comma
 						break;
 					}
 				}
-				intif_GMmessage(buf,strlen(buf)+1,8);
+				intif_broadcast(buf, strlen(buf)+1, 0);
 			}
 			fclose(fp);
 		}
@@ -8287,7 +8222,7 @@ int atcommand_main(const int fd, struct map_session_data* sd, const char* comman
 			// I use 0xFE000000 color for signalizing that this message is
 			// main chat message. 0xFE000000 is invalid color, same using
 			// 0xFF000000 for simple (not colored) GM messages. [LuzZza]
-			intif_announce(atcmd_output, strlen(atcmd_output) + 1, 0xFE000000, 0);
+			intif_broadcast2(atcmd_output, strlen(atcmd_output) + 1, 0xFE000000, 0, 0, 0, 0);
 
 			// Chat logging type 'M' / Main Chat
 			if( log_config.chat&1 || (log_config.chat&32 && !((agit_flag || agit2_flag) && log_config.chat&64)) )
@@ -8927,7 +8862,6 @@ AtCommandInfo atcommand_info[] = {
 	{ "guildrecall",       60,60,     atcommand_guildrecall },
 	{ "partyrecall",       60,60,     atcommand_partyrecall },
 	{ "nuke",              60,60,     atcommand_nuke },
-	{ "statuschange",      60,60,     atcommand_statuschange },
 	{ "shownpc",           80,80,     atcommand_shownpc },
 	{ "hidenpc",           80,80,     atcommand_hidenpc },
 	{ "loadnpc",           80,80,     atcommand_loadnpc },

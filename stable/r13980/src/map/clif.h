@@ -26,41 +26,6 @@ struct guild;
 struct battleground_data;
 struct quest;
 #include <stdarg.h>
-
-// server->client protocol version
-//        0 - pre-?
-//        1 - ?                    - 0x196
-//        2 - ?                    - 0x78, 0x79
-//        3 - ?                    - 0x1c8, 0x1c9, 0x1de
-//        4 - ?                    - 0x1d7, 0x1d8, 0x1d9, 0x1da
-//        5 - 2003-12-18aSakexe+   - 0x1ee, 0x1ef, 0x1f0, ?0x1c4, 0x1c5?
-//        6 - 2004-03-02aSakexe+   - 0x1f4, 0x1f5
-//        7 - 2005-04-11aSakexe+   - 0x229, 0x22a, 0x22b, 0x22c
-// 20070521 - 2007-05-21aSakexe+   - 0x283
-// 20070821 - 2007-08-21aSakexe+   - 0x2c5
-// 20070918 - 2007-09-18aSakexe+   - 0x2d7, 0x2d9, 0x2da
-// 20071106 - 2007-11-06aSakexe+   - 0x78, 0x7c, 0x22c
-// 20081126 - 2008-11-26aSakexe+   - 0x1a2
-// 20080827 - 2008-08-27aRagexeRE+ - First RE Client
-// 20081217 - 2008-12-17aRagexeRE+ - 0x6d (Note: This one still use old Char Info Packet Structure)
-// 20081218 - 2008-12-17bRagexeRE+ - 0x6d (Note: From this one client use new Char Info Packet Structure)
-// 20090218 - 2008-02-18aSakexe+   - 0x446
-// 20090603 - 2009-06-03aRagexeRE+ - 0x7d7, 0x7d8, 0x7d9, 0x7da
-// 20090617 - 2009-06-17aRagexeRE+ - 0x7d9
-// 20090922 - 2009-09-22aRagexeRE+ - 0x7e5, 0x7e7, 0x7e8, 0x7e9
-#ifndef PACKETVER
-	#define PACKETVER	20090922
-#endif
-// backward compatible PACKETVER 8 and 9
-#if PACKETVER == 8
-#undef PACKETVER
-#define PACKETVER 20070521
-#endif
-#if PACKETVER == 9
-#undef PACKETVER
-#define PACKETVER 20071106
-#endif
-
 // packet DB
 #define MAX_PACKET_DB		0x800
 #define MAX_PACKET_VER		25
@@ -235,6 +200,7 @@ int clif_skillup(struct map_session_data *sd,int skill_num);
 int clif_skillcasting(struct block_list* bl,int src_id,int dst_id,int dst_x,int dst_y,int skill_num,int pl,int casttime);
 int clif_skillcastcancel(struct block_list* bl);
 int clif_skill_fail(struct map_session_data *sd,int skill_id,int type,int btype);
+int clif_skill_cooldown(struct map_session_data *sd, int skillid, unsigned int tick);
 int clif_skill_damage(struct block_list *src,struct block_list *dst,unsigned int tick,int sdelay,int ddelay,int damage,int div,int skill_id,int skill_lv,int type);
 //int clif_skill_damage2(struct block_list *src,struct block_list *dst,unsigned int tick,int sdelay,int ddelay,int damage,int div,int skill_id,int skill_lv,int type);
 int clif_skill_nodamage(struct block_list *src,struct block_list *dst,int skill_id,int heal,int fail);
@@ -262,7 +228,6 @@ void clif_changemapcell(int fd, int m, int x, int y, int type, enum send_target 
 
 int clif_status_load(struct block_list *bl,int type, int flag);
 int clif_status_change(struct block_list *bl, int type, int flag, unsigned int tick, int val1, int val2, int val3);
-int clif_blockskill(int fd, int skillid, unsigned int tick);
 
 int clif_wis_message(int fd, const char* nick, const char* mes, int mes_len);
 int clif_wis_end(int fd,int flag);
@@ -313,7 +278,6 @@ int clif_party_info(struct party_data *p, struct map_session_data *sd);
 int clif_party_invite(struct map_session_data *sd,struct map_session_data *tsd);
 void clif_party_inviteack(struct map_session_data* sd, const char* nick, int flag);
 int clif_party_option(struct party_data *p,struct map_session_data *sd,int flag);
-int clif_party_option2(struct party_data *p,struct map_session_data *sd,int flag);
 int clif_party_leaved(struct party_data* p, struct map_session_data* sd, int account_id, const char* name, int flag);
 int clif_party_message(struct party_data* p, int account_id, const char* mes, int len);
 void clif_party_move(struct party* p, struct map_session_data* sd, int online);
@@ -376,10 +340,9 @@ int clif_font_single(int fd, struct map_session_data *sd);
 int clif_displaymessage(const int fd,const char* mes);
 int clif_disp_onlyself(struct map_session_data *sd,const char *mes,int len);
 void clif_disp_message(struct block_list* src, const char* mes, int len, enum send_target target);
-int clif_GMmessage(struct block_list* bl, const char* mes, int len, int flag);
+int clif_broadcast(struct block_list *bl, const char* mes, int len, int type, enum send_target target);
 void clif_MainChatMessage(const char* message); //luzza
-int clif_announce(struct block_list *bl, const char* mes, int len, unsigned long color, int flag);
-int clif_announce_ex(struct block_list *bl, const char* mes, int len, unsigned long color, int flag, int size);
+int clif_broadcast2(struct block_list *bl, const char* mes, int len, unsigned long fontColor, short fontType, short fontSize, short fontAlign, short fontY, enum send_target target);
 int clif_heal(int fd,int type,int val);
 int clif_resurrection(struct block_list *bl,int type);
 void clif_set0199(struct map_session_data* sd, int mode);
@@ -450,8 +413,8 @@ void clif_quest_send_mission(struct map_session_data * sd);
 void clif_quest_add(struct map_session_data * sd, struct quest * qd, int index);  
 void clif_quest_delete(struct map_session_data * sd, int quest_id);  
 void clif_quest_update_status(struct map_session_data * sd, int quest_id, bool active); 
-void clif_quest_update_objective(struct map_session_data * sd, struct quest * qd, int index);
-void clif_npc_show_event(struct map_session_data *sd, struct npc_data *nd, short state, short color );
+void clif_quest_update_objective(struct map_session_data * sd, struct quest * qd, int index); 
+void clif_quest_show_event(struct map_session_data *sd, struct block_list *bl, short state, short color);
 
 int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target type);
 int do_final_clif(void);

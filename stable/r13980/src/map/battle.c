@@ -1079,6 +1079,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 		unsigned idef2 : 1;	//Ignore defense (left weapon)
 		unsigned pdef : 2;	//Pierces defense (Investigate/Ice Pick)
 		unsigned pdef2 : 2;	//1: Use def+def2/100, 2: Use def+def2/50	
+//		unsigned pdef3 : 100;	// Defense piercing rate for Expiatio [LimitLine]
 		unsigned infdef : 1;	//Infinite defense (plants)
 		unsigned arrow : 1;	//Attack is arrow-based
 		unsigned rh : 1;		//Attack considers right hand (wd.damage)
@@ -1939,6 +1940,9 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				case HFLI_SBR44:	//[orn]
 					skillratio += 100 *(skill_lv-1);
 					break;
+				case NPC_VAMPIRE_GIFT:
+					skillratio += ((skill_lv-1)%5+1)*100;
+					break;
 				case RK_SONICWAVE:
 					skillratio += (400 + 100 * skill_lv) + (20 * status_get_lv(src) / 4);	// Still need oficial level based damage value. [pakpil]
 					break;
@@ -2316,10 +2320,12 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				target_count = unit_counttargeted(target,battle_config.vit_penalty_count_lv);
 				if(target_count >= battle_config.vit_penalty_count) {
 					if(battle_config.vit_penalty_type == 1) {
-						def1 = (def1 * (100 - (target_count - (battle_config.vit_penalty_count - 1))*battle_config.vit_penalty_num))/100;
+						if( !tsc || !tsc->data[SC_STEELBODY] )
+							def1 = (def1 * (100 - (target_count - (battle_config.vit_penalty_count - 1))*battle_config.vit_penalty_num))/100;
 						def2 = (def2 * (100 - (target_count - (battle_config.vit_penalty_count - 1))*battle_config.vit_penalty_num))/100;
 					} else { //Assume type 2
-						def1 -= (target_count - (battle_config.vit_penalty_count - 1))*battle_config.vit_penalty_num;
+						if( !tsc || !tsc->data[SC_STEELBODY] )
+							def1 -= (target_count - (battle_config.vit_penalty_count - 1))*battle_config.vit_penalty_num;
 						def2 -= (target_count - (battle_config.vit_penalty_count - 1))*battle_config.vit_penalty_num;
 					}
 				}
@@ -2347,12 +2353,8 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 			}
 			if (def1 > 100) def1 = 100;
 			ATK_RATE2(
-				flag.idef ?100:
-				(flag.pdef ?flag.pdef *(def1 + vit_def):
-				100-def1),
-			  	flag.idef2?100:
-				(flag.pdef2?flag.pdef2*(def1 + vit_def):
-				100-def1)
+				flag.idef ?100:(flag.pdef ?(int)(flag.pdef *(def1+vit_def)):(100-def1)),
+			 	flag.idef2?100:(flag.pdef2?(int)(flag.pdef2*(def1+vit_def)):(100-def1))
 			);
 			ATK_ADD2(
 				flag.idef ||flag.pdef ?0:-vit_def,
@@ -4088,7 +4090,7 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 		else
 			return -1;
 	}
-	else if( flag == BCT_NOONE ) //Why would someone use this? no clue.
+	if( flag == BCT_NOONE ) //Why would someone use this? no clue.
 		return -1;
 	
 	if( t_bl == s_bl )
@@ -4478,7 +4480,7 @@ static const struct _battle_data {
 	{ "hack_info_GM_level",                 &battle_config.hack_info_GM_level,              60,     0,      100,            },
 	{ "any_warp_GM_min_level",              &battle_config.any_warp_GM_min_level,           20,     0,      100,            },
 	{ "who_display_aid",                    &battle_config.who_display_aid,                 40,     0,      100,            },
-	{ "packet_ver_flag",                    &battle_config.packet_ver_flag,                 0xFFFF, 0x0000, 0xFFFF,         },
+	{ "packet_ver_flag",                    &battle_config.packet_ver_flag,                 0xFFFFFF,0x0000,INT_MAX,        },
 	{ "min_hair_style",                     &battle_config.min_hair_style,                  0,      0,      INT_MAX,        },
 	{ "max_hair_style",                     &battle_config.max_hair_style,                  23,     0,      INT_MAX,        },
 	{ "min_hair_color",                     &battle_config.min_hair_color,                  0,      0,      INT_MAX,        },
@@ -4583,6 +4585,7 @@ static const struct _battle_data {
 	{ "skill_add_heal_rate",                &battle_config.skill_add_heal_rate,             7,      0,      INT_MAX,        },
 	{ "eq_single_target_reflectable",       &battle_config.eq_single_target_reflectable,    1,      0,      1,              },
 	{ "invincible.nodamage",                &battle_config.invincible_nodamage,             0,      0,      1,              },
+	{ "mob_slave_keep_target",              &battle_config.mob_slave_keep_target,           0,      0,      1,              },
 	{ "gm_lvl_can_override_maxparam",       &battle_config.gm_lvl_can_override_maxparam,    0,      0,      99,             },
 // BattleGround Settings
 	{ "bg_update_interval",                 &battle_config.bg_update_interval,              1000,   100,    INT_MAX,        },
