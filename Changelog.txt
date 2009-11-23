@@ -5,6 +5,13 @@
 // 	- Details.
 //========================================
 
+11/23/2009
+	r29 [pakpil]
+	*Full update to eA revision 14162.
+	*Merged item_db, item_db2 & skill_cast_db.
+	-Added Cooldown column.
+	*Initialized Rune Knight skill rewrite update.
+
 11/22/2009
 	r27 [Jobbie]
 	* Fixed pc_setriding where Royal Guard couldn't mount Gryphon when setriding script command executed on a script.
