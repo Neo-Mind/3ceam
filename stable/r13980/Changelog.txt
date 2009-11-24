@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+11/24/2009
+	r30 [pakpil]
+	* Minor fix of a mistake in my last update. Srry :(
+
 11/23/2009
 	r29 [pakpil]
 	* Cleaned OPTION_MADO.
