@@ -899,10 +899,7 @@ int status_damage(struct block_list *src,struct block_list *target,int hp, int s
 		if (sc->data[SC_BERSERK] && status->hp <= 100)
 			status_change_end(target, SC_BERSERK, -1);
 		if (sc->data[SC_RAISINGDRAGON] && status->hp <= 1000)//Need official value of how much HP left will RD end. [Jobbie]
-		{
 			status_change_end(target, SC_RAISINGDRAGON, -1);
-			status_change_end(target, SC_EXPLOSIONSPIRITS, -1);
-		}
 	}
 
 	switch (target->type)
@@ -2578,6 +2575,11 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	if((skill=pc_checkskill(sd,AB_EUCHARISTICA))>0 ){
 		sd->subele[ELE_DARK] += skill;
 		sd->subrace[RC_DEMON] += skill;
+	}
+	//this must be the proper place for resistance of the two elements. [Jobbie]
+	if((skill=pc_checkskill(sd,NC_RESEARCHFE))>0){
+		sd->subele[ELE_FIRE] += skill*10;
+		sd->subele[ELE_EARTH] += skill*10;
 	}
 
 	if(sc->count){
@@ -8156,7 +8158,10 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		{
 			if( bl->type == BL_MOB )
 			{
+				int flag;
 				status_damage(bl,bl,sce->val1 * 150,0,clif_damage(bl,bl,tick,status->amotion,status->dmotion,sce->val1 * 150, 1, 0, 0),0);
+				flag = !sc->data[type];
+				if(flag) return 0;
 			}
 			else
 			{
@@ -8329,6 +8334,9 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		// 2% every seconds [Jobbie]
 		if(--(sce->val3)>0 && status_charge(bl, sce->val2, 0))
 		{
+			int flag;
+			flag = !sc->data[type];
+			if(flag) return 0; //sc already ended.
 			sc_timer_next(sce->val4+tick, status_change_timer, bl->id, data);
 			return 0;
 		}

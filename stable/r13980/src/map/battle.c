@@ -327,13 +327,6 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 	if ( sd && pc_isridingmado(sd) )
 			damage += 15 * pc_checkskill(sd, NC_MADOLICENCE);	// Is this supposed to go here? [LimitLine]
 
-	if (sd && tsd) {
-		if((skill_num == pc_checkskill(tsd, RA_RANGERMAIN))>0 && ( status->race == RC_BRUTE || status->race == RC_PLANT || status->race == RC_FISH ))
-			damage -= 5*skill_num;
-		if((skill_num == pc_checkskill(tsd, NC_RESEARCHFE))>0 && ( status->def_ele == ELE_FIRE || status->def_ele == ELE_EARTH ))
-			damage -= 10*skill_num;
-	}
-
 	if( sc && sc->count )
 	{
 		//First, sc_*'s that reduce damage to 0.
@@ -821,6 +814,10 @@ int battle_addmastery(struct map_session_data *sd,struct block_list *target,int 
 
 	if((skill = pc_checkskill(sd,RA_RANGERMAIN)) > 0 && (status->race==RC_BRUTE || status->race==RC_PLANT || status->race==RC_FISH) )
 		damage += (skill * 5);
+
+	//must be the proper place for bonus damage when mastering the skill against fire and earth element. [Jobbie]
+	if((skill = pc_checkskill(sd,NC_RESEARCHFE)) > 0 && (status->def_ele == ELE_FIRE || status->def_ele == ELE_EARTH) )
+		damage += (skill * 10);
 
 	if( pc_isridingwarg(sd) && (skill = pc_checkskill(sd,RA_TOOTHOFWUG)) > 0 )	// Increases wolf damage.
 	// The reason why pc_iswarg isn't checked above is because when it is active you can only use it via skills (where the bonus
@@ -2341,6 +2338,9 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				if((battle_check_undead(sstatus->race,sstatus->def_ele) || sstatus->race==RC_DEMON) && //This bonus already doesnt work vs players
 					src->type == BL_MOB && (skill=pc_checkskill(tsd,AL_DP)) > 0)
 					vit_def += skill*(int)(3 +(tsd->status.base_level+1)*0.04);   // submitted by orn
+				if( src->type == BL_MOB && (skill=pc_checkskill(tsd,RA_RANGERMAIN))>0 && 
+					( sstatus->race == RC_BRUTE || sstatus->race == RC_FISH || sstatus->race == RC_PLANT) )
+					vit_def += 5*skill;
 			} else { //Mob-Pet vit-eq
 				//VIT + rnd(0,[VIT/20]^2-1)
 				vit_def = (def2/20)*(def2/20);
@@ -3736,9 +3736,6 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 
 	if(sd && (pc_checkskill(sd,AB_EUCHARISTICA)) && (tstatus->race==RC_DEMON || tstatus->def_ele==ELE_DARK) )
 		wd.damage += (wd.damage*(pc_checkskill(sd,AB_EUCHARISTICA)))/100;
-
-	if(sd && (pc_checkskill(sd,NC_RESEARCHFE)) && (tstatus->def_ele==ELE_FIRE || tstatus->def_ele==ELE_EARTH) )
-		wd.damage += 10*(pc_checkskill(sd,NC_RESEARCHFE));
 
 	if (sd && sd->state.arrow_atk) //Consume arrow.
 		battle_consume_ammo(sd, 0, 0);

@@ -854,7 +854,7 @@
 2338,0,0,120,0,0,0,99,0,0,none,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_RAISINGDRAGON#Raising Dragon#
 2339,0,0,1,0,0,0,99,0,0,none,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_GENTLETOUCH#Gentle Touch#
 2340,0,0,1,0,0,0,99,0,0,none,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_ASSIMILATEPOWER#Assimilate Power#
-2341,0,0,1,0,0,0,99,0,0,none,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_POWERVELOCITY#Power Velocity#
+2341,0,0,1,0,0,0,99,0,0,none,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_POWERVELOCITY#Power Velocity#
 2342,0,0,1,0,0,0,99,0,0,none,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_CRESCENTELBOW_AUTOSPELL#Crescent Elbow Autospell#
 2343,0,0,1,0,20,0,99,0,0,explosionspirits,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_GATEOFHELL#Gate of Hell#
 2344,0,0,20:25:30:35:40,0,0,0,99,0,0,none,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	//SR_GENTLETOUCH_QUIET#Gentle Touch - Quiet#

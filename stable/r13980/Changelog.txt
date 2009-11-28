@@ -5,6 +5,16 @@
 // 	- Details.
 //========================================
 
+11/28/2009
+	r32 [Jobbie]
+	* Minor fix to Power Velocity skill not checking of the requirement for atleast 5 spirit balls.
+	* Fix RA_RANGERMAIN which is not implemented in the proper place. Thanks Spiritual_Kid for pointing out.
+	* Fix NC_RESEARCHFE 
+	- which is not putted in proper place for the resistance against fire and earth element.
+	- damage bonus is not place in proper place.
+	* Minor update to SC_RAISINGDRAGON status when ended only that sc not including SC_EXPLOISONSPIRIT will be removed.
+	* Fixed some sc which displaying NULL error after it is ended.
+
 11/24/2009
 	r31 [pakpil]
 	* Minor fix of a mistake in my last update. Srry :(
