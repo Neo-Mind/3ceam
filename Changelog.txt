@@ -5,7 +5,10 @@
 // 	- Details.
 //========================================
 11/28/2009
-	r32 [Jobbie]
+	r38 [Jobbie]
+	* Fixed the show_party_name option in party.conf. The code was messed up during the update from r30.
+	
+	r37 [Jobbie]
 	* Minor fix to Power Velocity skill not checking of the requirement for atleast 5 spirit balls.
 	* Fix RA_RANGERMAIN which is not implemented in the proper place. Thanks Spiritual_Kid for pointing out.
 	* Fix NC_RESEARCHFE 
