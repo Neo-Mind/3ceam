@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+11/29/2009
+	r41 [Jobbie]
+	* Fixed missing duration for Adoramus blind and decrease agi in skill_cast_db.txt
+	* Preserve skill should not preserve 3rd Class skills.
+
 11/28/2009
 	r38 [Jobbie]
 	* Fixed the show_party_name option in party.conf. The code was messed up during the update from r30.

@@ -342,7 +342,8 @@ int can_copy (struct map_session_data *sd, int skillid, struct block_list* bl)
 		return 0;
 
 	// High-class skills
-	if((skillid >= LK_AURABLADE && skillid <= ASC_CDP) || (skillid >= ST_PRESERVE && skillid <= CR_CULTIVATION))
+	// Shouldn't include to copy also 3rd Class skills. [Jobbie]
+	if((skillid >= LK_AURABLADE && skillid <= ASC_CDP) || (skillid >= ST_PRESERVE && skillid <= CR_CULTIVATION) || (skillid >= RK_ENCHANTBLADE && skillid <= SR_RIDEINLIGHTNING))
 	{
 		if(battle_config.copyskill_restrict == 2)
 			return 0;
@@ -8472,8 +8473,6 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 				sc_start(src,i,100,element,skill_get_time(skillid,skilllv));
 				clif_skill_nodamage(src, src, skillid, skilllv, 0);
 			}
-			else
-				clif_skill_fail(sd, skillid, 0, 19);
 		}
 		break;
 
