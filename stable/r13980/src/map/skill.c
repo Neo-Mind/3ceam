@@ -3251,6 +3251,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 	case WL_CRIMSONROCK:
 	case WL_COMET:
 	case RA_ARROWSTORM:
+	case RA_WUGDASH:
 	case AB_JUDEX:
 	case NC_FLAMELAUNCHER:
 	case NC_ARMSCANNON:
@@ -6906,18 +6907,17 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 
 	case RA_WUGDASH:
-		if(tsce)
+		if( tsce )
 		{
-			clif_skill_nodamage(src,bl,skillid,skilllv,
-				status_change_end(bl, type, -1));
+			clif_skill_nodamage(src,bl,skillid,skilllv,status_change_end(bl, type, -1));
 			map_freeblock_unlock();
 			return 0;
 		}
-		if(sd && dstsd && pc_isridingwarg(sd)){		
-			clif_skill_nodamage(src,bl,skillid,skilllv,1);
-			sc_start2(bl,type,100,skilllv,unit_getdir(bl),1);
+		if( sd && pc_isridingwarg(sd) ){
+			clif_skill_nodamage(src,bl,skillid,skilllv,
+				sc_start4(bl,type,100,skilllv,unit_getdir(bl),0,0,0));
+			clif_walkok(sd);
 		}
-		if (sd) clif_walkok(sd);
 		break;
 
 	case RA_SENSITIVEKEEN:

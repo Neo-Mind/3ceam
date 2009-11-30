@@ -1995,6 +1995,9 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					if (sd)
 						skillratio += 40*pc_checkskill(sd,RA_RESEARCHTRAP);
 					break;
+				case RA_WUGDASH:
+					skillratio += 500;//Damage based from iROwiki info. [Jobbie]
+					break;
 				case RA_WUGSTRIKE:
 					skillratio = 120 * skill_lv - 100;
 					break;

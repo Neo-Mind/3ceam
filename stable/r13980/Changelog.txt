@@ -6,6 +6,14 @@
 //========================================
 
 11/30/2009
+	r44 [Jobbie]
+	* Recoded RA_WUGDASH now it behaves same to official.
+	- iROwiki and test based information.
+		* SP cost is 40
+		* The skill wouldn't bounce back unlike sprint.
+		* Damage calculation is about 600%.
+		* The skill doesn't require warg strike to be learned even in the description said so.
+
 	r43 [Jobbie]
 	* Fixed Reflect shield causing map server to crash when knockback. There is a messed up in the code when LG_REFLECTDAMAGE is implemented.
 

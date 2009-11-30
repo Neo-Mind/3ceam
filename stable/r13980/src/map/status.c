@@ -473,7 +473,7 @@ void initChangeTables(void)
 	set_sc( AB_SECRAMENT         , SC_SACRAMENT       , SI_SACRAMENT       , SCB_NONE );
 
 	set_sc( RA_FEARBREEZE        , SC_FEARBREEZE      , SI_FEARBREEZE      , SCB_NONE );
-	set_sc( RA_WUGDASH           , SC_RUN             , SI_WUGDASH		   , SCB_SPEED );
+	set_sc( RA_WUGDASH           , SC_WUGDASH         , SI_WUGDASH		   , SCB_SPEED );
 	set_sc( RA_CAMOUFLAGE        , SC_CAMOUFLAGE      , SI_CAMOUFLAGE      , SCB_CRI|SCB_SPEED );
 	add_sc( RA_MAGENTATRAP       , SC_ELEMENTALCHANGE );
 	add_sc( RA_COBALTTRAP        , SC_ELEMENTALCHANGE );
@@ -4198,6 +4198,8 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				val = max( val, 75 );
 			if( sc->data[SC_CAMOUFLAGE] && (sc->data[SC_CAMOUFLAGE]->val4&1) == 1 )
 				val = max( val, sc->data[SC_CAMOUFLAGE]->val1 >= 5 ? 25 : 3 * sc->data[SC_CAMOUFLAGE]->val1 - 3 );	// Need official Value
+			if( sc->data[SC_WUGDASH] )
+				val = max( val, 15 );
 			if( sc->data[SC_CLOAKINGEXCEED] && (sc->data[SC_CLOAKINGEXCEED]->val4&1) == 1 )
 				val = max( val, 10 - pc_checkskill(sd, GC_CLOAKINGEXCEED) * 10 );
 			if( sc->data[SC_ACCELERATION] )
@@ -4380,6 +4382,8 @@ static unsigned short status_calc_dmotion(struct block_list *bl, struct status_c
 	if( sc->data[SC_CONCENTRATION] )
 		return 0;
 	if( sc->data[SC_RUN] )
+		return 0;
+	if( sc->data[SC_WUGDASH] )
 		return 0;
 
 	return (unsigned short)cap_value(dmotion,0,USHRT_MAX);
@@ -6249,6 +6253,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			val2 = 11-val1; //Chance to consume: 11-skilllv%
 			break;
 		case SC_RUN:
+		case SC_WUGDASH:
 			val4 = gettick(); //Store time at which you started running.
 			tick = -1;
 			break;
@@ -7074,6 +7079,13 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		case SC_MERC_SPUP:
 			status_percent_heal(bl, 0, 100); // Recover Full SP
 			break;
+		case SC_WUGDASH:
+			{
+				struct unit_data *ud = unit_bl2ud(bl);
+				if( ud )
+					ud->state.running = unit_wugdash(bl, sd);
+			}
+			break;
 		case SC_RAISINGDRAGON:
 			sce->val2 = 2*status->max_hp/100;// Temp 2% hp used. Need official hp draining value. [Jobbie]
 			break;
@@ -7253,6 +7265,16 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 				sc_start(bl,SC_SPURT,100,sce->val1,skill_get_time2(status_sc2skill(type), sce->val1));
 		}
 		break;
+		case SC_WUGDASH:
+			{
+				struct unit_data *ud = unit_bl2ud(bl);
+				if (ud) {
+					ud->state.running = 0;
+					if (ud->walktimer != -1)
+						unit_stop_walking(bl,1);
+				}
+			}
+			break;
 		case SC_AUTOBERSERK:
 			if (sc->data[SC_PROVOKE] && sc->data[SC_PROVOKE]->val2 == 1)
 				status_change_end(bl,SC_PROVOKE,-1);

@@ -8687,7 +8687,9 @@ void clif_parse_WalkToXY(int fd, struct map_session_data *sd)
 	else if (pc_cant_act(sd))
 		return;
 
-	if(sd->sc.data[SC_RUN])
+	if( sd->sc.data[SC_RUN] )
+		return;
+	if( sd->sc.data[SC_WUGDASH] )
 		return;
 
 	pc_delinvincibletimer(sd);
