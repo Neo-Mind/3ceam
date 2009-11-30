@@ -6,6 +6,9 @@
 //========================================
 
 11/30/2009
+	r43 [Jobbie]
+	* Fixed Reflect shield causing map server to crash when knockback. There is a messed up in the code when LG_REFLECTDAMAGE is implemented.
+
 	r42 [Jobbie]
 	* Fixed and merge the function of Renovatio from trunk to avoid server crash when used in town.
 	* Renovatio only damage undead monster and a player who armored undead property. iROwiki stated.

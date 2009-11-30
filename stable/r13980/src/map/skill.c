@@ -2144,6 +2144,20 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 		else
 			battle_drain(sd, bl, dmg.damage, dmg.damage2, tstatus->race, tstatus->mode&MD_BOSS);
 	}
+	
+	if( rdamage > 0 )
+	{
+		if( dmg.amotion )
+			battle_delay_damage(tick, dmg.amotion,bl,src,0,0,0,rdamage,ATK_DEF,0);
+		else
+			status_fix_damage(bl,src,rdamage,0);
+		clif_damage(src,src,tick, dmg.amotion,0,rdamage,1,4,0);
+		//Use Reflect Shield to signal this kind of skill trigger. [Skotlex]
+		if( tsd && src != bl )
+			battle_drain(tsd, src, rdamage, rdamage, sstatus->race, is_boss(src));
+		skill_additional_effect(bl, src, CR_REFLECTSHIELD, 1, BF_WEAPON|BF_SHORT|BF_NORMAL,ATK_DEF,tick);
+	}
+	
 	// Returned magic damage by LG_REFLECTDAMAGE [pakpil]
 	if( damage > 0 && dsrc != bl && sc && sc->data[SC_REFLECTDAMAGE] )
 	{
