@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+11/30/2009
+	r42 [Jobbie]
+	* Fixed and merge the function of Renovatio from trunk to avoid server crash when used in town.
+	* Renovatio only damage undead monster and a player who armored undead property. iROwiki stated.
+
 11/29/2009
 	r41 [Jobbie]
 	* Fixed missing duration for Adoramus blind and decrease agi in skill_cast_db.txt

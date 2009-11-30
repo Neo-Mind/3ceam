@@ -5574,7 +5574,6 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			case SC_CHANGE: //Otherwise your Hp/Sp would get refilled while still within effect of the last invocation.
 			case SC_URUZ:		// Confirm this?
 			case SC_BURNING:	// Confirm this?
-			case SC_RENOVATIO:	// Confirm this?
 			case SC_SHADOWFORM:	// Confirm this?
 			case SC_FEAR: // Need confirm this.
 				return 0;
@@ -6578,8 +6577,10 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			}
 			break;
 		case SC_RENOVATIO:
-			val4 = 5; // seconds between heals
-			tick = 1000;
+			val4 = tick / 5000;
+			if( val4 < 1 )
+				val4 = 1;
+			tick = 5000;
 			break;
 		case SC_PRAEFATIO:
 			val2 = status->max_hp * (val1 * 8 + 10) / 100; //%Max HP to absorb
@@ -8156,18 +8157,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 	case SC_RENOVATIO:
 		if( --(sce->val4) >= 0 )
 		{
-			if( bl->type == BL_MOB )
-			{
-				int flag;
-				status_damage(bl,bl,sce->val1 * 150,0,clif_damage(bl,bl,tick,status->amotion,status->dmotion,sce->val1 * 150, 1, 0, 0),0);
-				flag = !sc->data[type];
-				if(flag) return 0;
-			}
-			else
-			{
-				int hp = status->max_hp * 3 / 100;
-				status_heal(bl,hp,0,3);
-			}
+			status_heal(bl, status->max_hp / 100 * 3, 0, 2);
 			sc_timer_next(5000 + tick, status_change_timer, bl->id, data);
 			return 0;
 		}

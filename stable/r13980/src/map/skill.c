@@ -4638,7 +4638,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case WL_RECOGNIZEDSPELL:
 	case WL_MARSHOFABYSS:
 	case RA_FEARBREEZE:
-	case AB_RENOVATIO:
 	case AB_EXPIATIO:
 	case AB_DUPLELIGHT:
 	case AB_SECRAMENT:
@@ -7005,6 +7004,13 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				src, skillid, skilllv, tick, flag|BCT_ENEMY|1, skill_castend_nodamage_id);
 			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
 		}
+		break;
+
+	case AB_RENOVATIO:
+		if( battle_check_undead( tstatus->race, tstatus->def_ele ) )
+			skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
+		clif_skill_nodamage(src, bl, skillid, skilllv,
+			sc_start2(bl, type, 100, skilllv, status_get_lv(src), skill_get_time(skillid, skilllv)));
 		break;
 
 	case AB_SILENTIUM:
