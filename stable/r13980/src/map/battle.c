@@ -3749,6 +3749,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 		rdamage = battle_calc_return_damage(target, damage, wd.flag);
 		if( tsc && tsc->data[SC_DEATHBOUND] && rdamage > 0 )
 		{
+			clif_skill_damage(src,src,tick, status_get_amotion(src),0,-30000,1,RK_DEATHBOUND,tsc->data[SC_DEATHBOUND]->val1,6);
 			damage = rdamage/2; //Need confimr if this damage is based on rdmage or based on damage.
 			wd.damage = damage;
 		}

@@ -6,6 +6,10 @@
 //========================================
 
 11/30/2009
+	r45 [Jobbie]
+	* Wug Dash should consume SP when you use again while you're in dash status. (followed up r44).
+	* Added missing packet 0x1de of the skill RK_DEATHBOUND which should display effect. A .5sec duration to amplify the damage return.
+
 	r44 [Jobbie]
 	* Recoded RA_WUGDASH now it behaves same to official.
 	- iROwiki and test based information.
