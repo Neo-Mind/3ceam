@@ -73,8 +73,8 @@ Upper: Equippable upper-types. Uses the following bitmasks:
 	 1: Normal jobs
 	 2: Upper jobs
 	 4: Baby jobs
-	 8: Base Third jobs
-	16: Trans Third jobs
+	 8: Base Third jobs  ---\ Both used combined to make the item
+	16: Trans Third jobs ---/ or equip usable entirely by a 3rd job.
 
 Gender: Gender restriction. 0 is female, 1 is male, 2 for both.
 

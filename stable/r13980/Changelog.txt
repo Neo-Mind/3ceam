@@ -5,6 +5,16 @@
 // 	- Details.
 //========================================
 
+12/1/2009
+	r46[Rytech]
+	*Bunch of database fixes and ballance updates.
+	-All Mado equipment is now equiptable only on Mechanics. Yes its normal for a Mechanic to equip them without a Mado right now
+	-as we dont know all the exact details on how the server handles the Mado.
+	-Foxed the Mechanics Silver Sniper tower which is trying to loot items. Its AI is now the same as the Magic Decoy towers.
+	-Tetra Vortex timer settings added. Cast time is now 12 seconds, after cast delay is 2 seconds, and skill cooldown is 15 seconds.
+	-Comet is now Neutral element.
+	-Added a small commet to the item_db documnent.
+
 11/30/2009
 	r45 [Jobbie]
 	* Wug Dash should consume SP when you use again while you're in dash status. (followed up r44).
