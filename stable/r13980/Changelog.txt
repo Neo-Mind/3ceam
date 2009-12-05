@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+12/05/2009
+	r47 [Jobbie]
+	* Fixed skill couldn't be copied even by rouge and stalker class with plagiarism upgraded.
+	* Reproduce can copy all skill ( 1st, 2nd, 3rd and Expanded Class ) except transcendent skills.
+
 12/1/2009
 	r46[Rytech]
 	*Bunch of database fixes and ballance updates.

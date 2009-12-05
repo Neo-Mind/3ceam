@@ -342,8 +342,7 @@ int can_copy (struct map_session_data *sd, int skillid, struct block_list* bl)
 		return 0;
 
 	// High-class skills
-	// Shouldn't include to copy also 3rd Class skills. [Jobbie]
-	if((skillid >= LK_AURABLADE && skillid <= ASC_CDP) || (skillid >= ST_PRESERVE && skillid <= CR_CULTIVATION) || (skillid >= RK_ENCHANTBLADE && skillid <= SR_RIDEINLIGHTNING))
+	if((skillid >= LK_AURABLADE && skillid <= ASC_CDP) || (skillid >= ST_PRESERVE && skillid <= CR_CULTIVATION))
 	{
 		if(battle_config.copyskill_restrict == 2)
 			return 0;
@@ -353,6 +352,10 @@ int can_copy (struct map_session_data *sd, int skillid, struct block_list* bl)
 
 	//Added so plagarize can't copy agi/bless if you're undead since it damages you
 	if ((skillid == AL_INCAGI || skillid == AL_BLESSING || skillid == CASH_BLESSING || skillid == CASH_INCAGI))
+		return 0;
+
+	// Couldn't preserve 3rd Class skills except only when using Reproduce skill. [Jobbie]
+	if ( sd && !(sd->sc.data[SC_REPRODUCE_]) && (skillid >= RK_ENCHANTBLADE && skillid <= SR_RIDEINLIGHTNING))
 		return 0;
 
 	return 1;
