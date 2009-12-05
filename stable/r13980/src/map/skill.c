@@ -7175,13 +7175,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 
 	case GC_VENOMPRESSURE:
 		{
-			struct status_change *sc;
-			sc = status_get_sc(src);
-			if( !sd || !sc )
+			if( !sd )
 				return 0;
 			skill_castend_damage_id(src, bl, skillid, skilllv, tick, flag);
 			if( !clif_skill_nodamage(src, bl, skillid, skilllv,
-				sc_start(bl, sc->data[SC_POISONINGWEAPON]->val3, 70 + 5 * skilllv, skilllv,
+				sc_start(bl, sd->sc.data[SC_POISONINGWEAPON]->val3, 70 + 5 * skilllv, skilllv,
 					skill_get_time(skillid, skilllv))) )
 			{	// Skill Failed.
 				status_change_end(src, SC_POISONINGWEAPON, -1);
@@ -7194,7 +7192,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 
 	case GC_POISONINGWEAPON:
 		{
-			clif_skill_nodamage(src, bl, skillid, skilllv, 0);
+			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
 			if( sd && !(clif_selectpoison_list( sd )) )
 				clif_skill_fail(sd,skillid,0,0);
 		}
@@ -9089,6 +9087,7 @@ struct skill_unit_group* skill_unitsetting (struct block_list *src, short skilli
 		{
 			val1 = skillid;
 			val2 = sc->data[SC_POISONINGWEAPON]->val3;	// Poison ID.
+			status_change_end(src, SC_POISONINGWEAPON, -1);
 		}
 		break;
 

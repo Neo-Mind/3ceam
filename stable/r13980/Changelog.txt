@@ -6,6 +6,11 @@
 //========================================
 
 12/05/2009
+	r48 [Jobbie]
+	* Fixed Venom Pressure causing map-server to crash and its range change to 1 cell.
+	* Poisoning Weapon status should be removed when Poison Smoke is used.
+	* Fixed a typo in @job command
+
 	r47 [Jobbie]
 	* Fixed skill couldn't be copied even by rouge and stalker class with plagiarism upgraded.
 	* Reproduce can copy all skill ( 1st, 2nd, 3rd and Expanded Class ) except transcendent skills.
