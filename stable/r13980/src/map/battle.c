@@ -3556,7 +3556,7 @@ int battle_damage_area( struct block_list *bl, va_list ap)
 
 	if( bl != src && battle_check_target(src,bl,BCT_ENEMY) )
 	{
-		status_damage(bl,bl,damage,0,clif_damage(bl,bl,tick,amotion,dmotion,damage,1,ATK_BLOCK,0),0);
+		status_damage(src,bl,damage,0,clif_damage(bl,bl,tick,amotion,dmotion,damage,1,ATK_BLOCK,0),0);
 	}
 	
 	return 0;

@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+12/07/09
+	r49 [Jobbie]
+	* Fixed reflect damage not giving exp. Thanks spritiual_kid for pointing out
+
 12/05/2009
 	r48 [Jobbie]
 	* Fixed Venom Pressure causing map-server to crash and its range change to 1 cell.
