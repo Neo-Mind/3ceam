@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+12/12/2009
+	r50 [Rytech]
+	*Added RETURN_TO_ELDICASTES to the database.
+	-Everything needed is perty much added in. All thats left is to code where to make this skill warp you when used.
+
 12/07/09
 	r49 [Jobbie]
 	* Fixed reflect damage not giving exp. Thanks spritiual_kid for pointing out
