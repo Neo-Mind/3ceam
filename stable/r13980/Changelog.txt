@@ -6,6 +6,9 @@
 //========================================
 
 12/12/2009
+	r51 [Jobbie]
+	* Fixed missing else in state.improve_flag which affects the abracadabra not to work.
+
 	r50 [Rytech]
 	*Added RETURN_TO_ELDICASTES to the database.
 	-Everything needed is perty much added in. All thats left is to code where to make this skill warp you when used.

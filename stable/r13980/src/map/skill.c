@@ -10567,7 +10567,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 	{
 		if( sd->state.abra_flag ) // Hocus-Pocus was used. [Inkfish]
 			sd->state.abra_flag = 0;
-		if( sd->state.improv_flag )
+		else if( sd->state.improv_flag )
 			sd->state.improv_flag = 0;
 		else
 		{ // When a target was selected, consume items that were skipped in pc_use_item [Skotlex]
