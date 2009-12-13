@@ -1,8 +1,141 @@
 Date	Added
 
-This changelog is to determine what are the changes also in eAthena updates merged to our SVN.
-NOTE: Included all changelog of eathena.
+AS OF SVN REV. 5091, WE ARE NOW USING TRUNK.  ALL UNTESTED BUGFIXES/FEATURES GO INTO TRUNK.
+IF YOU HAVE A WORKING AND TESTED BUGFIX PUT IT INTO STABLE AS WELL AS TRUNK.
 
+2009/12/03
+	* Prevented online user count from going negative. (bugreport:3913) [Paradox924X]
+2009/12/02
+	* Rev. 14183 Semi-revert of 14182, moved ALL_WEWISH up under SA_GRAVITY instead, as I hadn't noticed it does exactly what the new case did. [L0ne_W0lf]
+	* Rev. 14182 Added skill ALL_WEWISH. This skill in older clients plays a song, however in current clients it does not. The effect (AL_ANGELUS) still shows. [L0ne_W0lf]
+2009/11/26
+	* Moved log_sql_init() call up in map-server-init to after after map_sql_init() call to prevent unnecessary processing before a potential quit. [Paradox924X]
+	* NPC event code cleanups. [Inkfish]
+	- removed the 'OnMyMobDead' dead code. It's never supported though documented.
+	- removed the 'feature' that events only trigger when the player is in the OnTouch area IF it's specified. 
+		It's never documented and breaks official scripts.
+	- some cleanups and bug fixes to OnTouch_.
+	* Fixed warping in OnPCDieEvent revives people with 0 hp.
+2009/11/25
+	* Fixed strnpcinfo(1) returning blank strings when NPC names did not have a hidden portion of the display name. (bugreport:3758) [Paradox924X]
+2009/11/23
+	* Fixed player keeps bleeding when dead. [Inkfish]
+	- If battle_config.invincible_nodamage is true, reflected damage to targets in invincible status is now 1.
+2009/11/22
+	* Added 'ipban_cleanup_interval' option which determines how often expired IP bans are cleaned from the database. (bugreport:3734) [Paradox924X]
+	* Modified ipban_check() to only include ipbans that haven't already expired. (bugreport:3734) [Paradox924X]
+2009/11/20
+	* Cleaned up mapreg dirty-marking code to only mark the mapreg as dirty when it actually is. (bugreport:3735) [Paradox924X]
+2009/11/19
+	* Applied the renewal client support patch from Diablo (eA forum topic 222623).
+	  By default eA still supports sakexe/ragexe clients. In order to support the 
+	  renewal clients you must:
+	- 1: Change the default packet version to "default" in db/packet_db.txt
+	- 2: Change the supported PACKETVER in src/common/mmo.h to the most recent one 
+	- 3: recompile. [Skotlex]
+	* Added support for strcharinfo(3) to retrieve the player's map, as getmapxy 
+	  can be a bit unwieldy when you just want this information. [Skotlex]
+	* Added script command "searchitem" which enables scripts to do item searches 
+	  based on name (can be useful for creating query NPCs). [Skotlex]
+09/11/09
+	* Fixed mob is removed from map right after his rebirth. [Inkfish]
+	* Fixed dead event does not trigger when a mob has rebirth skill and dies for the second time. [Inkfish]
+09/11/08
+	* Added a flag to indicate if the script of an autobonus was parsed for the sake of resourse saving. [Inkfish]
+09/11/04
+	* All Songs/Dances now create a 3 second delay before Adaption can be used. [Inkfish]
+	* Fixed unit still not being able to move when fiberlock is removed by Magnetic Earth. [Inkfish]
+09/11/02
+	* Rev. 14119 Added battle_config.mob_slave_keep_target config option (monster.conf) [L0ne_W0lf]
+	- When yes (default) MVP slaves will always keep their prior targets.
+	- When no the old behavior of switching to the closest target is enabled.
+	* Updated MAX_MOB_DB to 4000 (Monsters are starting to appear in the 2k ranges)
+	* Changed default respawn time (when 0) to 500 from 5000.
+	* Quick fix to char command checking gm level of the target player instead of the command user (bugreport:3255). [Inkfish]
+	* Disalbed @jump/@jumpto usage when dead. [Inkfish]
+09/11/01
+	* Rev. 14115 Implemented the fix for Slim Pitcher working on WoESE objects (bugreport:3618). [L0ne_W0lf]
+	* Added SC_SPIRIT to the list of buffs that are dispelled when the player logs out.
+09/10/27
+	* Fixed quest will never get erased when it's the only quest you have. [Inkfish]
+	* Cast time of Emergency Call is doubled if you master of High Jump. [Inkfish]
+	* High Jump can't be used on PvP maps. [Inkfish]
+09/10/26
+	* Implemented NPC_VAMPIREGIFT and NPC_WIDESOULDRAIN. [Inkfish]
+09/10/25
+	* Rev. 14101 The status SC_INVINCIBLE now reduces all damage to 1. [L0ne_W0lf]
+	- Official behavior, and allows players to cancel NPC_ALLHEAL casts.
+	- If battle_config.invincible_nodamage is true, reflected damage is still 0.
+09/10/25
+	* Implemented the official version of 'OnTouch' named as 'OnTouch_' and it can be defined in script_athena.conf. [Inkfish]
+	* Adapted 'map_foreachinarea' to 'map_forsomeinarea' so that it allows you to specify the count of bl you wanna operate on. [Inkfish]
+09/10/24
+	* Reverted the previous change to OnTouch not triggering for invisible chars [ultramage]
+	* 'OnTouch' script shouldn't trigger when you are invisible.(same as warps) [Inkfish]
+	* Fixed character doesn't stop walking when walking into OnTouch area of an NPC who doesn't have an OnTouch label. [Inkfish]
+09/10/18
+	* Removed the char_rename setting in favor of a PACKETVER define [ultramage]
+	* Inverted the way renames are counted: '0' now means 'no renames left' (the default)
+	* Please make sure your database matches this new behavior before starting the server.
+09/10/10
+	* Added character rename function. [Inkfish]
+	* NPCs' names should only be 24 characters long including EOS. [Inkfish]
+09/10/06
+	* Fixed rental items can be moved into guild storage from cart. [Inkfish]
+09/10/04
+	* Implemented new packets for rental items (from Jobbie and Natz and fixed by me). [zephyrus]
+	* Rental items now can be moved to storage and cart. [zephyrus]
+	* Autotrade cannot be used when user is dead, and it's not dispelled if user dies to prevent abuse. [zephyrus]
+	* Fixed pc_checkitem to do a proper item check and remove. [zephyrus]
+09/10/02
+	* Fixed a damage underflow.(bugreport:3624) [Inkfish]
+	* Marionette Control now has an infinite duration.(bugreport:2542) [Inkfish]
+09/09/23
+	* Added supports for Soul Bound. [Inkfish]
+09/09/21
+	* Disabled ip checking during auth, since it lead to a lot of confusion. [ultramage]
+09/09/17
+	* Duration of SC_STONE is not reduced by MDEF. [Inkfish]
+	* LexAeterna is allowed to be used on petrifying targets. [Inkfish]
+	* Mobs won't attack back if StoneCurse fails. [Inkfish]
+09/09/13
+	* Progressbar aborts when player is attacked. [Inkfish]
+	* Do not stand if damage is from yourself or has no source.(bugreport:3582) [Inkfish]
+	* Any mobs killed by party members within view range are taken into account in questlog. [Inkfish]
+	* 'unit_walktobl' now uses at least 1 as the range since 'unit_can_reach_bl' always sets the target coordinates 1 cell away from the target block. [Inkfish]
+09/09/12
+	* Clarified the names of some questlog functions and eventually implemented kill counts updating. [Inkfish]
+09/09/04
+	* QuestLog Fix. [Inkfish]
+	- mob id no longer stores in sql.
+	- counts won't increase if you have killed sufficient mobs.
+09/08/25
+	* Implemented Progress Bar.(topic:207933) [Inkfish]
+09/08/21
+	* Fixed Teleport through Hocus-Pocus skips menu. (bugreport:3513) [Inkfish]
+09/08/20
+	* Added bMagicHPGainValue and bMagicSPGainValue. [Inkfish]
+	* Fixed the wrong packet length makes client choke when add_quest packets are sent. [Inkfish]
+09/08/18
+	* Some fixes for Heat [Inkfish]
+	- Heat and other ground skills' activation won't cancel combo wait. (bugreport:3228)
+	- Heat should work with hp/sp drain bonus. (bugreport:3507)
+	- Heat consumes 10 sp if the attack doesn't connect. (bugreport:3038)
+09/08/17
+	* Equipment DEF penalty shouldn't be applied to players in Mental Strength. (bugreport:3454) [Inkfish]
+09/08/14
+	* Fixed self skills affecting target unit when used within combo delay for Asura and Flying Kick. (bugreport:3495) [Inkfish]
+09/08/11
+	* Fixed changequest behavior(before: completequest+setquest, now: erasequest+setquest) [Inkfish]
+09/08/10
+	* Fixed autospell and autobonus will still trigger even if the chance is 0. [Inkfish]
+	* Disabled "show_party_share_picker" functioning on client older than 20071002 to prevent from disconnection. (bugreport:3457) [Inkfish]
+	* Fixed units other than players and mercenaries using Devotion will cause crashes. (bugreport:3475) [Inkfish]
+09/08/01
+	* Questlog code cleanup. [Inkfish]
+	* Fixed range check on autospell and autospell2. [Inkfish]
+	* Implemented official behavior of party_show_share_picker. [Inkfish]
+	* Fixed a typo on reading no_equip list. [Inkfish]
 09/07/28
 	* Kaahi heals no matter if attack connects. (bugreport:2440) [Inkfish]
 	* Fixed a typo causing skillitem always resets skill delay. (bugreport:3431) [Inkfish]
@@ -70,15 +203,13 @@ NOTE: Included all changelog of eathena.
 	* Fixed "arrow_atk" flag never being reset results in arrow consumption on itemskills and autocasts. (bugreport:3233) [Inkfish]
 	* Fixed itemskill not bypassing Silence, SteelBody, Berserk and the like. (bugreport:3232) [Inkfish]
 	* Fury and Asura no longer disable SP regen on any other classes than Monk/Champion.(bugreport:3200) [Inkfish]
-09/06/12
-	* Fixed "arrow_atk" flag never being reset results in arrow consumption on itemskills and autocasts. (bugreport:3233) [Inkfish]
-	* Fixed itemskill not bypassing Silence, SteelBody, Berserk and the like. (bugreport:3232) [Inkfish]
-	* Fury and Asura no longer disable SP regen on any other classes than Monk/Champion.(bugreport:3200) [Inkfish]
 09/06/11
 	* Fixed TaTaMiGaEShi(Improvised Defense) not working. [Inkfish]
 	* Implemented new cooking success formula. Now cooking experience starts at 0.(bugreport:2439) [Inkfish]
 09/06/09
 	* Fixed applying autocasts with negative rate before the positive one made it fail to remove the autocast. [Inkfish]
+09/06/08
+	* Rev. 13869 Follow up to r13867, corrected the newly added MD_TARGETWEAK. Monsters with this mode will now only target players five level LOWER than itself. [L0ne_W0lf]
 09/06/08
 	* Fixed bHPGainValue and bSPGainValue worked on all types of attacks and was only activated on mob's death.(bugreport:3193) [Inkfish]
 	* Added a configuration for whether damage of EarthQuake with single target can be reflected. [Inkfish]
@@ -150,6 +281,7 @@ NOTE: Included all changelog of eathena.
 	- Autocasts won't check for requirements but will remove them if you have them(except for SP/HP).
 09/05/25
 	* Fixed losing skill list after base change. (bugreport:3106) [Inkfish]
+	* Now we can use 'boss_monster' to summon whatever monsters that need to be radared by Convex Mirror. (bugreport:2653) [Inkfish]
 09/05/24
 	* Taro Card can now break shoes and garment and won't affect dead target. (bugreport:2513) [Inkfish]
 09/05/23

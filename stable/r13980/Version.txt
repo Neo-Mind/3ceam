@@ -11,6 +11,15 @@
 //	Merging NOTE: From the last rev merge, include all what eA's SVN has. (Disregard if the update is for charmerge of eA).
 //========================================
 
+12/13/2009
+	r52 [Jobbie]
+	* Merge eAthena Updates upto r14198
+	- 14163(stable)
+	- 14171(stable)
+	- 14181(charmerge)
+	- 14187(stable) are not included.
+
+==============================================================================
 	r125 [Jobbie]
 	== PART 1 Merge Update ==
 	* Merge SVN with eAthena Updates. ( 13951 - 80 )

@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+12/13/2009
+	r52 [Jobbie]
+	* Merge eAthena Updates upto r14198
+
 12/12/2009
 	r51 [Jobbie]
 	* Fixed missing else in state.improve_flag which affects the abracadabra not to work.
