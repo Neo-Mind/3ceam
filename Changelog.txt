@@ -5,7 +5,58 @@
 // 	- Details.
 //========================================
 
+12/13/2009
+	r53 [Jobbie]
+	* Merge eAthena Updates upto r14198(TRUNK)
+
+	r52 [Jobbie]
+	* Merge eAthena Updates upto r14198
+
+12/12/2009
+	r51 [Jobbie]
+	* Fixed missing else in state.improve_flag which affects the abracadabra not to work.
+
+	r50 [Rytech]
+	*Added RETURN_TO_ELDICASTES to the database.
+	-Everything needed is perty much added in. All thats left is to code where to make this skill warp you when used.
+
+12/07/09
+	r49 [Jobbie]
+	* Fixed reflect damage not giving exp. Thanks spritiual_kid for pointing out
+
+12/05/2009
+	r48 [Jobbie]
+	* Fixed Venom Pressure causing map-server to crash and its range change to 1 cell.
+	* Poisoning Weapon status should be removed when Poison Smoke is used.
+	* Fixed a typo in @job command
+
+	r47 [Jobbie]
+	* Fixed skill couldn't be copied even by rouge and stalker class with plagiarism upgraded.
+	* Reproduce can copy all skill ( 1st, 2nd, 3rd and Expanded Class ) except transcendent skills.
+
+12/1/2009
+	r46[Rytech]
+	*Bunch of database fixes and ballance updates.
+	-All Mado equipment is now equiptable only on Mechanics. Yes its normal for a Mechanic to equip them without a Mado right now
+	-as we dont know all the exact details on how the server handles the Mado.
+	-Foxed the Mechanics Silver Sniper tower which is trying to loot items. Its AI is now the same as the Magic Decoy towers.
+	-Tetra Vortex timer settings added. Cast time is now 12 seconds, after cast delay is 2 seconds, and skill cooldown is 15 seconds.
+	-Comet is now Neutral element.
+	-Added a small commet to the item_db documnent.
+
 11/30/2009
+	r45 [Jobbie]
+	* Wug Dash should consume SP when you use again while you're in dash status. (followed up r44).
+	* Added missing packet 0x1de of the skill RK_DEATHBOUND which should display effect. A .5sec duration to amplify the damage return.
+
+	r44 [Jobbie]
+	* Recoded RA_WUGDASH now it behaves same to official.
+	- iROwiki and test based information.
+		* SP cost is 40
+		* The skill wouldn't bounce back unlike sprint.
+		* Damage calculation is about 600%.
+		* The skill doesn't require warg strike to be learned even in the description said so.
+
 	r43 [Jobbie]
 	* Fixed Reflect shield causing map server to crash when knockback. There is a messed up in the code when LG_REFLECTDAMAGE is implemented.
 
