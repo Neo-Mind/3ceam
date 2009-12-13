@@ -6,6 +6,9 @@
 //========================================
 
 12/13/2009
+	r56 [Jobbie]
+	* Quick fix forgot to remove the ShowInfo thing. (followed up r55)	
+
 	r55 [Jobbie]
 	* Implemented renewal cast time setting to enable variable and fixed cast time.
 	- Info: Original cast time is splitted into two parts which is fixed and variable.

@@ -11643,7 +11643,6 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 	if (battle_config.cast_rate != 100)
 		final_time = final_time * battle_config.cast_rate / 100;
 
-	ShowInfo("Final Cast Time is %d\n",final_time);
 	// return final cast time
 	return (final_time > 0) ? final_time : 0;
 }
