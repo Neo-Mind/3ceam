@@ -6,6 +6,18 @@
 //========================================
 
 12/13/2009
+	r55 [Jobbie]
+	* Implemented renewal cast time setting to enable variable and fixed cast time.
+	- Info: Original cast time is splitted into two parts which is fixed and variable.
+		80% of the original cast time is variable and 20% of it is fixed. Only
+		variable cast time be reduced by dex, int, item cast reduction, card cast reduction
+		such as kathrene keyon card and suffragium for example. Fixed cast time cannot be reduce by suffra,
+		only Sacrament or Radius( Warlock exclusive ) and fixed cast time special item could reduce
+		it.
+	* Fixed official calculation of Freezing status.
+	* Added AB_RENOVATIO skill in skill_castnodex_db casting time of this skill cannot be reduced by dex
+	* Fixed the AfterCastDelay which is not showing the paw icon and did not trigger after cast delay of skill.
+
 	r52 [Jobbie]
 	* Merge eAthena Updates upto r14198
 

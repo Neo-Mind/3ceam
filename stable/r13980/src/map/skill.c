@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 
 #define SKILLUNITTIMER_INTERVAL	100
@@ -1207,7 +1208,7 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 				if( sd && skill_get_cooldown( skill, skilllv ) ) // Skill cooldown. [LimitLine]
 					skill_blockpc_start(sd, skill, skill_get_cooldown(skill, skilllv));
 					if ( battle_config.display_status_timers && sd && skill_get_delay(skill, skilllv))
-						clif_status_change(src, SI_ACTIONDELAY, 1, 0, 0, 1, rate);
+						clif_status_change(src, SI_ACTIONDELAY, 1, rate, 1, 0, 0);
 				}
 			}
 		}
@@ -1480,7 +1481,7 @@ int skill_counter_additional_effect (struct block_list* src, struct block_list *
 					if( sd && skill_get_cooldown( skillid, skilllv ) ) // Skill cooldown. [LimitLine]
 						skill_blockpc_start(sd, skillid, skill_get_cooldown(skillid, skilllv));
 					if ( battle_config.display_status_timers && dstsd && skill_get_delay(skillid, skilllv))
-						clif_status_change(bl, SI_ACTIONDELAY, 1, 0, 0, 1, rate);
+						clif_status_change(bl, SI_ACTIONDELAY, 1, rate, 1, 0, 0);
 				}
 			}
 		}
@@ -7739,7 +7740,7 @@ int skill_castend_id(int tid, unsigned int tick, int id, intptr data)
 		if( !sd || sd->skillitem != ud->skillid || skill_get_delay(ud->skillid,ud->skilllv) )
 			ud->canact_tick = tick + skill_delayfix(src, ud->skillid, ud->skilllv); //Tests show wings don't overwrite the delay but skill scrolls do. [Inkfish]
 		if( battle_config.display_status_timers && sd && skill_get_delay(ud->skillid, ud->skilllv))
-			clif_status_change(src, SI_ACTIONDELAY, 1, 0, 0, 1, skill_delayfix(src, ud->skillid, ud->skilllv));
+			clif_status_change(src, SI_ACTIONDELAY, 1, skill_delayfix(src, ud->skillid, ud->skilllv), 1, 0, 0 );
 
 		if( sd )
 		{
@@ -7958,7 +7959,7 @@ int skill_castend_pos(int tid, unsigned int tick, int id, intptr data)
 		if( !sd || sd->skillitem != ud->skillid || skill_get_delay(ud->skillid,ud->skilllv) )
 			ud->canact_tick = tick + skill_delayfix(src, ud->skillid, ud->skilllv);
 		if( battle_config.display_status_timers && sd && skill_get_delay(ud->skillid, ud->skilllv))
-			clif_status_change(src, SI_ACTIONDELAY, 1, 0, 0, 1, skill_delayfix(src, ud->skillid, ud->skilllv));
+			clif_status_change(src, SI_ACTIONDELAY, 1, skill_delayfix(src, ud->skillid, ud->skilllv), 1, 0, 0);
 //		if( sd )
 //		{
 //			switch( ud->skillid )
@@ -11570,12 +11571,13 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
 	return req;
 }
 
-/*==========================================
- * Does cast-time reductions based on dex, item bonuses and config setting
- *------------------------------------------*/
-int skill_castfix (struct block_list *bl, int skill_id, int skill_lv)
+/*================================================
+ * Renewal Cast Time (variable and fixed)  [Jobbie]
+ *----------------------------------------------*/
+int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 {
-	int time = skill_get_cast(skill_id, skill_lv);
+	int scale = 0, time, final_time;//scale, time and final time
+	double variable_time, fixed_time; //variable and fixed cast time
 	struct map_session_data *sd;
 	struct status_change *sc;
 
@@ -11583,73 +11585,67 @@ int skill_castfix (struct block_list *bl, int skill_id, int skill_lv)
 	sd = BL_CAST(BL_PC, bl);
 	sc = status_get_sc(bl);
 
-	// calculate base cast time (reduced by dex)
-	if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
-	{
-		int scale = battle_config.castrate_dex_scale - status_get_dex(bl);
-		if( scale > 0 )	// not instant cast
-			time = time * scale / battle_config.castrate_dex_scale;
-		else return 0;	// instant cast
-	}
+	time = skill_get_cast(skill_id, skill_lv); //BaseCast
+	variable_time = time * 80/100.;// 80% of casttime is variable
+	fixed_time = time * 20/100.;// 20% of casttime is fixed
 
-	// calculate cast time reduced by item/card bonuses
+	// calculate base cast time (reduced by dex and int)
+	if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
+		scale = status_get_dex(bl)*2 + status_get_int(bl);
+
+	// calculate variable cast time reduced by item/card bonuses
 	if( !(skill_get_castnodex(skill_id, skill_lv)&4) && sd )
 	{
 		int i;
 		if( sd->castrate != 100 )
-			time = time * sd->castrate / 100;
+			variable_time = variable_time * sd->castrate / 100;
 		for( i = 0; i < ARRAYLENGTH(sd->skillcast) && sd->skillcast[i].id; i++ )
 		{
 			if( sd->skillcast[i].id == skill_id )
 			{
-				time+= time * sd->skillcast[i].val / 100;
+				variable_time+= variable_time * sd->skillcast[i].val / 100;
 				break;
 			}
 		}
 	}
 
-	if( sd && pc_checkskill(sd,WL_RADIUS)  && skill_id >= WL_WHITEIMPRISON && skill_id <= WL_FREEZE_SP )
-		time = (time/100) * 92 + (pc_checkskill(sd,WL_RADIUS) * 2);
-
-	// config cast time multiplier
-	if (battle_config.cast_rate != 100)
-		time = time * battle_config.cast_rate / 100;
-
-	// return final cast time
-	return (time > 0) ? time : 0;
-}
-
-/*==========================================
- * Does cast-time reductions based on sc data.
- *------------------------------------------*/
-int skill_castfix_sc (struct block_list *bl, int time)
-{
-	struct status_change *sc = status_get_sc(bl);
-
+	if( sd && pc_checkskill(sd, WL_RADIUS) && skill_id >= WL_WHITEIMPRISON && skill_id <= WL_FREEZE_SP )
+		fixed_time -= (fixed_time * ( 5 + 5 * skill_lv ))/100; //10*SkillLV% of Fixed Cast Time reduced.
+	
+	// calculate variable and fixed cast time reduced on sc data
 	if (sc && sc->count) {
 		if (sc->data[SC_SLOWCAST])
-			time += time * sc->data[SC_SLOWCAST]->val2 / 100;
+			variable_time += variable_time * sc->data[SC_SLOWCAST]->val2 / 100;
 		if (sc->data[SC_SUFFRAGIUM]) {
-			time -= time * sc->data[SC_SUFFRAGIUM]->val2 / 100;
+			variable_time -= variable_time * sc->data[SC_SUFFRAGIUM]->val2 / 100;
 			status_change_end(bl, SC_SUFFRAGIUM, -1);
 		}
 		if (sc->data[SC_MEMORIZE]) {
-			time>>=1;
+			variable_time /= 2;
 			if ((--sc->data[SC_MEMORIZE]->val2) <= 0)
 				status_change_end(bl, SC_MEMORIZE, -1);
 		}
 		if (sc->data[SC_POEMBRAGI])
-			time -= time * sc->data[SC_POEMBRAGI]->val2 / 100;
-		if (sc->data[SC_SACRAMENT])
-			time -= time * sc->data[SC_SACRAMENT]->val2 / 100;	// TODO: Change this to reduce fixed cast time once we implement it. [LimitLine]
+			variable_time -= variable_time * sc->data[SC_POEMBRAGI]->val2 / 100;
 		if( sc && sc->count && sc->data[SC_FREEZING] )
-			time += (time/100) * sc->data[SC_FREEZING]->val3;	// Need official value.
+			fixed_time += fixed_time * sc->data[SC_FREEZING]->val2 / 100;
+		if (sc->data[SC_SACRAMENT])
+			fixed_time -= fixed_time * sc->data[SC_SACRAMENT]->val2 / 100;
 		if (sc->data[SC_DANCEWITHWUG])
-			time /= 2;	// I saw in videos and it doesn't remove all cast time. My guess is that it only removes variable cast time, but since we don't have fixed cast time yet, let's leave it like this for now. [LimitLine]
+			variable_time /= 2;	// I saw in videos and it doesn't remove all cast time. My guess is that it only removes variable cast time, but since we don't have fixed cast time yet, let's leave it like this for now. [LimitLine]
 		if( sc->data[SC_LAZINESS_] )
-			time += time * sc->data[SC_LAZINESS_]->val2 / 100;
+			variable_time += variable_time * sc->data[SC_LAZINESS_]->val2 / 100;
 	}
-	return (time > 0) ? time : 0;
+
+	final_time = (int)((1-sqrt(scale/530.)) * variable_time + fixed_time);  
+
+	// config cast time multiplier
+	if (battle_config.cast_rate != 100)
+		final_time = final_time * battle_config.cast_rate / 100;
+
+	ShowInfo("Final Cast Time is %d\n",final_time);
+	// return final cast time
+	return (final_time > 0) ? final_time : 0;
 }
 
 /*==========================================

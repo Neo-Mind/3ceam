@@ -3971,7 +3971,7 @@ static signed char status_calc_def(struct block_list *bl, struct status_change *
 	if (sc->data[SC_FLING])
 		def -= def * (sc->data[SC_FLING]->val2)/100;
 	if(sc->data[SC_FREEZING])
-		def -= (def/100) * sc->data[SC_FREEZING]->val3;	// Need official value.
+		def -= def / 10 * 3;
 	if(sc->data[SC_CAMOUFLAGE])
 		def -= def * sc->data[SC_CAMOUFLAGE]->val3/100;	// Need Official Value
 	if(sc->data[SC_ANALYZE])
@@ -4014,6 +4014,8 @@ static signed short status_calc_def2(struct block_list *bl, struct status_change
 			  + def2 * ( sc->data[SC_JOINTBEAT]->val2&BREAK_WAIST ? 25 : 0 ) / 100;
 	if(sc->data[SC_FLING])
 		def2 -= def2 * (sc->data[SC_FLING]->val3)/100;
+	if( sc->data[SC_FREEZING] )
+		def2 -= def2 / 10 * 3;
 	if(sc->data[SC_CAMOUFLAGE])
 		def2 -= def2 * sc->data[SC_CAMOUFLAGE]->val3/100;	//Need Official Value
 	if(sc->data[SC_ANALYZE])
@@ -4170,7 +4172,7 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				if( sc->data[SC_SWOO] )
 					val = max( val, 300 );
 				if( sc->data[SC_FREEZING] )
-					val = max( val, sc->data[SC_FREEZING]->val2 );
+					val = max( val, 70 );
 				if( sc->data[SC_MARSHOFABYSS] )
 					val = max( val, 50 );
 				if( sc->data[SC_CAMOUFLAGE] && (sc->data[SC_CAMOUFLAGE]->val4&1) == 0 )
@@ -4361,8 +4363,8 @@ static short status_calc_aspd_rate(struct block_list *bl, struct status_change *
 	}
 	if(sc->data[SC_OTHILA])
 		aspd_rate += sc->data[SC_OTHILA]->val3;	// Need official value. [LimitLine]
-	if(sc->data[SC_FREEZING])
-		aspd_rate += (aspd_rate/100) * sc->data[SC_FREEZING]->val3;
+	if( sc->data[SC_FREEZING] )
+		aspd_rate += 300;
 	if(sc->data[SC_HALLUCINATIONWALK_DELAY])
 		aspd_rate *= 2;
 	if(sc->data[SC_PARALIZE])
@@ -5050,7 +5052,6 @@ int status_get_sc_def(struct block_list *bl, enum sc_type type, int rate, int ti
 		if (sd) tick>>=1; //Half duration for players.
 	case SC_STONE:
 	case SC_FREEZE:
-	case SC_FREEZING:
 		sc_def = 3 +status->mdef;
 		break;
 	case SC_CURSE:
@@ -6549,8 +6550,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 				tick  -= tick / 5;
 			break;
 		case SC_FREEZING:
-			val2 = 30;	// Walking speed reduction.
-			val3 = 30;	// Aspd/Cast time decrease/increase. (in percents)
+			val2 = 50;	// +50% of fixed cast time.
 			break;
 		case SC_OVERHEAT:	// Need official interval between hits.
 		case SC_DEEPSLEEP:
