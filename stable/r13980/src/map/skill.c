@@ -4118,7 +4118,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	if(status_isdead(src))
 		return 1;
 
-	if(src!=bl && status_isdead(bl) && skillid != ALL_RESURRECTION && skillid != PR_REDEMPTIO && skillid != AB_EPICLESIS && skillid != WM_DEADHILLHERE)
+	if(src!=bl && status_isdead(bl) && skillid != ALL_RESURRECTION && skillid != PR_REDEMPTIO && skillid != NPC_WIDESOULDRAIN && skillid != AB_EPICLESIS && skillid != WM_DEADHILLHERE)
 		return 1;
 
 	tstatus = status_get_status_data(bl);
@@ -5100,8 +5100,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case CASH_BLESSING:
 	case CASH_INCAGI:
 	case CASH_ASSUMPTIO:
-	case AB_CLEMENTIA:
-	case AB_CANTO:
 	case AB_PRAEFATIO:
 	case WA_SWING_DANCE:
 	case WA_SYMPHONY_OF_LOVER:
@@ -6938,6 +6936,20 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 					skill_get_splash(skillid, skilllv), BL_SKILL);
 			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		}
+		break;
+
+	case AB_CLEMENTIA:
+	case AB_CANTO:
+		{
+			int bless_lv = pc_checkskill(sd,AL_BLESSING);
+			int agi_lv = pc_checkskill(sd,AL_INCAGI);
+			if( sd == NULL || sd->status.party_id == 0 || (flag & 1) )
+				clif_skill_nodamage(bl, bl, skillid, 
+					(skillid == AB_CLEMENTIA)?bless_lv:(skillid == AB_CANTO)?agi_lv:skilllv, sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)));
+			else if( sd )
+				party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skillid, skilllv), src, skillid, 
+					(skillid == AB_CLEMENTIA)?bless_lv:(skillid == AB_CANTO)?agi_lv:skilllv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
 		}
 		break;
 

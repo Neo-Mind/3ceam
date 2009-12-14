@@ -3478,7 +3478,7 @@ static unsigned short status_calc_str(struct block_list *bl, struct status_chang
 	if(sc->data[SC_THURISAZ])
 		str += 30;
 	if(sc->data[SC_HARMONIZE])
-		str += 4 + sc->data[SC_HARMONIZE]->val1;
+		str += sc->data[SC_HARMONIZE]->val2;
 
 	return (unsigned short)cap_value(str,0,USHRT_MAX);
 }
@@ -3519,7 +3519,7 @@ static unsigned short status_calc_agi(struct block_list *bl, struct status_chang
 	if(sc->data[SC_MARSHOFABYSS])
 		agi -= sc->data[SC_MARSHOFABYSS]->val2;
 	if(sc->data[SC_HARMONIZE])
-		agi += 4 + sc->data[SC_HARMONIZE]->val1;
+		agi += sc->data[SC_HARMONIZE]->val2;
 
 	return (unsigned short)cap_value(agi,0,USHRT_MAX);
 }
@@ -3552,7 +3552,7 @@ static unsigned short status_calc_vit(struct block_list *bl, struct status_chang
 	if(sc->data[SC_AGNUS])
 		vit += sc->data[SC_AGNUS]->val2;
 	if(sc->data[SC_HARMONIZE])
-		vit += 4 + sc->data[SC_HARMONIZE]->val1;
+		vit += sc->data[SC_HARMONIZE]->val2;
 
 	return (unsigned short)cap_value(vit,0,USHRT_MAX);
 }
@@ -3591,7 +3591,7 @@ static unsigned short status_calc_int(struct block_list *bl, struct status_chang
 	if(sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_HIGH && int_ < 50)
 		int_ = 50;
 	if(sc->data[SC_HARMONIZE])
-		int_ += 4 + sc->data[SC_HARMONIZE]->val1;
+		int_ += sc->data[SC_HARMONIZE]->val2;
 	if(sc->data[SC_STRIPACCESSORY])
 		int_ -= int_ * sc->data[SC_STRIPACCESSORY]->val2/100;
 
@@ -3637,7 +3637,7 @@ static unsigned short status_calc_dex(struct block_list *bl, struct status_chang
 	if(sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_HIGH && dex < 50)
 		dex  = 50;
 	if(sc->data[SC_HARMONIZE])
-		dex += 4 + sc->data[SC_HARMONIZE]->val1;
+		dex += sc->data[SC_HARMONIZE]->val2;
 	if(sc->data[SC_STRIPACCESSORY])
 		dex -= dex * sc->data[SC_STRIPACCESSORY]->val2/100;
 
@@ -3670,7 +3670,7 @@ static unsigned short status_calc_luk(struct block_list *bl, struct status_chang
 	if(sc->data[SC_RAMUS])
 		luk += sc->data[SC_RAMUS]->val2;
 	if(sc->data[SC_HARMONIZE])
-		luk += 4 + sc->data[SC_HARMONIZE]->val1;
+		luk += sc->data[SC_HARMONIZE]->val2;
 	if(sc->data[SC_STRIPACCESSORY])
 		luk -= luk * sc->data[SC_STRIPACCESSORY]->val2/100;
 
@@ -6699,6 +6699,9 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			break;
 		case SC_SWINGDANCE:
 			val2 = val1 * 4;
+			break;
+		case SC_HARMONIZE:
+			val2 = val1 * 2 + 3;// All stat bonus.
 			break;
 		case SC_VOICEOFSIREN:
 			val4 = tick / 2000;
