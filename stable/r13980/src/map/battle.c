@@ -260,12 +260,17 @@ int battle_attr_fix(struct block_list *src, struct block_list *target, int damag
 		if( tsc->data[SC_SPIDERWEB]->val2 == 0 )
 			status_change_end(target,SC_SPIDERWEB,-1);
 	}
-	if( tsc && tsc->data[SC_ORATIO] && atk_elem == ELE_HOLY)
-		ratio += tsc->data[SC_ORATIO]->val2;
-	if( tsc && tsc->data[SC_WHITEIMPRISON] && atk_elem != ELE_GHOST)
-		damage = 0;	// Those under WI can be only attacked by Ghost-element attacks. [LimitLine]
-	if( tsc && tsc->data[SC_VENOMIMPRESS] && atk_elem == ELE_POISON)
-		ratio += tsc->data[SC_VENOMIMPRESS]->val2;
+	if( tsc && tsc->count )
+	{
+		if( tsc->data[SC_ORATIO] && atk_elem == ELE_HOLY)
+			ratio += tsc->data[SC_ORATIO]->val2;
+		if( tsc->data[SC_WHITEIMPRISON] && atk_elem != ELE_GHOST)
+			damage = 0;	// Those under WI can be only attacked by Ghost-element attacks. [LimitLine]
+		else
+			status_change_end(target, SC_WHITEIMPRISON, -1);
+		if( tsc->data[SC_VENOMIMPRESS] && atk_elem == ELE_POISON)
+			ratio += tsc->data[SC_VENOMIMPRESS]->val2;
+	}
 	return damage*ratio/100;
 }
 

@@ -6,6 +6,11 @@
 //========================================
 
 12/18/2009
+	r59 [Jobbie]
+	* Fixed white imprison which cannot be attacked by ghost property skill or item.
+	* Fixed venom pressure skill. (followed up r48)
+	* Fixed a typo in skill SR_RIDEINLIGHTNING.
+
 	r58 [Jobbie]
 	* Cleaned up some note in job_db2. Just to point out that all 3-1 and 3-2 jobs have their official job bonuses.
 	* Fixed renewal cast time settings. ( Fixed by Inkfish )

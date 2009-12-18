@@ -6858,14 +6858,12 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 
 	case WL_WHITEIMPRISON:
-		if( !clif_skill_nodamage(src, bl, skillid, skilllv,
-			sc_start2(bl, type, 40 + skilllv * 10, skilllv, src->id, skill_get_time(skillid, skilllv))) && sd )
+		if( sd && !clif_skill_nodamage(src, bl, skillid, skilllv,
+			sc_start2(bl, type, 40 + skilllv * 10, skilllv, src->id, skill_get_time(skillid, skilllv))) )
 		{
 			clif_skill_fail(sd, skillid, 0, 0);
 			return 0;
 		}
-		else if( sd )
-			skill_blockpc_start(sd, skillid, skill_get_time2(skillid, skilllv));	// Set cooldown to this skill. [LimitLine]
 		break;
 
 	case WL_READING_SB:
@@ -7194,15 +7192,14 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		{
 			if( !sd )
 				return 0;
-			skill_castend_damage_id(src, bl, skillid, skilllv, tick, flag);
-			if( !clif_skill_nodamage(src, bl, skillid, skilllv,
-				sc_start(bl, sd->sc.data[SC_POISONINGWEAPON]->val3, 70 + 5 * skilllv, skilllv,
-					skill_get_time(skillid, skilllv))) )
-			{	// Skill Failed.
+			if( sd->sc.data[SC_POISONINGWEAPON] )
+			{
+				clif_skill_nodamage(src, bl, skillid, skilllv,
+					sc_start(bl, sd->sc.data[SC_POISONINGWEAPON]->val3, 70 + 5 * skilllv, skilllv,
+						skill_get_time(skillid, skilllv)));
 				status_change_end(src, SC_POISONINGWEAPON, -1);
-				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
 			}
+			skill_castend_damage_id(src, bl, skillid, skilllv, tick, flag);
 			status_change_end(src, SC_POISONINGWEAPON, -1);
 		}
 		break;
@@ -10937,6 +10934,14 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 		{
 			sd->special_state.no_gemstone |= 2;
 			skill_check_pc_partner(sd, skill, &lv, 1, 1);
+		}
+		break;
+	case GC_VENOMPRESSURE:
+		if( sc && !(sc->data[SC_POISONINGWEAPON]) )
+		{	// Skill Failed.
+			status_change_end(&sd->bl, SC_POISONINGWEAPON, -1);
+			clif_skill_fail(sd, skill, 0, 0);
+			return 0;
 		}
 		break;
 	case WL_SUMMONFB:
