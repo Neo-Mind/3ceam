@@ -5,6 +5,16 @@
 // 	- Details.
 //========================================
 
+12/18/2009
+	r58 [Jobbie]
+	* Cleaned up some note in job_db2. Just to point out that all 3-1 and 3-2 jobs have their official job bonuses.
+	* Fixed renewal cast time settings. ( Fixed by Inkfish )
+
+12/14/2009
+	r57 [Jobbie]
+	* Corrected bonus stat given by Harmonize skill.
+	* Corrected bonus stat given by Clementia and Canto skill it should be based on AGI and BLESS skillLv
+
 12/13/2009
 	r56 [Jobbie]
 	* Quick fix forgot to remove the ShowInfo thing. (followed up r55)	

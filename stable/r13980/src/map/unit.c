@@ -1150,9 +1150,13 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 	break;
 	}
   	
-	// moved here to prevent Suffragium from ending if skill fails
-	if (!(skill_get_castnodex(skill_num, skill_lv)&2))
-		casttime = skill_castfix(src, skill_num, skill_lv);
+	// statuses affecting cast time end here [Inkfish]
+	if( !(skill_get_castnodex(skill_num, skill_lv)&2) && sc )
+	{
+		status_change_end(src, SC_SUFFRAGIUM, -1);
+		if ( sc->data[SC_MEMORIZE] && (--sc->data[SC_MEMORIZE]->val2) <= 0)
+			status_change_end(src, SC_MEMORIZE, -1);
+	}
 
 	if( casttime > 0 || temp )
 	{ 
@@ -1310,9 +1314,13 @@ int unit_skilluse_pos2( struct block_list *src, short skill_x, short skill_y, sh
 
 	unit_stop_attack(src);
 
-	// moved here to prevent Suffragium from ending if skill fails
-	if (!(skill_get_castnodex(skill_num, skill_lv)&2))
-		casttime = skill_castfix(src, skill_num, skill_lv);
+	// statuses affecting cast time end here [Inkfish]
+	if( !(skill_get_castnodex(skill_num, skill_lv)&2) && sc )
+	{
+		status_change_end(src, SC_SUFFRAGIUM, -1);
+		if (sc->data[SC_MEMORIZE] && (--sc->data[SC_MEMORIZE]->val2) <= 0)
+			status_change_end(src, SC_MEMORIZE, -1);
+	}
 
 	ud->state.skillcastcancel = castcancel&&casttime>0?1:0;
 	if( !sd || sd->skillitem != skill_num || skill_get_cast(skill_num,skill_lv) )

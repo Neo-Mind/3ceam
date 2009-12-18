@@ -167,9 +167,6 @@
 // Note: All 3rd class jobs go up to job level 50. Also, Gangsi job tree job levels will be set
 // the same as the Taekwon job tree until we can get some official info. (Rytech)
 //
-// Note 2: Currently only the 3-1 jobs have stat bonuses as we know their official settings.
-// However, the 3-2 bonuses are unknown, but will be added in the future once we know them.
-//
 // Gangsi (Bongun/Munak)
 4050,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // Death Knight

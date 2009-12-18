@@ -11584,12 +11584,12 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
 }
 
 /*================================================
- * Renewal Cast Time (variable and fixed)  [Jobbie]
+ * Renewal Cast Time Settings (variable and fixed) [Jobbie] [Inkfish]
  *----------------------------------------------*/
 int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 {
-	int scale = 0, time, final_time;//scale, time and final time
-	double variable_time, fixed_time; //variable and fixed cast time
+	int variable_time, fixed_time, final_time, fixed_reduction = 0;
+	double scale = 0;
 	struct map_session_data *sd;
 	struct status_change *sc;
 
@@ -11597,15 +11597,14 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 	sd = BL_CAST(BL_PC, bl);
 	sc = status_get_sc(bl);
 
-	time = skill_get_cast(skill_id, skill_lv); //BaseCast
-	variable_time = time * 80/100.;// 80% of casttime is variable
-	fixed_time = time * 20/100.;// 20% of casttime is fixed
+	variable_time = skill_get_cast(skill_id, skill_lv) * 80/100;// 80% of casttime is variable
+	fixed_time = skill_get_cast(skill_id, skill_lv) * 20/100;// 20% of casttime is fixed
 
-	// calculate base cast time (reduced by dex and int)
+	// calculate variable cast time reduced by dex and int
 	if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
-		scale = status_get_dex(bl)*2 + status_get_int(bl);
+		scale = cap_value((status_get_dex(bl)*2 + status_get_int(bl))*10000, INT_MIN, INT_MAX);
 
-	// calculate variable cast time reduced by item/card bonuses
+	// calculate variable cast time reduced by item/card/skills bonuses
 	if( !(skill_get_castnodex(skill_id, skill_lv)&4) && sd )
 	{
 		int i;
@@ -11615,7 +11614,7 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		{
 			if( sd->skillcast[i].id == skill_id )
 			{
-				variable_time+= variable_time * sd->skillcast[i].val / 100;
+				variable_time += variable_time * sd->skillcast[i].val / 100;
 				break;
 			}
 		}
@@ -11625,18 +11624,13 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		fixed_time -= (fixed_time * ( 5 + 5 * skill_lv ))/100; //10*SkillLV% of Fixed Cast Time reduced.
 	
 	// calculate variable and fixed cast time reduced on sc data
-	if (sc && sc->count) {
+	if ( !(skill_get_castnodex(skill_id, skill_lv)&2) && sc && sc->count) {
 		if (sc->data[SC_SLOWCAST])
 			variable_time += variable_time * sc->data[SC_SLOWCAST]->val2 / 100;
-		if (sc->data[SC_SUFFRAGIUM]) {
+		if (sc->data[SC_SUFFRAGIUM])
 			variable_time -= variable_time * sc->data[SC_SUFFRAGIUM]->val2 / 100;
-			status_change_end(bl, SC_SUFFRAGIUM, -1);
-		}
-		if (sc->data[SC_MEMORIZE]) {
+		if (sc->data[SC_MEMORIZE])
 			variable_time /= 2;
-			if ((--sc->data[SC_MEMORIZE]->val2) <= 0)
-				status_change_end(bl, SC_MEMORIZE, -1);
-		}
 		if (sc->data[SC_POEMBRAGI])
 			variable_time -= variable_time * sc->data[SC_POEMBRAGI]->val2 / 100;
 		if( sc && sc->count && sc->data[SC_FREEZING] )
@@ -11649,7 +11643,9 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 			variable_time += variable_time * sc->data[SC_LAZINESS_]->val2 / 100;
 	}
 
-	final_time = (int)((1-sqrt(scale/530.)) * variable_time + fixed_time);  
+	final_time = (100 - (int)sqrt(scale/530.)) * variable_time / 100;
+	if( final_time < 0 ) final_time = 0;
+	final_time += fixed_time;  
 
 	// config cast time multiplier
 	if (battle_config.cast_rate != 100)
