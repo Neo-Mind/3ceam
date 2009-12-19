@@ -463,6 +463,7 @@ void initChangeTables(void)
 	set_sc( AB_CLEMENTIA         , SC_BLESSING        , SI_BLESSING        , SCB_STR|SCB_INT|SCB_DEX );
 	set_sc( AB_CANTO             , SC_INCREASEAGI     , SI_INCREASEAGI     , SCB_AGI|SCB_SPEED );
 	set_sc( AB_PRAEFATIO         , SC_PRAEFATIO       , SI_KYRIE           , SCB_NONE );
+	set_sc( AB_EPICLESIS         , SC_EPICLESIS       , SI_BLANK           , SCB_MAXHP );
 	set_sc( AB_ORATIO            , SC_ORATIO          , SI_ORATIO          , SCB_NONE );
 	set_sc( AB_LAUDAAGNUS        , SC_AGNUS           , SI_BLANK           , SCB_VIT );
 	set_sc( AB_LAUDARAMUS        , SC_RAMUS           , SI_BLANK           , SCB_LUK );
@@ -4421,6 +4422,8 @@ static unsigned int status_calc_maxhp(struct block_list *bl, struct status_chang
 		maxhp += maxhp * 2;
 	if(sc->data[SC_MARIONETTE])
 		maxhp -= 1000;
+	if(sc->data[SC_EPICLESIS])
+		maxhp += maxhp * 5 * sc->data[SC_EPICLESIS]->val1/100;
 	if(sc->data[SC_VENOMBLEED])
 		maxhp -= maxhp / 100 * 15;
 	if(sc->data[SC_LERADSDEW])

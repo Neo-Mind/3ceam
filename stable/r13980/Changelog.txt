@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+12/19/2009
+	r62 [Jobbie]
+	* Cleaned up some eA codes which using skill_blockpc_start reverted to its original declaration.
+	* Fixed Epiclesis not giving bonus of MaxHP.
+
 12/18/2009
 	r59 [Jobbie]
 	* Fixed white imprison which cannot be attacked by ghost property skill or item.

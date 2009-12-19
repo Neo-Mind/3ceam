@@ -4733,8 +4733,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case SM_ENDURE:
 		clif_skill_nodamage(src,bl,skillid,skilllv,
 			sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)));
-		if (sd && skill_get_cooldown(skillid, skilllv))
-			skill_blockpc_start (sd, skillid, skill_get_cooldown(skillid, skilllv));//skill_get_time2(skillid,skilllv));
+		if (sd)
+			skill_blockpc_start (sd, skillid, skill_get_time2(skillid,skilllv));
 		break;
 
 	case AS_ENCHANTPOISON: // Prevent spamming [Valaris]
@@ -6268,7 +6268,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		}
 		clif_skill_nodamage(src,bl,skillid,skilllv,
 			sc_start4(bl,type,100,skilllv,skillid,src->id,skill_get_time(skillid,skilllv),1000));
-		if (sd && skill_get_cooldown(skillid, skilllv)) skill_blockpc_start (sd, skillid, skill_get_cooldown(skillid, skilllv)); //skill_get_time(skillid, skilllv)+3000);
+		if (sd) skill_blockpc_start (sd, skillid, skill_get_time(skillid, skilllv)+3000);
 		break;
 
 	case PF_MINDBREAKER:
@@ -8261,7 +8261,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 		if (unit_movepos(src, x, y, 1, 1)) {
 			clif_skill_poseffect(src,skillid,skilllv,src->x,src->y,tick);
 //			clif_slide(src, src->x, src->y); //Poseffect is the one that makes the char snap on the client...
-			if (sd && skill_get_cooldown(skillid, skilllv)) skill_blockpc_start (sd, MO_EXTREMITYFIST, skill_get_cooldown(skillid, skilllv)); //2000);
+			if (sd) skill_blockpc_start (sd, MO_EXTREMITYFIST, 2000);
 		}
 		break;
 	case NJ_SHADOWJUMP:
@@ -10039,6 +10039,7 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 					heal = 0;
 					heal_sp = 0;
 				}
+				sc_start(bl, SC_EPICLESIS, 100, sg->skill_lv, skill_get_time(sg->skill_id, sg->skill_lv));
 				status_heal(bl,heal,heal_sp,2);
 				//Added to show heal status to other clients
 				if( heal)
@@ -11638,7 +11639,7 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 			variable_time /= 2;
 		if (sc->data[SC_POEMBRAGI])
 			variable_time -= variable_time * sc->data[SC_POEMBRAGI]->val2 / 100;
-		if( sc && sc->count && sc->data[SC_FREEZING] )
+		if (sc->data[SC_FREEZING] )
 			fixed_time += fixed_time * sc->data[SC_FREEZING]->val2 / 100;
 		if (sc->data[SC_SACRAMENT])
 			fixed_time -= fixed_time * sc->data[SC_SACRAMENT]->val2 / 100;
@@ -11650,7 +11651,7 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 
 	final_time = (100 - (int)sqrt(scale/530.)) * variable_time / 100;
 	if( final_time < 0 ) final_time = 0;
-	final_time += fixed_time;  
+	final_time += fixed_time;
 
 	// config cast time multiplier
 	if (battle_config.cast_rate != 100)
