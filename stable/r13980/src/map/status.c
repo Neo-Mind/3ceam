@@ -4125,6 +4125,9 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				speed_rate += val;
 				val = 0;
 			}
+			else
+			if( sd && pc_isridinggryphon(sd) )
+				val = 25;
 			speed_rate -= val;
 		}
 
@@ -6809,7 +6812,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			val2 = 8 + 2 * val1;
 			val3 = 1; // Initial rage value.
 			val4 = 5 + 2 * val1; // Max Rage Counters
-			tick = 1000;
+			tick = 10000;
 			break;
 		case SC_EARTHDRIVE:
 			val4 = tick / 1000;
@@ -8388,11 +8391,11 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		break;
 
 	case SC_FORCEOFVANGUARD:
-		if(!status_charge(bl, 0, 2))
+		if(!status_charge(bl, 0, 24 - (4 * sce->val1)))
 			break; //Not enough SP to continue.
-		sc_timer_next(gettick()+tick, status_change_timer, bl->id, data);
+		sc_timer_next(10000+tick, status_change_timer, bl->id, data);
 		return 0;
-
+		
 	case SC_EARTHDRIVE:
 		if(--(sce->val4) > 0 && status_charge(bl, sce->val2, sce->val3) )
 		{

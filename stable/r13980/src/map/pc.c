@@ -445,7 +445,7 @@ int pc_makesavestatus(struct map_session_data *sd)
 	if(!battle_config.save_clothcolor)
 		sd->status.clothes_color=0;
 
-  	//Only copy the Cart/Peco/Falcon/Dragon/Warg options, the rest are handled via
+  	//Only copy the Cart/Peco/Falcon/Dragon/Warg/Mado options, the rest are handled via
 	//status change load/saving. [Skotlex]
 	sd->status.option = sd->sc.option&(OPTION_CART|OPTION_FALCON|OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_WUG|OPTION_RIDING_WUG|OPTION_MADO);
 		

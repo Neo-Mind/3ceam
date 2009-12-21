@@ -2109,7 +2109,7 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 	// Apply knock back chance in SC_TRIANGLESHOT skill.
 	if(skillid == SC_TRIANGLESHOT)
 	{
-		if( rand()%100 <= (1 + skilllv))
+		if( rand()%100 >= (1 + skilllv)) // NOTE: The chance is that this become zero.
 			dmg.blewcount = 0;
 	}
 
@@ -2753,7 +2753,7 @@ static int skill_timerskill(int tid, unsigned int tick, int id, intptr data)
 					skill_castend_damage_id(src, target, skl->skill_id, skl->skill_lv, tick, skl->flag);
 					break;
 
-				case SC_FATALMENACE:	
+				case SC_FATALMENACE:
 					skill_fatalmenace(src, target, skl->skill_lv, tick);
 					break;
 				case SC_FEINTBOMB:
@@ -4676,7 +4676,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case SR_GENTLETOUCH_CHANGE:
 	case SR_GENTLETOUCH_REVITALIZE:
 	case LG_REFLECTDAMAGE:
-	case LG_FORCEOFVANGUARD:
 	case LG_PRESTIGE:
 	case GN_CARTBOOST:
 		clif_skill_nodamage(src,bl,skillid,skilllv,
@@ -7227,6 +7226,21 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			clif_skill_nodamage(src, bl, skillid, skilllv, 
 				sc_start(src, SC_ROLLINGCUTTER, 100, cutter, skill_get_time(skillid, skilllv)));
 			skill_castend_damage_id(src, src, skillid, skilllv, tick, flag);			
+		}
+		break;
+
+	case LG_FORCEOFVANGUARD:
+		{
+			struct status_change *sc = status_get_sc(src);
+			if( sc && sc->data[SC_FORCEOFVANGUARD] )
+			{
+				status_change_end(bl,type,-1);
+			}
+			else
+			{
+				clif_skill_nodamage(src,bl,skillid,skilllv,
+				sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)));
+			}
 		}
 		break;
 
@@ -10576,6 +10590,10 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 		sc = NULL;
 
 	if(sc && sc->data[SC_IGNORANCE_] )
+		return 0;
+
+	if( (skill == LG_REFLECTDAMAGE && sc && sc->data[SC_REFLECTSHIELD]) ||
+		(skill == CR_REFLECTSHIELD && sc && sc->data[SC_REFLECTDAMAGE]) )
 		return 0;
 
 	if( sd->skillitem == skill )

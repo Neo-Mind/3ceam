@@ -5,6 +5,16 @@
 // 	- Details.
 //========================================
 
+12/20/2009
+	r63 [pakpil]
+	* Fixed Royal Guard's walk speed when riding gryphon.
+		http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1280812
+	* Fixed LG_FORCEOFVANGUARD. Still need more fix.
+		http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1280812
+	* Fixed SC_TRIANGLESHOT's knockback chance.
+	* Added import-tmpl and save-tmpl folders
+
+
 12/19/2009
 	r62 [Jobbie]
 	* Cleaned up some eA codes which using skill_blockpc_start reverted to its original declaration.
