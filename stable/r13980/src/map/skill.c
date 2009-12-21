@@ -1207,8 +1207,8 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 					ud->canact_tick = tick+rate;				
 				if( sd && skill_get_cooldown( skill, skilllv ) ) // Skill cooldown. [LimitLine]
 					skill_blockpc_start(sd, skill, skill_get_cooldown(skill, skilllv));
-					if ( battle_config.display_status_timers && sd && skill_get_delay(skill, skilllv))
-						clif_status_change(src, SI_ACTIONDELAY, 1, rate, 1, 0, 0);
+				if ( battle_config.display_status_timers && sd && skill_get_delay(skill, skilllv))
+					clif_status_change(src, SI_ACTIONDELAY, 1, rate, 1, 0, 0);
 				}
 			}
 		}
@@ -7449,9 +7449,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 
 	case SR_RAISINGDRAGON:
 		if(sd && !(dstsd && dstsd->sc.data[SC_RAISINGDRAGON])){
-			sc_start(bl,SC_EXPLOSIONSPIRITS,100,skilllv,skill_get_time(skillid,skilllv));
 			clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start(bl, type, 100, skilllv, skill_get_time(skillid, skilllv)));
+			sc_start(bl,SC_EXPLOSIONSPIRITS,100,skilllv,skill_get_time(skillid,skilllv));
 			for(i = 0; i <= 15; i++)
 				pc_addspiritball(sd,skill_get_time(skillid,skilllv),5);
 		}

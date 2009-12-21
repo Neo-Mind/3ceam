@@ -5,7 +5,14 @@
 // 	- Details.
 //========================================
 
-12/20/2009
+12/21/2009
+	r65 [Jobbie]
+	* Fearbreeze status will be remove if you take off your weapon.
+	* Fixed Raising Dragon.
+	- Not properly giving only 5 spiritballs when state is ended.
+	- Decrease from 2% to .5% hp draining. Still its a custom value.
+	* Fixed overheat status giving NuLL status timer when ended.
+	
 	r63 [pakpil]
 	* Fixed Royal Guard's walk speed when riding gryphon.
 		http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1280812

@@ -539,7 +539,7 @@ void initChangeTables(void)
 	add_sc( SR_CRESCENTELBOW     , SC_CRESCENTELBOW  );
 	add_sc( SR_CURSEDCIRCLE      , SC_CURSEDCIRCLE_  );
 	add_sc( SR_LIGHTNINGWALK     , SC_LIGHTNINGWALK  );
-	set_sc( SR_RAISINGDRAGON     , SC_RAISINGDRAGON         , SI_RAISINGDRAGON          , SCB_MAXHP|SCB_MAXSP|SCB_ASPD );
+	set_sc( SR_RAISINGDRAGON     , SC_RAISINGDRAGON         , SI_RAISINGDRAGON         , SCB_MAXHP|SCB_MAXSP|SCB_ASPD );
 	set_sc( SR_GENTLETOUCH_ENERGYGAIN   , SC_ENERGYGAIN     , SI_GT_ENERGYGAIN         , SCB_NONE );
 	set_sc( SR_GENTLETOUCH_CHANGE       , SC_CHANGE_        , SI_GT_CHANGE             , SCB_DEF|SCB_DEF2|SCB_MDEF|SCB_MDEF2|SCB_BATK|SCB_ASPD );
 	set_sc( SR_GENTLETOUCH_REVITALIZE   , SC_REVITALIZE     , SI_GT_REVITALIZE         , SCB_VIT|SCB_MAXHP|SCB_REGEN|SCB_SPEED|SCB_ASPD );
@@ -2911,6 +2911,7 @@ void status_calc_regen_rate(struct block_list *bl, struct regen_data *regen, str
 		|| sc->data[SC_BLEEDING]
 		|| sc->data[SC_BURNING]
 		|| sc->data[SC_ELECTRICSHOCKER]
+		|| sc->data[SC_RAISINGDRAGON]
 	)	//No regen
 		regen->flag = 0;
 
@@ -6789,7 +6790,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		}		
 			break;
 		case SC_RAISINGDRAGON:
-			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1);
+			//FIXTHIS: Status bar should be the same to skill duration of the status not the val3 value.[Jobbie]
+			if (!val3) val3 = skill_get_time2(status_sc2skill(type),val1);
 			if (!val4) val4 = 1000; //Val4 holds damage interval
 			val3 = tick/val4; //val3 holds skill duration
 			tick = val4;
@@ -7114,7 +7116,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			}
 			break;
 		case SC_RAISINGDRAGON:
-			sce->val2 = 2*status->max_hp/100;// Temp 2% hp used. Need official hp draining value. [Jobbie]
+			sce->val2 = 5*status->max_hp/1000;// Temp .5%hp used. Need official hp draining value. [Jobbie]
 			break;
 	}
 
@@ -7559,9 +7561,11 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 				clif_millenniumshield(sd,0);
 			break;
 		case SC_RAISINGDRAGON:
-			{// After the status duration ended 5 spiritballs will only remain. [Jobbie]
+			if( sd && sce->val2 ){// After the status duration ended 5 spiritballs will only remain. [Jobbie]
 				int i;
-				for(i = 0; i < 5; i++)
+				pc_delspiritball(sd,sd->spiritball,0);
+				status_change_end(bl,SC_EXPLOSIONSPIRITS,-1);
+				for(i=0;i<5;i++)
 					pc_addspiritball(sd,skill_get_time(CH_SOULCOLLECT,sce->val1),5);
 			}
 			break;		
@@ -8220,6 +8224,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 			if( status_zap(bl, status->max_hp / 50, 0) )
 			{
 				clif_specialeffect(bl, 730, AREA);
+				if(!sc->data[type]) return 0;
 				sc_timer_next((sce->val2 * 1000) + tick, status_change_timer, bl->id, data);
 				return 0;
 			}
@@ -8370,12 +8375,10 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		break;
 
 	case SC_RAISINGDRAGON:
-		// 2% every seconds [Jobbie]
+		// .5% every seconds [Jobbie]
 		if(--(sce->val3)>0 && status_charge(bl, sce->val2, 0))
 		{
-			int flag;
-			flag = !sc->data[type];
-			if(flag) return 0; //sc already ended.
+			if(!sc->data[type]) return 0;
 			sc_timer_next(sce->val4+tick, status_change_timer, bl->id, data);
 			return 0;
 		}
