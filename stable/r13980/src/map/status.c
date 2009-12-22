@@ -509,12 +509,13 @@ void initChangeTables(void)
 	set_sc( MI_ECHOSONG           , SC_ECHO             , SI_ECHO               , SCB_BATK );
 	set_sc( MI_HARMONIZE          , SC_HARMONIZE        , SI_HARMONIZE          , SCB_STR|SCB_AGI|SCB_VIT|SCB_INT|SCB_DEX|SCB_LUK );
 	add_sc( WM_POEMOFNETHERWORLD  , SC_STOP );
-	add_sc( WM_VOICEOFSIREN       , SC_VOICEOFSIREN  );
+	set_sc( WM_VOICEOFSIREN       , SC_VOICEOFSIREN     , SI_VOICEOFSIREN       , SCB_NONE );
 	set_sc( WM_LULLABY_DEEPSLEEP  , SC_DEEPSLEEP        , SI_DEEPSLEEP          , SCB_NONE );
 	set_sc( WM_SIRCLEOFNATURE     , SC_SIRCLEOFNATURE   , SI_SIRCLEOFNATURE     , SCB_REGEN );
+	set_sc( WM_GLOOMYDAY          , SC_GLOOMYDAY_DEBUFF , SI_GLOOMY_DAY         , SCB_ASPD|SCB_FLEE );
 	set_sc( WM_SONG_OF_MANA       , SC_SONGOFMANA       , SI_SONGOFMANA         , SCB_NONE );
 	set_sc( WM_DANCE_WITH_WUG     , SC_DANCEWITHWUG     , SI_DANCEWITHWUG       , SCB_ASPD );
-	set_sc( WM_SATURDAY_NIGHT_FEVER,SC_BERSERK          , SI_SATURDAYNIGHT      , SCB_DEF|SCB_DEF2|SCB_MDEF|SCB_MDEF2|SCB_FLEE|SCB_SPEED|SCB_ASPD|SCB_MAXHP|SCB_REGEN);
+	set_sc( WM_SATURDAY_NIGHT_FEVER   ,SC_BERSERK       , SI_BLANK              , SCB_DEF|SCB_DEF2|SCB_MDEF|SCB_MDEF2|SCB_FLEE|SCB_SPEED|SCB_ASPD|SCB_MAXHP|SCB_REGEN);
 	set_sc( WM_LERADS_DEW         , SC_LERADSDEW        , SI_LERADSDEW          , SCB_MAXHP );
 	set_sc( WM_MELODYOFSINK       , SC_MELODYOFSINK     , SI_MELODYOFSINK       , SCB_BATK|SCB_MATK );
 	set_sc( WM_BEYOND_OF_WARCRY   , SC_WARCRYOFBEYOND   , SI_WARCRYOFBEYOND     , SCB_BATK|SCB_MATK );
@@ -4381,11 +4382,11 @@ static short status_calc_aspd_rate(struct block_list *bl, struct status_change *
 	if(sc->data[SC_INVISIBILITY_])
 		aspd_rate -= (aspd_rate * 50 - (sc->data[SC_INVISIBILITY_]->val2 * 10)) / 100;
 	if(sc->data[SC_SWINGDANCE])
-		aspd_rate -= sc->data[SC_SWINGDANCE]->val2 * 10;
+		aspd_rate -= sc->data[SC_SWINGDANCE]->val3 / 100;
 	if(sc->data[SC_DANCEWITHWUG])
 		aspd_rate -= 50;	// Need official value. [LimitLine]
 	if(sc->data[SC_GLOOMYDAY_DEBUFF])
-		aspd_rate -= 30 * sc->data[SC_GLOOMYDAY_DEBUFF]->val1;
+		aspd_rate += 30 * sc->data[SC_GLOOMYDAY_DEBUFF]->val1;
 	if(sc->data[SC_RAISINGDRAGON])
 		aspd_rate -= 100; //FIXME: Need official ASPD bonus of this status. [Jobbie]	
 	if(sc->data[SC_EARTHDRIVE])
@@ -6705,7 +6706,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 				val2 = 20;
 			break;
 		case SC_SWINGDANCE:
-			val2 = val1 * 4;
+			val2 = val1 * 4;//Holds for movement speed value.
+			if(sd) val3 = 4 * (sd->status.job_level * val1);//ASPD increase is influenced by joblvl.
 			break;
 		case SC_HARMONIZE:
 			val2 = val1 * 2 + 3;// All stat bonus.
@@ -7565,8 +7567,8 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 				int i;
 				pc_delspiritball(sd,sd->spiritball,0);
 				status_change_end(bl,SC_EXPLOSIONSPIRITS,-1);
-				for(i=0;i<5;i++)
-					pc_addspiritball(sd,skill_get_time(CH_SOULCOLLECT,sce->val1),5);
+				for(i=0;i<=5;i++)
+					pc_addspiritball(sd,skill_get_time(CH_SOULCOLLECT,sce->val1),i);
 			}
 			break;		
 		}

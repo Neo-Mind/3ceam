@@ -870,11 +870,12 @@ enum si_type {
 // 428
 	SI_SWINGDANCE = 429,
 	SI_SYMPHONY = 430,
-// 431-434
+// 431-433
+	SI_VOICEOFSIREN = 434,
 	SI_DEEPSLEEP = 435,
 	SI_SIRCLEOFNATURE, // (Guess) May as well be Song of Mana. Need to confirm this. [LimitLine]
 	SI_COLD, // Need to figure out what it is. [LimitLine]
-	SI_SATURDAYNIGHT,	// (Guess) [LimitLine]
+	SI_GLOOMY_DAY,
 	SI_SONGOFMANA, // (Guess) May as well be Circle of Nature. Need to confirm this. [LimitLine]
 // 440
 	SI_DANCEWITHWUG = 441, // (Guess) [LimitLine]

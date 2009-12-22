@@ -5,6 +5,16 @@
 // 	- Details.
 //========================================
 
+12/22/2009
+	r67 [Jobbie]
+	* Updated Casttime,AfterCastDelay,Cooldown, and some Duration of Wanderer and Minstrel skills to official information.
+	* Fixed SI_*'s for Gloomy Day and Voice of Siren.
+	* Fixed Gloomy Days ASPD penalty instead of decreasing it was implemented to increase which should not.
+	* Fixed Swing Dance bonus ASPD.
+	* Fixed Valley of Dead skill you should not cast a non=dead and even your self when using the skill.
+	* Fixed Enchant Blade follow up way back to r27 that causes map-server to crash when casted to a mob it missed sd check.
+	- Need to confirm also if in PVP, enemy player cannot be buffed by enchant blade. As for now it shouldn't.
+
 12/21/2009
 	r65 [Jobbie]
 	* Fearbreeze status will be remove if you take off your weapon.

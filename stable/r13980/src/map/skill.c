@@ -6918,7 +6918,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		}
 		if( sd && pc_isridingwarg(sd) ){
 			clif_skill_nodamage(src,bl,skillid,skilllv,
-				sc_start4(bl,type,100,skilllv,unit_getdir(bl),0,0,0));
+				sc_start4(bl,type,100,skilllv,unit_getdir(bl),0,0,1));
 			clif_walkok(sd);
 		}
 		break;
@@ -7260,11 +7260,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		if( sd )
 		{
 			if( rand()%100 > 88 + 2 * skilllv )
-			{
-				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
-			}
-			if( !status_isdead(bl) )
 			{
 				clif_skill_fail(sd, skillid, 0, 0);
 				return 0;

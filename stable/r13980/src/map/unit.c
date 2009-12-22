@@ -1098,7 +1098,8 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 	
 	switch(skill_num){
 	case ALL_RESURRECTION:
-		if(battle_check_undead(tstatus->race,tstatus->def_ele)) {	
+	case WM_DEADHILLHERE:
+		if(skill_num != WM_DEADHILLHERE && battle_check_undead(tstatus->race,tstatus->def_ele)) {	
 			temp = 1;
 		} else if (!status_isdead(target))
 			return 0; //Can't cast on non-dead characters.
@@ -1140,6 +1141,10 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 	case GD_EMERGENCYCALL: //Emergency Call double cast when the user has learned Leap [Daegaladh]
 		if( sd && pc_checkskill(sd,TK_HIGHJUMP) )
 			casttime *= 2;
+	break;
+	case RK_ENCHANTBLADE:
+		if( battle_check_target(src,target,BCT_ENEMY)>0 )
+			return 0;
 	break;
 	case WL_RELEASE:
 		casttime = 0;

@@ -884,7 +884,7 @@
 1019,9,6,1,4,0x1,0,1,1,yes,0,0x1,0,magic,0,	SA_ELEMENTWIND,Elemental Change Wind
 
 // Rune Knight
-2001,0,6,16,0,0x1,0,5,1,yes,0,0x1000,0,magic,0,	RK_ENCHANTBLADE,Enchant Blade
+2001,0,6,16,0,0x1,0,5,1,yes,0,0,0,magic,0,	RK_ENCHANTBLADE,Enchant Blade
 2002,11,6,1,-1,0,0,5,1,no,0,0,0,weapon,0,	RK_SONICWAVE,Sonic Wave
 2003,0,6,4,0,0x1,0,10,1,yes,0,0,0,weapon,0,	RK_DEATHBOUND,Death Bound
 2004,4,8,1,0,0,1,10,-5,yes,0,0,0,weapon,0,	RK_HUNDREDSPEAR,Hundred Spear
