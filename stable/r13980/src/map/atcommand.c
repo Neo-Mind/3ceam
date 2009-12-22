@@ -4559,7 +4559,8 @@ int atcommand_mount(const int fd, struct map_session_data* sd, const char* comma
 	switch( class_ )
 	{
 		case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
-		case JOB_LORD_KNIGHT: case JOB_PALADIN:
+		case JOB_LORD_KNIGHT: case JOB_PALADIN: case JOB_BABY_KNIGHT: case JOB_BABY_KNIGHT2:
+		case JOB_BABY_CRUSADER: case JOB_BABY_CRUSADER2:
 			if( pc_isriding(sd) )
 				riding_flag = 1;
 			msg[0] = 102; msg[1] = 214; msg[2] = 213; msg[3] = 212;

@@ -6,6 +6,11 @@
 //========================================
 
 12/22/2009
+	r68 [Jobbie]
+	* Fixed an issue which baby knight and baby crusader cannot obtain a peco.
+		http://www.eathena.ws/board/index.php?act=findpost&pid=1282777
+	* Fixed the area of effect for Voice of Siren.
+
 	r67 [Jobbie]
 	* Updated Casttime,AfterCastDelay,Cooldown, and some Duration of Wanderer and Minstrel skills to official information.
 	* Fixed SI_*'s for Gloomy Day and Voice of Siren.
