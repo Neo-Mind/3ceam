@@ -4,6 +4,10 @@
 // 	- Details.
 //========================================
 
+12/24/2009
+	rev 76
+	*Added 12/23/2009 patch text files to the changes detection folder.
+
 10/28/2009
 	*Added 10/28/2009 patch text files to the changes detection folder.
 	*Updated the skill desc translations for Warlock, Genetic, and Sorcerer.

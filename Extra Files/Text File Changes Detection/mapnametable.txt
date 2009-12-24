@@ -1,4 +1,11 @@
-//사크라이 09.10.14
+//사크라이 09.12.09
+dicastes01.rsw#사파 수도 엘 디카스테스#
+dicastes02.rsw#브룸벨드 요르히 숲#
+dic_in01.rsw#디카스테스 내부#
+dic_fild01.rsw#카미달 산기슭#
+dic_fild02.rsw#카미달 산기슭#
+dic_dun01.rsw#카미달 터널#
+dic_dun02.rsw#스카라바 홀#
 job3_gen01.rsw#제네릭 연구소#
 s_atelier.rsw#그림자 공방#
 brasilis.rsw#브라질리스#
