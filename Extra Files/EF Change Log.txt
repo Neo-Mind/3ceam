@@ -1,0 +1,41 @@
+// Format:
+// Date (mm/dd/yr)
+// 	* Modifications.
+// 	- Details.
+//========================================
+
+10/28/2009
+	*Added 10/28/2009 patch text files to the changes detection folder.
+	*Updated the skill desc translations for Warlock, Genetic, and Sorcerer.
+
+10/26/2009
+	*Added 10/21/2009 patch text files to the changes detection folder.
+
+9/23/2009
+	*Added 9/23/2009 patch text files to the changes detection folder.
+
+9/16/2009
+	*Updated Royal Guard and added Genetic translations from 9/16/2009 patch.
+	-Added text files from 9/16/2009 patch to the change detection folder.
+
+9/15/2009
+	*Updated Royal Guard translations to 9/8/2009
+	-Just changed skill level requirements.
+
+9/8/2009
+	*Added 9/8/2009 patch text files to the changes detection folder.
+	-Most useful piece of info will be the correction of the required level for some Royal Guard skills.
+	-Also is something about the Earth Drive skill desc that needs to be checked.
+
+9/4/2009
+	*Fully updated the Mechanic translations file. Got a lot of changed skill damage ratios.
+	-Check the diff for more information on changes.
+
+9/1/2009
+	*Updated text files in the changes detection folder to 9/1/2009 patch.
+
+9/1/2009
+	*Added files and folders.
+	-Note: The custom skill icons can be used, however I dont recommand clicking on the icon itself
+	-In the skill list/tree views as I havent made any ACT or SPR files for them yet.
+	-A update will soon follow to update the text files in the changes detection folder.

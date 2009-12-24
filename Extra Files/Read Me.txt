@@ -1,0 +1,41 @@
+Extra Files Information [Rytech]
+
+The purpose of this folder is to perform special tasks for me. Please do not upload,
+edit, or delete any of these files. These files are very important for keeping track
+of many things in the RO client and the files in the GRF's.
+
+The Extra Files folder will be nicknamed EF
+The Text File Changes Detection folder will be nicknamed Changes Detection
+
+The following folders are here for the following reasons...
+
+=Client Files=
+
+Special client files are placed here. They will be mostly custom or specially edited files.
+These files are best used in the client when working on development as they can give more
+info and easier access to some skill ID's, and other things.
+
+=Google Translated Files=
+
+In this folder are skill descs translated through google. These will be kept up to date
+as much as possiable. The information on Doddler's RO Wiki is out of date in many area's
+and following the information on there isnt allways the best.
+
+For example: The date right now is September the 1st, the Rune Knights Phantom Thrust skill
+info says the damage starts off at 100% at level 1 and maxes out at 180% at level 5. The info
+in the latest translation of this skill desc shows that the damage starts at 50% at level 1
+and maxes out at 250% at level 5, and even shows the cell range increaseing by 1 each level.
+
+So looking here is recommanded just to be safe. Do note that the english here will not be clear,
+but looking at certain things can help you figure out what is what.
+
+=Text File Changes Detection=
+
+Every week, the latest text files will be uploaded into this folder as is, with no changes of any kind.
+With each update, the SVN will create a diff for the changes between the 2 revisions. By looking at the
+diff file, its possiable to see exactly everything thats been changed in each file. Knowing these changes
+are very important in order to keep up to date with skill descs, as well as the adding of items,
+SP requirement changes, and other things.
+
+Who knew a SVN could be so useful. =D
+
