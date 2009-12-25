@@ -5,6 +5,16 @@
 // 	- Details.
 //========================================
 
+12/25/2009
+	r77 [Jobbie]
+	* Updated produce_db of Rune Knight and Guillotine Cross.
+	* Updated some of Wanderer and Minstrels skills to use exclusively Instrument/Whip items.
+	* Fixed Raising Dragon's HP Drain into 1% per 5 seconds based on official test.
+	* Fixed White Imprison.
+	- When status is active you cannot use items or skills.
+	- Cannot target non-enemy unit.
+	* Applied fix of (r3) for mounting error when you relog and there is an item equipped.
+
 12/22/2009
 	r68 [Jobbie]
 	* Fixed an issue which baby knight and baby crusader cannot obtain a peco.
@@ -35,7 +45,6 @@
 		http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1280812
 	* Fixed SC_TRIANGLESHOT's knockback chance.
 	* Added import-tmpl and save-tmpl folders
-
 
 12/19/2009
 	r62 [Jobbie]

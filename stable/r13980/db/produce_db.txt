@@ -399,43 +399,46 @@
 //==============================================
 
 //===== Rune Stones ============ ItemLV=24 =====
-//-- Rune Stone Thurisaz <-- RK_RUNEMASTERY Lv1, 1 Elder's Branch, 1 Blue Hair, 1 Claw of Desert Wolf
-12731,24,2010,1,7939,1,1034,1,7030,1
-//-- Rune Stone Isa <-- RK_RUNEMASTERY Lv2, 1 Elder's Branch, 1 Burning Heart
-12728,24,2010,2,7939,1,7097,1
-//-- Rune Stone Wyrd <-- RK_RUNEMASTERY Lv3, 1 Light Partacle, 1 Elder's Branch, 1 Tangled Chains, 1 Dragon Canine
-12729,24,2010,3,7938,1,7939,1,7221,1,1035,1
-//-- Rune Stone Hagalaz <-- RK_RUNEMASTERY Lv4, 1 Elder's Branch, 1 Round Shell, 1 Dragon Skin
-12733,24,2010,4,7939,1,1096,1,7123,1
-//-- Rune Stone Othila <-- RK_RUNEMASTERY Lv5, 1 Light Partacle, 1 Elder's Branch, 1 Orge Tooth
-12732,24,2010,5,7938,1,7939,1,7002,1
-//-- Rune Stone Uruz <-- RK_RUNEMASTERY Lv6, 1 Elder's Branch, 1 Honey, 1 Horrendous Hair
-12730,24,2010,6,7939,1,518,1,1048,1
-//-- Rune Stone Raido <-- RK_RUNEMASTERY Lv7, 1 Light Partacle, 1 Elder's Branch, 1 Red Gemstone
+
+//-- Nauthiz Rune Stone <-- RK_RUNEMASTERY Lv8, 2 Light Particle, 2 Elder's Branch, 1 Destroyed Armor, 1 Word Out Scroll
+12725,24,2010,8,7938,2,7939,2,7069,1,618,1
+//-- Raido Rune Stone <-- RK_RUNEMASTERY Lv7, 1 Light Particle, 1 Elder's Branch, 1 Red Gemstone
 12726,24,2010,7,7938,1,7939,1,716,1
-//-- Rune Stone Nauthiz <-- RK_RUNEMASTERY Lv8, 1 Light Partacle, 1 Elder's Branch, 1 Destroyed Armor, 1 Word Out Scroll
-12725,24,2010,8,7938,1,7939,1,7069,1,618,1
-//-- Rune Stone Berkana <-- RK_RUNEMASTERY Lv9, 1 Elder's Branch, 1 Armor Piece of Dullahan
+//-- Berkana Rune Stone <-- RK_RUNEMASTERY Lv9, 1 Elder's Branch, 1 Armor Piece of Dullahan
 12727,24,2010,9,7939,1,7210,1
+//-- Isa Rune Stone <-- RK_RUNEMASTERY Lv2, 1 Elder's Branch, 1 Burning Heart
+12728,24,2010,2,7939,1,7097,1
+//-- Wyrd Rune Stone <-- RK_RUNEMASTERY Lv3, 1 Light Particle, 1 Elder's Branch, 1 Tangled Chains, 1 Dragon Canine
+12729,24,2010,3,7938,1,7939,1,7221,1,1035,1
+//-- Uruz Rune Stone <-- RK_RUNEMASTERY Lv6, 1 Elder's Branch, 1 Honey, 1 Horrendous Hair
+12730,24,2010,6,7939,1,518,1,1048,1
+//-- Thurisaz Rune Stone <-- RK_RUNEMASTERY Lv1, 1 Elder's Branch, 1 Blue Hair, 1 Claw of Desert Wolf
+12731,24,2010,1,7939,1,1034,1,7030,1
+//-- Othila Rune Stone <-- RK_RUNEMASTERY Lv5, 1 Light Particle, 1 Elder's Branch, 1 Orge Tooth
+12732,24,2010,5,7938,1,7939,1,7002,1
+//-- Hagalaz Rune Stone <-- RK_RUNEMASTERY Lv4, 1 Elder's Branch, 1 Round Shell, 1 Dragon Skin
+12733,24,2010,4,7939,1,1096,1,7123,1
+
+
 //==============================================
 
 //===== Guillotine Cross Poisons ===============
-//-- Paralize <-- GC_RESEARCHNEWPOISON Lv1, 20 Poison Toad Skin, 1 Amoena
-12717,25,2024,1,7931,0,7155,20,7937,1
-//-- Pyrexia <-- GC_RESEARCHNEWPOISON Lv2, 20 Anolian Skin, 1 Lantana
-12718,25,2024,2,7931,0,7003,20,7933,1
-//-- Disheart <-- GC_RESEARCHNEWPOISON Lv3, 10 Decayed Nail, 1 Celatom
-12719,25,2024,3,7931,0,957,10,7935,1
-//-- Leech End <-- GC_RESEARCHNEWPOISON Lv4, 1 Nerium, 1 Scoforia
-12720,25,2024,4,7931,0,7932,1,7936,1
 //-- Antidote <-- GC_RESEARCHNEWPOISON Lv5, 2 Green Herbs, 1 Blue Herb, 1 White Herb
 6128,25,2024,5,7931,0,509,1,510,1,511,2
-//-- Venom Bleed <-- GC_RESEARCHNEWPOISON Lv6, 10 Sticky Poison, 1 Isildor
-12721,25,2024,6,7931,0,7565,10,709,1
-//-- Magic Mushroom <-- GC_RESEARCHNEWPOISON Lv7, 10 Poison Spore, 1 Makulrata
-12722,25,2024,7,7931,0,7033,10,7934,1
-//-- Toxin <-- GC_RESEARCHNEWPOISON Lv8, 10 Sticky Poison, 1 Nerium
-12723,25,2024,8,7931,0,7565,10,7932,1
+//-- Paralize <-- GC_RESEARCHNEWPOISON Lv1, 20 Poison Toad Skin, 1 Amoena
+12717,25,2024,1,7931,0,7155,20,7937,1
+//-- Leechend <-- GC_RESEARCHNEWPOISON Lv4, 1 Nerium, 1 Scoforia
+12718,25,2024,4,7931,0,7932,1,7936,1
 //-- Oblivion Curse <-- GC_RESEARCHNEWPOISON Lv9, 10 Mermaid Heart, 1 Isildor
-12724,25,2024,9,7931,0,950,10,709,1
+12719,25,2024,9,7931,0,950,10,709,1
+//-- Disheart <-- GC_RESEARCHNEWPOISON Lv3, 10 Decayed Nail, 1 Celatom
+12720,25,2024,3,7931,0,957,10,7935,1
+//-- Toxin <-- GC_RESEARCHNEWPOISON Lv8, 10 Sticky Poison, 1 Nerium
+12721,25,2024,8,7931,0,7565,10,7932,1
+//-- Pyrexia <-- GC_RESEARCHNEWPOISON Lv2, 20 Anolian Skin, 1 Lantana
+12722,25,2024,2,7931,0,7003,20,7933,1
+//-- Magic Mushroom <-- GC_RESEARCHNEWPOISON Lv7, 10 Poison Spore, 1 Makulrata
+12723,25,2024,7,7931,0,7033,10,7934,1
+//-- Venom Bleed <-- GC_RESEARCHNEWPOISON Lv6, 10 Sticky Poison, 1 Isildor
+12724,25,2024,6,7931,0,7565,10,709,1
 //==============================================

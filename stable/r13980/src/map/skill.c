@@ -6862,7 +6862,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		{
 			clif_skill_fail(sd, skillid, 0, 0);
 			return 0;
-		}
+		}else
+			return 0;
 		break;
 
 	case WL_READING_SB:
@@ -8654,6 +8655,7 @@ int skill_castend_map (struct map_session_data *sd, short skill_num, const char 
 		sd->sc.data[SC_BERSERK] ||
 		sd->sc.data[SC_BASILICA] ||
 		sd->sc.data[SC_MARIONETTE] ||
+		sd->sc.data[SC_WHITEIMPRISON] ||
 		sd->sc.data[SC_SHADOWFORM_] ||
 		sd->sc.data[SC_INVISIBILITY_] ||
 		sd->sc.data[SC_MANHOLE_]
@@ -11126,7 +11128,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 			clif_skill_fail(sd,skill,0,0);
 			return 0;
 		}
-		break;;
+		break;
 	case ST_RIDINGMADO:
 		if(!pc_isridingmado(sd)) {
 			clif_skill_fail(sd,skill,0,0);

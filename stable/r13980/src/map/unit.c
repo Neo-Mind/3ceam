@@ -1146,6 +1146,10 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 		if( battle_check_target(src,target,BCT_ENEMY)>0 )
 			return 0;
 	break;
+	case WL_WHITEIMPRISON:
+		if( battle_check_target(src,target,BCT_SELF|BCT_ENEMY)<0 )
+			return 0;
+	break;
 	case WL_RELEASE:
 		casttime = 0;
 	break;

@@ -1289,8 +1289,8 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 				(sc->data[SC_MARIONETTE] && skill_num != CG_MARIONETTE) || //Only skill you can use is marionette again to cancel it
 				(sc->data[SC_MARIONETTE2] && skill_num == CG_MARIONETTE) || //Cannot use marionette if you are being buffed by another
 				sc->data[SC_STEELBODY] ||
-				sc->data[SC_BERSERK] || sc->data[SC_OBLIVIONCURSE] || sc->data[SC_STASIS] || sc->data[SC_SHADOWFORM_] ||
-				sc->data[SC_INVISIBILITY_] || sc->data[SC_CURSEDCIRCLE_] || sc->data[SC_IGNORANCE_]
+				sc->data[SC_BERSERK] || sc->data[SC_OBLIVIONCURSE] || sc->data[SC_WHITEIMPRISON] || sc->data[SC_STASIS] ||
+				sc->data[SC_SHADOWFORM_] || sc->data[SC_INVISIBILITY_] || sc->data[SC_CURSEDCIRCLE_] || sc->data[SC_IGNORANCE_]
 			))
 				return 0;
 
@@ -5237,7 +5237,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			return 0;
 	case SC_SLEEP:
 	case SC_STUN:
-	case SC_BURNING:	// Need to confirm this. [LimitLine]
+	case SC_BURNING:
 		if (sc->opt1)
 			return 0; //Cannot override other opt1 status changes. [Skotlex]
 	break;
@@ -5601,7 +5601,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			case SC_NOCHAT:
 			case SC_CHANGE: //Otherwise your Hp/Sp would get refilled while still within effect of the last invocation.
 			case SC_URUZ:		// Confirm this?
-			case SC_BURNING:	// Confirm this?
+			case SC_BURNING:
 			case SC_SHADOWFORM:	// Confirm this?
 			case SC_FEAR: // Need confirm this.
 				return 0;
@@ -6793,8 +6793,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			break;
 		case SC_RAISINGDRAGON:
 			//FIXTHIS: Status bar should be the same to skill duration of the status not the val3 value.[Jobbie]
-			if (!val3) val3 = skill_get_time2(status_sc2skill(type),val1);
-			if (!val4) val4 = 1000; //Val4 holds damage interval
+			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1);
+			if (!val4) val4 = 5000; //Val4 holds damage interval
 			val3 = tick/val4; //val3 holds skill duration
 			tick = val4;
 			break;
@@ -7118,7 +7118,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			}
 			break;
 		case SC_RAISINGDRAGON:
-			sce->val2 = 5*status->max_hp/1000;// Temp .5%hp used. Need official hp draining value. [Jobbie]
+			sce->val2 = status->max_hp/100;// Officially tested its 1%hp drain. [Jobbie]
 			break;
 	}
 
@@ -8377,7 +8377,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		break;
 
 	case SC_RAISINGDRAGON:
-		// .5% every seconds [Jobbie]
+		// 1% every 5 seconds [Jobbie]
 		if(--(sce->val3)>0 && status_charge(bl, sce->val2, 0))
 		{
 			if(!sc->data[type]) return 0;
