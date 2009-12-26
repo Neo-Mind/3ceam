@@ -5,6 +5,14 @@
 // 	- Details.
 //========================================
 
+12/26/2009
+	r78 [Jobbie]
+	* Added and Confirmed some official UNT_* of new skills.
+	* Added and Updated some SI_*'s that is used by skills and named it to its official value name.
+	* Updated some skills to use its official SI's.
+	* Fixed timer error of SC_INVISIBILITY.
+	* Fixed some items which is not updated to its upper type.
+
 12/25/2009
 	r77 [Jobbie]
 	* Updated produce_db of Rune Knight and Guillotine Cross.

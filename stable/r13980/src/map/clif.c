@@ -4908,7 +4908,7 @@ int clif_status_change(struct block_list *bl, int type, int flag, unsigned int t
 		type == SI_BUMP || type == SI_READYSTORM || type == SI_READYDOWN ||
 		type == SI_READYTURN || type == SI_READYCOUNTER || type == SI_DODGE ||
 		type == SI_DEVIL || type == SI_NIGHT || type == SI_INTRAVISION || type == SI_WOLFMOUNT ||
-		type == SI_CLOAKING || type == SI_POISONSMOKECLOAKINGEXCEED ||
+		type == SI_CLOAKING || type == SI_POISONINGWEAPON ||
 		type == SI_HIDING || type == SI_HALLUCINATIONWALK )
 		tick=0;
 

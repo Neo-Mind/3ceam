@@ -9688,10 +9688,6 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 						skill_delunit(rev);
 					}
 					break;
-				case WM_POEMOFNETHERWORLD:
-					if( !(status_get_mode(bl)&MD_BOSS) )
-						sc_start(bl, type, 100, sg->skill_lv, skill_get_time2(sg->skill_id, sg->skill_lv)); // Is this 100% chance? [LimitLine]
-					break;
 				case WM_LULLABY_DEEPSLEEP:
 					if( !(status_get_mode(bl)&MD_BOSS) )
 						sc_start(bl, type, 88 + sg->skill_lv * 2, sg->skill_lv, skill_get_time2(sg->skill_id, sg->skill_lv));
@@ -10067,16 +10063,21 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 				skill_delunitgroup(sg);
 			break;
 
-	case UNT_POISONSMOKE:
-		if( tsc && !tsc->data[sg->val2] )
-			sc_start(bl, sg->val2, 20, sg->skill_lv,
-				skill_get_time2(sg->skill_id, sg->skill_lv));
-		break;
+		case UNT_POISONSMOKE:
+			if( tsc && !tsc->data[sg->val2] )
+				sc_start(bl, sg->val2, 20, sg->skill_lv,
+					skill_get_time2(sg->skill_id, sg->skill_lv));
+			break;
 
 		case UNT_REVERBERATION:
 			skill_unitsetting(ss, WM_REVERBERATION_MELEE, sg->skill_lv, bl->x, bl->y, 0);
 			skill_unitsetting(ss, WM_REVERBERATION_MAGIC, sg->skill_lv, bl->x, bl->y, 0);
 			skill_delunit(src);
+			break;
+
+		case UNT_NETHERWORLD:
+			if( !(status_get_mode(bl)&MD_BOSS) )
+				sc_start(bl, type, 100, sg->skill_lv, skill_get_time2(sg->skill_id, sg->skill_lv)); // Is this 100% chance? [LimitLine]
 			break;
 
 		case UNT_MANHOLE:
@@ -10104,6 +10105,8 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			
 		case UNT_CHAOSPANIC:
 		case UNT_BLOODYLUST:
+			if( sg->src_id == bl->id )
+				break; //Does not affect the caster.
 			sc_start(bl, type, 100, sg->unit_id == UNT_BLOODYLUST ? 10 : sg->skill_lv,
 				skill_get_time(sg->skill_id, sg->skill_lv));
 			break;
