@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+12/27/2009
+	r79 [Rytech]
+	*Added LUB files for 2009-12-15 and older clients.
+
 12/19/2009
 	r61 [Jobbie]
 	* Implemented renewal cast time settings to enable fixed and variable cast time.
