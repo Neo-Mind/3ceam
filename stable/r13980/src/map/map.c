@@ -1639,6 +1639,8 @@ int map_quit(struct map_session_data *sd)
 				status_change_end(&sd->bl,SC_SLOWCAST,-1);
 			if(sd->sc.data[SC_CRITICALWOUND])
 				status_change_end(&sd->bl,SC_CRITICALWOUND,-1);
+			if(sd->sc.data[SC_RAISINGDRAGON])
+				status_change_end(&sd->bl,SC_RAISINGDRAGON,-1);
 		}
 		if (battle_config.debuff_on_logout&2)
 		{

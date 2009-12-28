@@ -6,6 +6,12 @@
 //========================================
 
 12/27/2009
+	r81 [Jobbie]
+	* Fixed status timer issue which is not displaying properly the status icon bar.
+	* Fixed Ruwach cannot detect Cloaking Exceed status.
+	* Fixed Raising Dragon status being removed when you teleport or change map.
+	* Applied SI_* for Lightning walk skill.
+
 	r80 [Rytech]
 	*Updated database.
 	-Added New 3rd job items and other EP 13.3 items in the item_db2.

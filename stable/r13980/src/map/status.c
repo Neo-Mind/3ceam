@@ -444,13 +444,13 @@ void initChangeTables(void)
 	add_sc( RK_DRAGONBREATH      , SC_BURNING         );
 	set_sc( RK_MILLENNIUMSHIELD  , SC_BERKANA         , SI_BERKANA         , SCB_NONE );
 	set_sc( RK_CRUSHSTRIKE       , SC_RAIDO           , SI_RAIDO           , SCB_NONE );
-	set_sc( RK_REFRESH           , SC_NAUTHIZ      , SI_NAUTHIZ         , SCB_NONE );
-	set_sc( RK_GIANTGROWTH       , SC_THURISAZ     , SI_TURISUSS        , SCB_STR );
-	set_sc( RK_STONEHARDSKIN     , SC_HAGALAZ      , SI_HAGALAZ         , SCB_NONE );
-	set_sc( RK_VITALITYACTIVATION       , SC_ISA      , SI_ISHA          , SCB_REGEN );
-	set_sc( RK_STORMBLAST        , SC_WYRD            , SI_WYRD         , SCB_NONE );
-	set_sc( RK_FIGHTINGSPIRIT    , SC_OTHILA          , SI_EISIR       , SCB_WATK|SCB_ASPD );
-	set_sc( RK_ABUNDANCE         , SC_URUZ     , SI_URUZ         , SCB_NONE );
+	set_sc( RK_REFRESH           , SC_NAUTHIZ         , SI_NAUTHIZ         , SCB_NONE );
+	set_sc( RK_GIANTGROWTH       , SC_THURISAZ        , SI_TURISUSS        , SCB_STR );
+	set_sc( RK_STONEHARDSKIN     , SC_HAGALAZ         , SI_HAGALAZ         , SCB_NONE );
+	set_sc( RK_VITALITYACTIVATION       , SC_ISA      , SI_ISHA            , SCB_REGEN );
+	set_sc( RK_STORMBLAST        , SC_WYRD            , SI_WYRD            , SCB_NONE );
+	set_sc( RK_FIGHTINGSPIRIT    , SC_OTHILA          , SI_EISIR           , SCB_WATK|SCB_ASPD );
+	set_sc( RK_ABUNDANCE         , SC_URUZ            , SI_URUZ            , SCB_NONE );
 
 	add_sc( WL_WHITEIMPRISON     , SC_WHITEIMPRISON );
 	set_sc( WL_FROSTMISTY        , SC_FREEZING        , SI_FREEZING        , SCB_ASPD|SCB_DEF|SCB_SPEED );
@@ -541,7 +541,7 @@ void initChangeTables(void)
 
 	add_sc( SR_CRESCENTELBOW     , SC_CRESCENTELBOW  );
 	add_sc( SR_CURSEDCIRCLE      , SC_CURSEDCIRCLE_  );
-	add_sc( SR_LIGHTNINGWALK     , SC_LIGHTNINGWALK  );
+	set_sc( SR_LIGHTNINGWALK     , SC_LIGHTNINGWALK      , SI_LIGHTNINGWALK     , SCB_NONE  );
 	set_sc( SR_RAISINGDRAGON     , SC_RAISINGDRAGON      , SI_RAISINGDRAGON     , SCB_MAXHP|SCB_MAXSP|SCB_ASPD );
 	set_sc( SR_GENTLETOUCH_ENERGYGAIN   , SC_ENERGYGAIN  , SI_ENERGYGAIN        , SCB_NONE );
 	set_sc( SR_GENTLETOUCH_CHANGE       , SC_CHANGE_     , SI_CHANGE            , SCB_DEF|SCB_DEF2|SCB_MDEF|SCB_MDEF2|SCB_BATK|SCB_ASPD );
@@ -6794,11 +6794,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		}		
 			break;
 		case SC_RAISINGDRAGON:
-			//FIXTHIS: Status bar should be the same to skill duration of the status not the val3 value.[Jobbie]
-			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1);
-			if (!val4) val4 = 5000; //Val4 holds damage interval
-			val3 = tick/val4; //val3 holds skill duration
-			tick = val4;
+			val3 = tick/5000;
+			tick = 5000;
 			break;
 		case SC_REFLECTDAMAGE:
 			val2 = 15 + 5 * val1;
@@ -7056,7 +7053,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 	}
 
 	if( (vd && (pcdb_checkid(vd->class_))) || bl->type == BL_MER || bl->type == BL_MOB )
-		clif_status_change(bl,StatusIconChangeTable[type],1,tick,val_flag&1?val1:1,val_flag&2?val2:0,val_flag&4?val3:0);
+		clif_status_change(bl,StatusIconChangeTable[type],1,duration,(val_flag&1)?val1:1,(val_flag&2)?val2:0,(val_flag&4)?val3:0);
 	else if( sd ) //Send packet to self otherwise (disguised player?)
 		clif_status_load(bl,StatusIconChangeTable[type],1);
 
@@ -8381,10 +8378,10 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 
 	case SC_RAISINGDRAGON:
 		// 1% every 5 seconds [Jobbie]
-		if(--(sce->val3)>0 && status_charge(bl, sce->val2, 0))
+		if( --(sce->val3)>0 && status_charge(bl, sce->val2, 0) )
 		{
 			if(!sc->data[type]) return 0;
-			sc_timer_next(sce->val4+tick, status_change_timer, bl->id, data);
+			sc_timer_next(5000 + tick, status_change_timer, bl->id, data);
 			return 0;
 		}
 		break;
@@ -8450,7 +8447,7 @@ int status_change_timer_sub(struct block_list* bl, va_list ap)
 		status_change_end(bl, SC_CLOAKINGEXCEED, -1);
 		break;
 	case SC_RUWACH:	/* ƒ‹ƒAƒt */
-		if (tsc && (tsc->data[SC_HIDING] || tsc->data[SC_CLOAKING] || tsc->data[SC_CAMOUFLAGE] || tsc->data[SC_CLOAKING])) {
+		if (tsc && (tsc->data[SC_HIDING] || tsc->data[SC_CLOAKING] || tsc->data[SC_CAMOUFLAGE] || tsc->data[SC_CLOAKINGEXCEED])) {
 			status_change_end(bl, SC_HIDING, -1);
 			status_change_end(bl, SC_CLOAKING, -1);
 			status_change_end(bl, SC_CAMOUFLAGE, -1);

@@ -1947,7 +1947,6 @@ int unit_remove_map_(struct block_list *bl, int clrtype, const char* file, int l
 		status_change_end(bl,SC_MAGNETICFIELD,-1);
 		status_change_end(bl,SC_SHADOWFORM_,-1);
 		status_change_end(bl,SC_MANHOLE_,-1);
-		status_change_end(bl,SC_RAISINGDRAGON,-1);
 		status_change_end(bl,SC_WALLOFTHORN,-1);
 	}
 
