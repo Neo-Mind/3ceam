@@ -5,6 +5,20 @@
 // 	- Details.
 //========================================
 
+12/27/2009
+	r80 [Rytech]
+	*Updated database.
+	-Added New 3rd job items and other EP 13.3 items in the item_db2.
+	-However, their currently added as test items and arnt useable. You can find them at the bottom of the list.
+	-Updated SP requirements for Minstrel, Wanderer, and Royal Guard.
+	-Updated Royal Guard Skill Tree...
+
+	-Ray of Genesis: Grand Cross Lv 10 -> Grand Cross Lv 5 
+	-Reflect Damage: Reflect Shield Lv 3 -> Reflect Shield Lv 5 
+	-Piety: Faith Lv10 -> Faith Lv 3 
+	-Inspiration: Ray of Genesis Lv 1 -> Ray of Genesis Lv 4 
+	-Vanishing Point/Moon Slasher: Spear Quicken Lv 1 -> Spear Mastery Lv 1
+
 12/26/2009
 	r78 [Jobbie]
 	* Added and Confirmed some official UNT_* of new skills.
