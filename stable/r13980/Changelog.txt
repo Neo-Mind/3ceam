@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+01/01/2010
+	r86 [Jobbie]
+	* Fixed some missing eA patches which haven't applied.
+	* Minor fix to renovatio.
+
 12/27/2009
 	r81 [Jobbie]
 	* Fixed status timer issue which is not displaying properly the status icon bar.

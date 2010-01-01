@@ -6607,9 +6607,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			}
 			break;
 		case SC_RENOVATIO:
-			val4 = tick / 5000;
-			if( val4 < 1 )
-				val4 = 1;
+			val3 = tick / 5000;
 			tick = 5000;
 			break;
 		case SC_PRAEFATIO:
@@ -8209,7 +8207,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		return 0;
 
 	case SC_RENOVATIO:
-		if( --(sce->val4) >= 0 )
+		if( --(sce->val3) > 0 )
 		{
 			status_heal(bl, status->max_hp / 100 * 3, 0, 2);
 			sc_timer_next(5000 + tick, status_change_timer, bl->id, data);

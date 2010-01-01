@@ -2144,7 +2144,8 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 	if(skillid == CR_GRANDCROSS || skillid == NPC_GRANDDARKNESS)
 		dmg.flag |= BF_WEAPON;
 
-	if(sd && dmg.flag&BF_WEAPON && src != bl && src == dsrc && damage > 0) {
+	if( sd && dmg.flag&BF_WEAPON && src != bl && ( src == dsrc || ( dsrc->type == BL_SKILL && ( skillid == SG_SUN_WARM || skillid == SG_MOON_WARM || skillid == SG_STAR_WARM ) ) )  && damage > 0 )
+	{
 		if (battle_config.left_cardfix_to_right)
 			battle_drain(sd, bl, dmg.damage, dmg.damage, tstatus->race, tstatus->mode&MD_BOSS);
 		else
@@ -7200,7 +7201,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				status_change_end(src, SC_POISONINGWEAPON, -1);
 			}
 			skill_castend_damage_id(src, bl, skillid, skilllv, tick, flag);
-			status_change_end(src, SC_POISONINGWEAPON, -1);
+			//status_change_end(src, SC_POISONINGWEAPON, -1);
 		}
 		break;
 
