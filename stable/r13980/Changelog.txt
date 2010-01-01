@@ -6,6 +6,9 @@
 //========================================
 
 01/01/2010
+	r87 [Jobbie]
+	* Merge eAthena trunk updates up to r14215
+
 	r86 [Jobbie]
 	* Fixed some missing eA patches which haven't applied.
 	* Minor fix to renovatio.
