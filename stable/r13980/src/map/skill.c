@@ -7449,7 +7449,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start(bl, type, 100, skilllv, skill_get_time(skillid, skilllv)));
 			sc_start(bl,SC_EXPLOSIONSPIRITS,100,skilllv,skill_get_time(skillid,skilllv));
-			for(i = 0; i <= 15; i++)
+			for(i = 0; i < 15; i++)
 				pc_addspiritball(sd,skill_get_time(skillid,skilllv),5);
 		}
 		else if( sd )
@@ -11622,12 +11622,28 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 	sd = BL_CAST(BL_PC, bl);
 	sc = status_get_sc(bl);
 
-	variable_time = skill_get_cast(skill_id, skill_lv) * 80/100;// 80% of casttime is variable
-	fixed_time = skill_get_cast(skill_id, skill_lv) * 20/100;// 20% of casttime is fixed
+	if( !battle_config.renewal_cast_enable )// config to disable renewal cast settings.
+	{
+		variable_time = skill_get_cast(skill_id, skill_lv);
 
-	// calculate variable cast time reduced by dex and int
-	if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
-		scale = cap_value((status_get_dex(bl)*2 + status_get_int(bl))*10000, INT_MIN, INT_MAX);
+		// calculate base cast time (reduced by dex)
+		if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
+		{
+			scale = battle_config.castrate_dex_scale - status_get_dex(bl);
+			if( scale > 0 )	// not instant cast
+				variable_time = variable_time * (int)scale / battle_config.castrate_dex_scale;
+			else return 0;	// instant cast
+		}
+	}
+	else
+	{
+		variable_time = skill_get_cast(skill_id, skill_lv) * 80/100;// 80% of casttime is variable
+		fixed_time = skill_get_cast(skill_id, skill_lv) * 20/100;// 20% of casttime is fixed
+
+		// calculate variable cast time reduced by dex and int
+		if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
+			scale = cap_value((status_get_dex(bl)*2 + status_get_int(bl))*10000, INT_MIN, INT_MAX);
+	}
 
 	// calculate variable cast time reduced by item/card/skills bonuses
 	if( !(skill_get_castnodex(skill_id, skill_lv)&4) && sd )
@@ -11668,9 +11684,14 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 			variable_time += variable_time * sc->data[SC_LAZINESS_]->val2 / 100;
 	}
 
-	final_time = (100 - (int)sqrt(scale/530.)) * variable_time / 100;
-	if( final_time < 0 ) final_time = 0;
-	final_time += fixed_time;
+	if( !battle_config.renewal_cast_enable )
+		final_time = variable_time;
+	else
+	{
+		final_time = (100 - (int)sqrt(scale/530.)) * variable_time / 100;
+		if( final_time < 0 ) final_time = 0;
+		final_time += fixed_time;
+	}
 
 	// config cast time multiplier
 	if (battle_config.cast_rate != 100)

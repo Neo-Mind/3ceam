@@ -4602,6 +4602,8 @@ static const struct _battle_data {
 	{ "bg_magic_attack_damage_rate",        &battle_config.bg_magic_damage_rate,            60,     0,      INT_MAX,        },
 	{ "bg_misc_attack_damage_rate",         &battle_config.bg_misc_damage_rate,             60,     0,      INT_MAX,        },
 	{ "bg_flee_penalty",                    &battle_config.bg_flee_penalty,                 20,     0,      INT_MAX,        },
+// Casting Time Settings
+	{ "renewal_cast_enable",                &battle_config.renewal_cast_enable,              1,     0,            1,        },
 };
 
 

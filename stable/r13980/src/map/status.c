@@ -7564,8 +7564,8 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 				int i;
 				pc_delspiritball(sd,sd->spiritball,0);
 				status_change_end(bl,SC_EXPLOSIONSPIRITS,-1);
-				for(i=0;i<=5;i++)
-					pc_addspiritball(sd,skill_get_time(CH_SOULCOLLECT,sce->val1),i);
+				for(i=0;i<5;i++)
+					pc_addspiritball(sd,skill_get_time(CH_SOULCOLLECT,sce->val1),5);
 			}
 			break;		
 		}

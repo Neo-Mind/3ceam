@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+01/03/2010
+	r88 [Jobbie]
+	* Added renewal_cast_enable setting. Read inside skill.conf about its functionality.
+	* Minor fix to Raising Dragon.
+
 01/01/2010
 	r87 [Jobbie]
 	* Merge eAthena trunk updates up to r14215

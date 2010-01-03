@@ -483,6 +483,9 @@ extern struct Battle_Config
 	int bg_magic_damage_rate;
 	int bg_misc_damage_rate;
 	int bg_flee_penalty;
+
+	// Cast Time Settings [Jobbie]
+	int renewal_cast_enable;
 } battle_config;
 
 void do_init_battle(void);
