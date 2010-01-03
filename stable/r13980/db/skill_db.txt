@@ -987,12 +987,12 @@
 2236,9,8,1,0,0,0,10,1,yes,0,0,0,weapon,0,	RA_AIMEDBOLT,Aimed Bolt
 2237,6,6,2,0,0x3,3,1,1,no,0,0,0,none,0,		RA_DETONATOR,Detonator
 2238,6,6,2,0,0x3,5,5,1,no,0,0x80,3,misc,0,	RA_ELECTRICSHOCKER,Electric Shocker
-2239,6,6,2,3,0x42,7,5,1,no,0,0x80,3,weapon,0,	RA_CLUSTERBOMB,Cluster Bomb
+2239,6,6,2,0,0x42,7,5,1,no,0,0x80,3,weapon,0,	RA_CLUSTERBOMB,Cluster Bomb
 2240,0,6,4,0,0,0,1,0,no,0,0,0,none,0,		RA_WUGMASTERY,Warg Mastery
 2241,0,6,4,0,0,0,3,0,no,0,0,0,none,0,		RA_WUGRIDER,Warg Rider
 2242,0,6,4,0,0x2,3,1,0,no,0,0,0,weapon,0,	RA_WUGDASH,Warg Dash
-2243,9,6,1,0,0,0,5,1,no,0,0,0,weapon,0,		RA_WUGSTRIKE,Warg Strike
-2244,9,6,1,0,0,0,5,1,no,0,0,0,weapon,0,		RA_WUGBITE,Warg Bite
+2243,9,6,1,-1,0,0,5,1,no,0,0,0,weapon,0,		RA_WUGSTRIKE,Warg Strike
+2244,9,6,1,-1,0,0,5,1,no,0,0,0,weapon,0,		RA_WUGBITE,Warg Bite
 2245,0,0,0,0,0,0,10,0,no,0,0,0,none,0,		RA_TOOTHOFWUG,Tooth of Warg
 2246,0,6,4,0,0x2,7:9:11:13:15,5,0,no,0,0,0,weapon,0,		RA_SENSITIVEKEEN,Sensitive Keen
 2247,0,6,4,0,0x1,0,5,0,no,0,0,0,weapon,0,	RA_CAMOUFLAGE,Camouflage
@@ -1001,17 +1001,17 @@
 2250,6,6,2,1,0x40,5,1,1,no,0,0x80,1,misc,0,	RA_COBALTTRAP,Cobalt Trap
 2251,6,6,2,2,0x40,5,1,1,no,0,0x80,1,misc,0,	RA_MAIZETRAP,Maize Trap
 2252,6,6,2,4,0x40,5,1,1,no,0,0x80,1,misc,0,	RA_VERDURETRAP,Verdure Trap
-2253,6,6,2,3,0x42,5,5,1,no,0,0x80,1,misc,0,	RA_FIRINGTRAP,Firing Trap
-2254,6,6,2,1,0x42,5,5,1,no,0,0x80,1,misc,0,	RA_ICEBOUNDTRAP,Icebound Trap
+2253,6,6,2,0,0x42,5,5,1,no,0,0x80,1,misc,0,	RA_FIRINGTRAP,Firing Trap
+2254,6,6,2,0,0x42,5,5,1,no,0,0x80,1,misc,0,	RA_ICEBOUNDTRAP,Icebound Trap
 
 // Mechanic
 2255,0,0,0,0,0,0,5,0,no,0,0,0,none,0,		NC_MADOLICENCE,Mado License
 2256,11,6,1,0,0,0,5,1,no,0,0,0,weapon,0,	NC_BOOSTKNUCKLE,Boost Knuckle // Is this official # of hits? [LimitLine]
 2257,4,6,1,0,0,0,3,1,no,0,0,0,weapon,0,		NC_PILEBUNKER,Pile Bunker // Need official range. Is this official # of hits? [LimitLine]
-2258,13,8,1,0,0,0,3,1:2:3,no,0,0,0,weapon,0,NC_VULCANARM,Vulcan Arm // Is this official # of hits? [LimitLine]
+2258,13,8,1,0,0,0,3,1:2:3,no,0,0,0,weapon,0,	NC_VULCANARM,Vulcan Arm // Is this official # of hits? [LimitLine]
 2259,5,6,1,3,0x2,3,3,1,yes,0,0,0,weapon,0,	NC_FLAMELAUNCHER,Flame Launcher
-2260,9,6,2,1,0,0,3,1,yes,0,0,0,weapon,0,	NC_COLDSLOWER,Cold Slower
-2261,9,8,1,-1,0x2,7:5:3,3,2,yes,0,0,0,weapon,0,	NC_ARMSCANNON,Arm Cannon // Need official range. Is this official # of hits? [LimitLine]
+2260,7,6,2,1,0,0,3,1,yes,0,0,0,weapon,0,	NC_COLDSLOWER,Cold Slower
+2261,7,8,1,0,0x42,7:5:3,3,2,yes,0,0,0,weapon,0,	NC_ARMSCANNON,Arm Cannon // Is this official # of hits? [LimitLine]
 2262,0,6,4,0,0x1,0,3,1,yes,0,0,0,none,0,	NC_ACCELERATION,Acceleration
 2263,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,	NC_HOVERING,Hovering
 2264,0,6,4,0,0x1,0,1,1,no,0,0,0,none,0,		NC_F_SIDESLIDE,Front-Side Slide

@@ -6,6 +6,24 @@
 //========================================
 
 01/03/2010
+	r89 [Jobbie]
+	* Mechanic skills update according to official info.
+	- Fixed damage calculations of some mechanic skills that is affected by stats and baselvl.
+	- Fixed ranged for Cold Slower and Arms Cannon,
+	- Arms Cannon will ignore's enemies flee and forced to be neutral attack.
+	- Cold Slower is forced to be water attack. 
+	- Fixed Mado Licence bonus damage calculation.
+	- Fixed Axe Tornado bonus damage if weapon is endowed with Wind element by 20%.
+	- Fixed animation for Emergency Cool.
+	- Fixed bonus movement speed for Accerleration.
+	* Fixed Ride in Lightening according to official information.
+	- Each point of DEX raises damage about 0.25~0.3%.
+	- If weapon is endowed by wind element +20% damage.
+	- At level 5 it consumes all 15 spheres for about ~1300% damage.
+	* Ranger skills update according to official info.
+	- Cluster Bomb, Firing Trap and Icebound Trap is forced to be neutral attack.
+	- Warg Bite and Warg Strike carries the effects/element from weapon/arrows.
+
 	r88 [Jobbie]
 	* Added renewal_cast_enable setting. Read inside skill.conf about its functionality.
 	* Minor fix to Raising Dragon.

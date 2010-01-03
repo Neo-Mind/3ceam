@@ -330,7 +330,7 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 		return damage; //This skill bypass everything else.
 
 	if ( sd && pc_isridingmado(sd) )
-			damage += 15 * pc_checkskill(sd, NC_MADOLICENCE);	// Is this supposed to go here? [LimitLine]
+			damage += 40 * pc_checkskill(sd, NC_MADOLICENCE);	// Is this supposed to go here? [LimitLine]
 
 	if( sc && sc->count )
 	{
@@ -2008,8 +2008,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio = 120 * skill_lv - 100;
 					break;
 				case RA_WUGBITE:
-					skillratio += 50 * skill_lv;
-					break;
 				case RA_SENSITIVEKEEN:
 					skillratio += 50 * skill_lv;
 					break;
@@ -2017,41 +2015,39 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 10 * skill_lv;
 					break;
 				case NC_BOOSTKNUCKLE:
-					skillratio += (100 + 100 * skill_lv) + status_get_dex(src) + status_get_lv(src);	// Need the official value. [Rytech]
+					skillratio += (100 + 100 * skill_lv) + sstatus->dex;
 					break;
 				case NC_PILEBUNKER:
-					skillratio += (200 + 100 * skill_lv) + status_get_str(src) + status_get_lv(src);	// Need the official value. [Rytech]
+					skillratio += (200 + 100 * skill_lv) + sstatus->str;
 					if( rand()%100 <= 5 + 15 * skill_lv )
 						flag.pdef = flag.pdef2 = 2;
 					break;
 				case NC_VULCANARM:
-					skillratio += (70 * skill_lv - 100) + status_get_dex(src) + status_get_lv(src);	// Need the official value. [Rytech]
+					skillratio += (70 * skill_lv - 100) + sstatus->dex;
 					break;
 				case NC_FLAMELAUNCHER:
 				case NC_COLDSLOWER:
-					skillratio += (200 + 300 * skill_lv) + status_get_lv(src);	// Need the official value. [Rytech]
+					skillratio += 200 + 300 * skill_lv;
 					break;
 				case NC_ARMSCANNON:
-					skillratio += 100 + 400 * skill_lv;	// Temporary using medium sized monster damage. Will need to be redone since damage % depends on monster size. [Rytech]
-					skillratio += status_get_lv(src);	// Need the official value. [Rytech]
+					switch(tstatus->size)
+						{
+							case 0: skillratio += 100+500*skill_lv; break;//small
+							case 1: skillratio += 100+400*skill_lv; break;//medium
+							case 2: skillratio += 100+300*skill_lv; break;//large
+						}
 					break;
 				case NC_SELFDESTRUCTION:
 					skillratio += 3000;	// Need official value.
 					break;
 				case NC_POWERSWING:
-					skillratio += 80 + 20 * skill_lv;
-					skillratio += status_get_str(src);	// Damage increased by STR, DEX, and Base Level. [Rytech]
-					skillratio += status_get_dex(src);	// What is the official value for all 3 of these?
-					skillratio += status_get_lv(src);	// So far, my guess is that the STR and DEX may be correct.
+					skillratio += 80 + 20 * skill_lv + (sstatus->str + sstatus->dex);
 					break;
 				case NC_AXETORNADO:
-					skillratio += 100 + 100 * skill_lv;
-					skillratio += status_get_vit(src);
-					skillratio += status_get_lv(src);	// Need the official value. [Rytech]
-					break;						// Damage is also increased if the weapon is endowed with wind element, but how much? [Rytech]
+					skillratio += (100 + 100 * skill_lv) + sstatus->vit;
+					break;
 				case NC_AXEBOOMERANG:
 					skillratio += 60 + 40 * skill_lv;
-					skillratio += status_get_lv(src);	// What is the official value? [Rytech]
 					break;
 				case GC_CROSSIMPACT:
 					skillratio += 1050 + 50 * skill_lv;
@@ -2107,8 +2103,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 80 + 20 * skill_lv;
 					break;
 				case SR_SKYNETBLOW:
-					skillratio += 50 + 50 * skill_lv;
-					skillratio += status_get_agi(src); // Need official value. [LimitLine]
+					skillratio += (50 + 50 * skill_lv) + sstatus->agi;
 					break;
 				case SR_EARTHSHAKER:
 					skillratio += 50 * (skill_lv - 1);
@@ -2126,7 +2121,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					{	// Knockback part of the skill. [LimitLine]
 						// FIXME: There must be a better way to handle this, but since I couldn't think of a better one right now, I'll leave it to someone who knows. [LimitLine]
 						int x, y;
-						skillratio += 150 * (skill_lv - 5) - 100;	// SkillLV - 5. The reason why is because SR_KNUCKLEARROW's knockback part of the damage is called at skilllv + 5
+						skillratio += 150 * (skill_lv - 5) - 100; // SkillLV - 5. The reason why is because SR_KNUCKLEARROW's knockback part of the damage is called at skilllv + 5
 						x = target->x;
 						y = target->y;
 						switch( unit_getdir(target) )
@@ -2149,12 +2144,12 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 150; //iRO wiki 250% damage info. [Jobbie]
 					break;
 				case SR_RIDEINLIGHTNING:
-					skillratio += 500 * skill_lv - 100;	// Where whoever got that from? [LimitLine]
-					skillratio += status_get_dex(src);	// Need official ratio. [LimitLine]
+					// ~1300% dmg calculation w/ spiritball counted to its damage at lvl5. Need proper calculation. [Jobbie]
+					skillratio += (400 + 100 * skill_lv) + (sstatus->dex / 3);
 					break;
 				case SR_GENTLETOUCH_QUIET:
 					skillratio *= skill_lv;
-					skillratio += status_get_dex(src) * 2;	// Need official value. [LimitLine]
+					skillratio += status_get_dex(src) * 2; // Need official value. [LimitLine]
 					break;
 				case LG_BANISHINGPOINT:
 					skillratio += 30 * skill_lv;
@@ -2252,6 +2247,23 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				if(sc && sc->data[SC_SPIRIT] &&
 					sc->data[SC_SPIRIT]->val2 == SL_CRUSADER)
 					ATK_ADDRATE(100);
+				break;
+			case NC_BOOSTKNUCKLE:
+			case NC_PILEBUNKER:
+			case NC_VULCANARM:
+			case NC_FLAMELAUNCHER:
+			case NC_COLDSLOWER:
+			case NC_ARMSCANNON:
+			case NC_AXEBOOMERANG:
+			case NC_POWERSWING:
+			case NC_AXETORNADO:
+				ATK_ADDRATE(status_get_lv(src)/6);//Should led up to 1.25 times the normal damage if Blevel is 150. [Jobbie]
+				if( skill_num == NC_AXETORNADO && ((sstatus->rhw.atk) == ELE_WIND || (sstatus->lhw.ele) == ELE_WIND) )
+					ATK_ADDRATE(50);
+				break;
+			case SR_RIDEINLIGHTNING:
+				if( (sstatus->rhw.atk) == ELE_WIND || (sstatus->lhw.ele) == ELE_WIND )
+					ATK_ADDRATE(20);
 				break;
 		}
 		
@@ -2384,9 +2396,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 			if( skill_num == MO_FINGEROFFENSIVE )
 			{
 				ATK_ADD2(wd.div_*sstatus->rhw.atk2, wd.div_*sstatus->lhw.atk2);
-			} else if( (skill_num == SR_RIDEINLIGHTNING || skill_num == NC_AXETORNADO) && ((sstatus->rhw.atk) == ELE_WIND || (sstatus->lhw.ele) == ELE_WIND) )
-			{
-				ATK_ADD2(wd.damage*sstatus->rhw.atk2, wd.damage*sstatus->lhw.atk2);	// Need official value for both skills. [LimitLine]
 			} else {
 				ATK_ADD2(sstatus->rhw.atk2, sstatus->lhw.atk2);
 			}
@@ -2472,7 +2481,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 			ATK_ADD2(wd.div_*sd->right_weapon.star, wd.div_*sd->left_weapon.star);
 		if (skill_num==MO_FINGEROFFENSIVE) { //The finger offensive spheres on moment of attack do count. [Skotlex]
 			ATK_ADD(wd.div_*sd->spiritball_old*3);
-		} else if( skill_num == SR_RAMPAGEBLASTER ) {
+		} else if( skill_num == SR_RAMPAGEBLASTER || skill_num == SR_RIDEINLIGHTNING ) {
 			ATK_ADD(wd.damage * sd->spiritball_old);
 		} else {
 			ATK_ADD(wd.div_*sd->spiritball*3);

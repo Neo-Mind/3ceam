@@ -4111,7 +4111,7 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				val = 25;
 			else
 			if( sd && pc_isridingwarg(sd) )
-				val = 10*(pc_checkskill(sd,RA_WUGRIDER)); //Need Official Value
+				val = 10*(pc_checkskill(sd,RA_WUGRIDER));
 			else
 			if( sd && pc_isridingmado(sd) )
 			{
@@ -4228,7 +4228,7 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 			if( sc->data[SC_CLOAKINGEXCEED] && (sc->data[SC_CLOAKINGEXCEED]->val4&1) == 1 )
 				val = max( val, 10 - pc_checkskill(sd, GC_CLOAKINGEXCEED) * 10 );
 			if( sc->data[SC_ACCELERATION] )
-				val = max( val, 20 ); // Need official value. [LimitLine]
+				val = max( val, 25 );
 			if( sc->data[SC_HOVERING] )
 				val = max( val, 10 ); // Need official value. [LimitLine]
 			if( sc->data[SC_SIDESLIDE] )
