@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+01/04/2010
+	r90 [Jobbie]
+	* Minor fixed from r88 update putting an initialization to fixed_time if renewal_cast_enable is disabled.
+
 01/03/2010
 	r89 [Jobbie]
 	* Mechanic skills update according to official info.

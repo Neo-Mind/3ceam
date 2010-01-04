@@ -11610,7 +11610,7 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
  *----------------------------------------------*/
 int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 {
-	int variable_time, fixed_time, final_time, fixed_reduction = 0;
+	int variable_time, fixed_time = 0, final_time, fixed_reduction = 0;
 	double scale = 0;
 	struct map_session_data *sd;
 	struct status_change *sc;
@@ -11689,6 +11689,7 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		if( final_time < 0 ) final_time = 0;
 		final_time += fixed_time;
 	}
+	ShowInfo("Final Time is: %d\n",final_time);
 
 	// config cast time multiplier
 	if (battle_config.cast_rate != 100)
