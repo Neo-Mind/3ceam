@@ -11689,7 +11689,6 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		if( final_time < 0 ) final_time = 0;
 		final_time += fixed_time;
 	}
-	ShowInfo("Final Time is: %d\n",final_time);
 
 	// config cast time multiplier
 	if (battle_config.cast_rate != 100)

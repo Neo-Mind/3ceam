@@ -6,6 +6,9 @@
 //========================================
 
 01/04/2010
+	r91 [Jobbie]
+	* Removed the showinfo code. Sorry forgot to removed after my test. followed up r90	
+
 	r90 [Jobbie]
 	* Minor fixed from r88 update putting an initialization to fixed_time if renewal_cast_enable is disabled.
 
