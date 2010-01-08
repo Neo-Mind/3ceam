@@ -716,7 +716,7 @@ MAX Lv : 5
 #
 PR_BENEDICTIO#
 성체강복(Benedictio Sanctissimi Sacramenti)
-MAX Lv : 1
+MAX Lv : 5
 ^777777습득조건 : 아스페르시오 5, 글로리아 3^000000
 계열 : ^777777축복계^000000
 대상 : ^777777지면^000000
