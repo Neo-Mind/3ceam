@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+1/7/2010
+	r92 [Rytech]
+	*Updated item_db2.txt with working EP13.3 weapons and shields.
+	-The item scripts still needs to be done and also tweaked to be ballanced with the mechanics.
+
 01/04/2010
 	r91 [Jobbie]
 	* Removed the showinfo code. Sorry forgot to removed after my test. followed up r90	
