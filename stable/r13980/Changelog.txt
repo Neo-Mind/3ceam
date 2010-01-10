@@ -6,6 +6,11 @@
 //========================================
 
 01/10/2010
+	r99 [pakpil]
+	* Minor fix in Release (realese too fast).
+	* Minor unused variable clean.
+
+01/10/2010
 	r98 [pakpil]
 	* Some bug report fix:
 	- http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1281197

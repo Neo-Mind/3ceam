@@ -3772,7 +3772,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 				}
 				else
 				{
-					int i, j = 0, s = 0;
+					int i, s = 0;
 					if( sc && (sc->data[SC_SPHERE_1] || sc->data[SC_SPHERE_2] || sc->data[SC_SPHERE_3] || sc->data[SC_SPHERE_4] || sc->data[SC_SPHERE_5]) )
 					{
 						for( i = SC_SPHERE_1; i < (SC_SPHERE_5+1); i++ )
@@ -3788,16 +3788,16 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 							switch( s )
 							{
 								case WLS_FIRE:
-									skill_addtimerskill(src, gettick() + 200 + 100*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_FIRE, skilllv, BF_MAGIC, SD_LEVEL);
+									skill_addtimerskill(src, gettick() + 500*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_FIRE, skilllv, BF_MAGIC, SD_LEVEL);
 									break;
 								case WLS_WIND:
-									skill_addtimerskill(src, gettick() + 200 + 100*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_WIND, skilllv, BF_MAGIC, SD_LEVEL);
+									skill_addtimerskill(src, gettick() + 500*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_WIND, skilllv, BF_MAGIC, SD_LEVEL);
 									break;
 								case WLS_WATER:
-									skill_addtimerskill(src, gettick() + 200 + 100*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_WATER, skilllv, BF_MAGIC, SD_LEVEL);
+									skill_addtimerskill(src, gettick() + 500*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_WATER, skilllv, BF_MAGIC, SD_LEVEL);
 									break;
 								case WLS_STONE:
-									skill_addtimerskill(src, gettick() + 200 + 100*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_GROUND, skilllv, BF_MAGIC, SD_LEVEL);
+									skill_addtimerskill(src, gettick() + 500*(i-SC_SPHERE_1), bl->id, bl->x, bl->y, WL_SUMMON_ATK_GROUND, skilllv, BF_MAGIC, SD_LEVEL);
 									break;
 								default:
 									ShowError("skill_castend_damage_id: unknown val1 (%d) in SC (%d)\n",sc->data[i]->val1, i );
@@ -11611,7 +11611,7 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
  *----------------------------------------------*/
 int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 {
-	int variable_time, fixed_time = 0, final_time, fixed_reduction = 0;
+	int variable_time, fixed_time = 0, final_time; //, fixed_reduction = 0; // Unused [pakpil]
 	double scale = 0;
 	struct map_session_data *sd;
 	struct status_change *sc;

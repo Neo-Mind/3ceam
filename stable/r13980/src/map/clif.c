@@ -13672,7 +13672,6 @@ void clif_millenniumshield(struct map_session_data *sd, short shields )
 {
 #if PACKETVER >= 20081217
 	unsigned char buf[8];
-	int fd = sd->fd;
 
 	WBUFW(buf,0) = 0x440;
 	WBUFL(buf,2) = sd->bl.id;
