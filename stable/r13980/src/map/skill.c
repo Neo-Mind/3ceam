@@ -1089,8 +1089,8 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 	case LG_MOONSLASHER:
 		if( dstsd )
 		{
-			pc_setsit( dstsd );
-			clif_sitting(bl);
+			pc_setsit(dstsd);
+			clif_sitting(&dstsd->bl);
 		}
 		if( dstmd )
 			sc_start(bl, SC_STOP, 100, 0, skill_get_time2(skillid,skilllv));
@@ -3950,10 +3950,10 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		if( flag & 1 )
 		{
 			skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
-			if( bl->type == BL_PC && tsd )
+			if( tsd )
 			{
 				pc_setsit(tsd);
-				clif_sitting(bl);
+				clif_sitting(&tsd->bl);
 			}
 			if( bl->type == BL_MOB && tstatus && !(tstatus->mode&MD_BOSS) )
 				sc_start(bl, SC_STUN, 100, skilllv, 1000 + 1000 * (rand()%3));
@@ -9093,8 +9093,8 @@ struct skill_unit_group* skill_unitsetting (struct block_list *src, short skilli
 
 	case AB_EPICLESIS:
 		val1 = (skilllv + 3) * 2;
-		val2 = 250 + (skilllv * 50);
-		val3 = skilllv + 1;
+		val2 = (skilllv == 5)?5:(skilllv > 2)?4:3; // HP regen per sec.
+		val3 = (skilllv == 5)?4:(skilllv > 2)?3:2; // SP regen per sec.
 		break;
 
 	case WL_CHAINLIGHTNING:
@@ -9438,7 +9438,7 @@ static int skill_unit_onplace (struct skill_unit *src, struct block_list *bl, un
 			switch(sg->skill_id)
 			{
 				case SR_CURSEDCIRCLE:
-					if(!sce)
+					if( !sce && !(status_get_mode(bl)&MD_BOSS) )
 						sc_start4(bl,type,100,sg->skill_lv,sg->group_id,0,0,sg->limit);
 						break;
 			}
@@ -9712,7 +9712,8 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 					sc_start(bl, SC_BLIND, 3 + 2 * sg->skill_lv, sg->skill_lv, skill_get_time2(sg->skill_id, sg->skill_lv));
 					break;
 				case SR_CURSEDCIRCLE:
-					sc_start(bl,type,100,sg->skill_lv,sg->limit);
+					if( !(status_get_mode(bl)&MD_BOSS) )
+						sc_start(bl,type,100,sg->skill_lv,sg->limit);
 					break;
 				default:
 					skill_attack(skill_get_type(sg->skill_id),ss,&src->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
@@ -10030,8 +10031,8 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			}
 			else
 			{
-				int heal = sg->val2;
-				int heal_sp = sg->val3;
+				int heal = tstatus->max_hp * sg->val2 / 100;
+				int heal_sp = tstatus->max_sp * sg->val3 / 100;
 				if(tstatus->hp >= tstatus->max_hp)
 					heal = 0;
 				if(tstatus->sp >= tstatus->max_sp)
@@ -11627,6 +11628,7 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
 		{
 			scale = battle_config.castrate_dex_scale - status_get_dex(bl);
+			if( scale > 530 ) scale = 530;
 			if( scale > 0 )	// not instant cast
 				variable_time = variable_time * (int)scale / battle_config.castrate_dex_scale;
 			else return 0;	// instant cast
@@ -11658,7 +11660,8 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		}
 	}
 
-	if( sd && pc_checkskill(sd, WL_RADIUS) && skill_id >= WL_WHITEIMPRISON && skill_id <= WL_FREEZE_SP )
+	if( sd && pc_checkskill(sd, WL_RADIUS) && skill_id >= WL_WHITEIMPRISON && skill_id <= WL_FREEZE_SP &&
+		!(sc && sc->data[SC_SACRAMENT]) )
 		fixed_time -= (fixed_time * ( 5 + 5 * skill_lv ))/100; //10*SkillLV% of Fixed Cast Time reduced.
 	
 	// calculate variable and fixed cast time reduced on sc data

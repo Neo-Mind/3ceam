@@ -1975,7 +1975,7 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	status->mode = MD_MASK&~(MD_BOSS|MD_PLANT|MD_DETECTOR|MD_ANGRY);
 
 	status->size = (sd->class_&JOBL_BABY)?0:1;
-	if ( battle_config.character_size && ( pc_isriding(sd) || pc_isridingwarg(sd) || pc_isridingmado(sd) ) ) { //[Lupus]
+	if ( battle_config.character_size && ( pc_isriding(sd) || pc_isridingwarg(sd) || pc_isridingmado(sd) || pc_isridinggryphon(sd)) ) { //[Lupus]
 		if (sd->class_&JOBL_BABY) {
 			if (battle_config.character_size&2)
 				status->size++;
@@ -2542,6 +2542,8 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 		sd->max_weight += 500 + 200 * skill;
 	if(pc_isridingmado(sd))
 		sd->max_weight += 20000;
+	if(pc_isridinggryphon(sd))
+		sd->max_weight += 10000;
 	if(sc->data[SC_KNOWLEDGE])
 		sd->max_weight += sd->max_weight*sc->data[SC_KNOWLEDGE]->val1/10;
 	if((skill=pc_checkskill(sd,ALL_INCCARRY))>0)
@@ -6760,7 +6762,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 				if( sd->pd ) pet_menu(sd,3);
 				if( merc_is_hom_active(sd->hd) ) merc_hom_vaporize(sd,1);
 				if( sd->md ) merc_delete(sd->md,3);
-				if( pc_isriding(sd) || pc_isridingdragon(sd) || pc_iswarg(sd) ) pc_setriding(sd, 0);
+				if( pc_isriding(sd) || pc_isridingdragon(sd) || pc_iswarg(sd) || pc_isridinggryphon(sd)) pc_setriding(sd, 0);
 				if( pc_isfalcon(sd) ) pc_setfalcon(sd,0);
 				if( pc_iswarg(sd) ) pc_setwarg(sd,0);
 			}

@@ -329,9 +329,6 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 	if (skill_num == PA_PRESSURE)
 		return damage; //This skill bypass everything else.
 
-	if ( sd && pc_isridingmado(sd) )
-			damage += 40 * pc_checkskill(sd, NC_MADOLICENCE);	// Is this supposed to go here? [LimitLine]
-
 	if( sc && sc->count )
 	{
 		//First, sc_*'s that reduce damage to 0.
@@ -829,6 +826,9 @@ int battle_addmastery(struct map_session_data *sd,struct block_list *target,int 
 	// The reason why pc_iswarg isn't checked above is because when it is active you can only use it via skills (where the bonus
 	// is put somewhere else)
 		damage += 6 * skill;
+
+	if( pc_isridingmado(sd) )
+		damage += 40 * pc_checkskill(sd, NC_MADOLICENCE);
 
 	if(type == 0)
 		weapon = sd->weapontype1;
@@ -1962,7 +1962,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					if( distance_bl(src, target) == 2 ) skillratio += 200 * skill_lv;
 					if( distance_bl(src, target) >= 3 ) skillratio += 100 + 100 * skill_lv;
 					if(sd && sd->base_status.rhw.ele == ELE_FIRE)
-						skillratio *= 3/2; // if the weapon is endowed with fire elemet this skill deal 1.5 more damage. [pakpil]
+						skillratio += skillratio/2; // if the weapon is endowed with fire elemet this skill deal 1.5 more damage. [pakpil]
 					break;
 				case RK_CRUSHSTRIKE:
 					skillratio += 1400;
@@ -2211,10 +2211,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				case NJ_SYURIKEN:
 					ATK_ADD(4*skill_lv);
-					break;
-				case RK_IGNITIONBREAK:
-					if( sd && sd->base_status.rhw.ele == ELE_FIRE )
-						ATK_ADDRATE( 150 );
 					break;
 			}
 		}

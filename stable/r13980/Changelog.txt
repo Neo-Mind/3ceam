@@ -5,7 +5,16 @@
 // 	- Details.
 //========================================
 
-1/7/2010
+01/10/2010
+	r98 [pakpil]
+	* Some bug report fix:
+	- http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1281197
+	- http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1281260
+	- http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1281315
+	- http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1291171
+
+
+01/7/2010
 	r92 [Rytech]
 	*Updated item_db2.txt with working EP13.3 weapons and shields.
 	-The item scripts still needs to be done and also tweaked to be ballanced with the mechanics.
