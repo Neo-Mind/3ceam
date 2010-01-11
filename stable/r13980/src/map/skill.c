@@ -13297,6 +13297,7 @@ static int skill_unit_timer_sub (DBKey key, void* data, va_list ap)
 			case UNT_REVERBERATION:
 				if( unit->val1 <= 0 )
 					skill_delunit(unit);
+				break;
 		}
 	}
 
