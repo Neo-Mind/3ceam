@@ -9314,7 +9314,6 @@ void clif_parse_TakeItem(int fd, struct map_session_data *sd)
 		if(sd->sc.count && (
 			sd->sc.data[SC_HIDING] ||
 			sd->sc.data[SC_CLOAKING] ||
-			sd->sc.data[SC_CAMOUFLAGE] ||
 			sd->sc.data[SC_CLOAKINGEXCEED] ||
 			sd->sc.data[SC_TRICKDEAD] ||
 			sd->sc.data[SC_BLADESTOP] ||

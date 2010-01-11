@@ -5,12 +5,17 @@
 // 	- Details.
 //========================================
 
+01/11/2010
+	r101 [Jobbie]
+	* Fixed RA_CAMOUFLAGE.
+	* Removed setting maximum initialization of scale in skill_castfix.
+	* Updated Cooldowns,Cast time, Duration and AfterCast Delay of Warlock skills.
+
 01/10/2010
 	r99 [pakpil]
 	* Minor fix in Release (realese too fast).
 	* Minor unused variable clean.
 
-01/10/2010
 	r98 [pakpil]
 	* Some bug report fix:
 	- http://www.eathena.ws/board/index.php?showtopic=234773&view=findpost&p=1281197

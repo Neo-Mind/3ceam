@@ -255,7 +255,6 @@ extern struct Battle_Config
 	int pc_cloak_check_type;
 	int monster_cloak_check_type;
 	int pc_camouflage_check_type;
-	int monster_camouflage_check_type;
 	int estimation_type;
 	int gvg_short_damage_rate;
 	int gvg_long_damage_rate;

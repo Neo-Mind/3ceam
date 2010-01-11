@@ -832,7 +832,7 @@ int unit_can_move(struct block_list *bl)
 			|| (sc->data[SC_CLOAKING] && //Need wall at level 1-2
 				sc->data[SC_CLOAKING]->val1 < 3 && !(sc->data[SC_CLOAKING]->val4&1))
 			|| (sc->data[SC_CAMOUFLAGE] && //Need wall at level 1-2
-				sc->data[SC_CAMOUFLAGE]->val1 < 3 && !(sc->data[SC_CAMOUFLAGE]->val4&1))
+				sc->data[SC_CAMOUFLAGE]->val1 < 3 && !(sc->data[SC_CAMOUFLAGE]->val3&1))
 			|| (sc->data[SC_CLOAKINGEXCEED] && //Need wall at level 1-2
 				sc->data[SC_CLOAKINGEXCEED]->val1 < 3 && !(sc->data[SC_CLOAKINGEXCEED]->val4&1))
 			|| sc->data[SC_MADNESSCANCEL]
@@ -1231,12 +1231,6 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 		if (!src->prev) return 0; //Warped away!
 	}
 
-	if( sc && sc->data[SC_CAMOUFLAGE] && !(sc->data[SC_CAMOUFLAGE]->val4&4) && skill_num != RA_CAMOUFLAGE )
-	{
-		status_change_end(src,SC_CAMOUFLAGE,-1);
-		if (!src->prev) return 0; //Warped away!
-	}
-
  	if( sc && sc->data[SC_CLOAKINGEXCEED] && !(sc->data[SC_CLOAKINGEXCEED]->val4&4) && skill_num != GC_CLOAKINGEXCEED )
 	{
 		status_change_end(src,SC_CLOAKINGEXCEED,-1);
@@ -1355,12 +1349,6 @@ int unit_skilluse_pos2( struct block_list *src, short skill_x, short skill_y, sh
 	if (sc && sc->data[SC_CLOAKING] && !(sc->data[SC_CLOAKING]->val4&4))
 	{
 		status_change_end(src,SC_CLOAKING,-1);
-		if (!src->prev) return 0; //Warped away!
-	}
-
-	if (sc && sc->data[SC_CAMOUFLAGE] && !(sc->data[SC_CAMOUFLAGE]->val4&4))
-	{
-		status_change_end(src,SC_CAMOUFLAGE,-1);
 		if (!src->prev) return 0; //Warped away!
 	}
 

@@ -5211,7 +5211,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			clif_walkok(sd); // So aegis has to resend the walk ok.
 		break;
 	case AS_CLOAKING:
-	case RA_CAMOUFLAGE:
 	case GC_WEAPONBLOCKING:
 	case GC_HALLUCINATIONWALK:
 	case GC_CLOAKINGEXCEED:
@@ -6938,6 +6937,13 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		}
 		break;
 
+	case RA_CAMOUFLAGE:
+		i = sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv));
+		if( i ) clif_skill_nodamage(src,bl,skillid,-1,i);
+		else if( sd )
+			clif_skill_fail(sd,skillid,0,0);
+		break;
+
 	case AB_CLEMENTIA:
 	case AB_CANTO:
 		{
@@ -7786,12 +7792,16 @@ int skill_castend_id(int tid, unsigned int tick, int id, intptr data)
 				src->type, src->id, ud->skillid, ud->skilllv, target->id);
 
 		map_freeblock_lock();
+
+		sc = status_get_sc(src);
+		if( sc && sc->data[SC_CAMOUFLAGE] )
+			status_change_end(src,SC_CAMOUFLAGE,-1);
+
 		if (skill_get_casttype(ud->skillid) == CAST_NODAMAGE)
 			skill_castend_nodamage_id(src,target,ud->skillid,ud->skilllv,tick,flag);
 		else
 			skill_castend_damage_id(src,target,ud->skillid,ud->skilllv,tick,flag);
 
-		sc = status_get_sc(src);
 		if(sc && sc->count) {
 		  	if(sc->data[SC_MAGICPOWER] &&
 				ud->skillid != HW_MAGICPOWER && ud->skillid != WZ_WATERBALL)
@@ -8040,6 +8050,9 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 	sc = status_get_sc(src);
 	type = status_skill2sc(skillid);
 	sce = (sc && type != -1)?sc->data[type]:NULL;
+
+	if( sc && sc->data[SC_CAMOUFLAGE] )
+		status_change_end(src,SC_CAMOUFLAGE,-1);
 
 	switch (skillid) { //Skill effect.
 		case WZ_METEOR:
@@ -11628,7 +11641,6 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 		if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
 		{
 			scale = battle_config.castrate_dex_scale - status_get_dex(bl);
-			if( scale > 530 ) scale = 530;
 			if( scale > 0 )	// not instant cast
 				variable_time = variable_time * (int)scale / battle_config.castrate_dex_scale;
 			else return 0;	// instant cast
@@ -12674,8 +12686,7 @@ bool skill_check_camouflage(struct block_list *bl, struct status_change_entry *s
 	bool wall = true;
 	int i;
 
-	if( (bl->type == BL_PC && battle_config.pc_camouflage_check_type&1)
-	||	(bl->type != BL_PC && battle_config.monster_camouflage_check_type&1) )
+	if( bl->type == BL_PC && battle_config.pc_camouflage_check_type&1 )
 	{	//Check for walls.
 		ARR_FIND( 0, 8, i, map_getcell(bl->m, bl->x+dx[i], bl->y+dy[i], CELL_CHKNOPASS) != 0 );
 		if( i == 8 )
@@ -12689,20 +12700,20 @@ bool skill_check_camouflage(struct block_list *bl, struct status_change_entry *s
 			if( sce->val1 < 3 ) //End camouflage.
 				status_change_end(bl, SC_CAMOUFLAGE, -1);
 			else
-			if( sce->val4&1 )
+			if( sce->val3&1 )
 			{	//Remove wall bonus
-				sce->val4&=~1;
+				sce->val3&=~1;
 				status_calc_bl(bl,SCB_SPEED);
 			}
 		}
-		else
+		/*else
 		{
 			if( !(sce->val4&1) )
 			{	//Add wall speed bonus
 				sce->val4|=1;
 				status_calc_bl(bl,SCB_SPEED);
 			}
-		}
+		}*/
 	}
 
 	return wall;

@@ -1377,10 +1377,7 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 			if (tsc->option&hide_flag && !(status->mode&MD_BOSS) &&
 				(sd->special_state.perfect_hiding || !(status->mode&MD_DETECTOR)))
 				return 0;
-			// FIXME: Are you seriously supposed to be ignored by all monsters? That can't be possible @_@.
-			// So right now I'm putting a check preventing this from happening at least with Boss monsters and detectors, but we
-			// will need to get back to this later. [LimitLine]
-			if ( sd->sc.data[SC_CAMOUFLAGE] && !(status->mode&MD_BOSS) && !(status->mode&MD_DETECTOR) )
+			if ( tsc->data[SC_CAMOUFLAGE] && !skill_num && !(status->mode&MD_BOSS) && !(status->mode&MD_DETECTOR) )
 				return 0;
 			if ( sc && sc->data[SC_VOICEOFSIREN] && sc->data[SC_VOICEOFSIREN]->val3 == sd->bl.id && !(status->mode&MD_BOSS) )
 				return 0;
@@ -1438,8 +1435,7 @@ int status_check_visibility(struct block_list *src, struct block_list *target)
 			!(status->mode&MD_BOSS) &&
 			(
 				((TBL_PC*)target)->special_state.perfect_hiding ||
-				!(status->mode&MD_DETECTOR) ||
-				(tsc->data[SC_CAMOUFLAGE])	// Once again, should you really have perfect hiding w/ Camouflage? [LimitLine]
+				!(status->mode&MD_DETECTOR) || (tsc->data[SC_CAMOUFLAGE])
 			))
 			return 0;
 		break;
@@ -3716,8 +3712,6 @@ static unsigned short status_calc_batk(struct block_list *bl, struct status_chan
 		batk += sc->data[SC_GATLINGFEVER]->val3;
 	if(sc->data[SC_MADNESSCANCEL])
 		batk += 100;
-	if(sc->data[SC_CAMOUFLAGE])
-		batk += batk * sc->data[SC_CAMOUFLAGE]->val3/100;	//Need Official Value
 	if(sc->data[SC_HAGALAZ])
 		batk -= batk / 100 * 25;
 	if(sc->data[SC_ECHO])
@@ -3818,8 +3812,6 @@ static signed short status_calc_critical(struct block_list *bl, struct status_ch
 		critical += sc->data[SC_TRUESIGHT]->val2;
 	if(sc->data[SC_CLOAKING])
 		critical += critical;
-	if(sc->data[SC_CAMOUFLAGE])
-		critical += critical;	//Need official Value
 	if(sc->data[SC_CLOAKINGEXCEED])
 		critical += critical;
 	if(sc->data[SC_INVISIBILITY_])
@@ -3979,8 +3971,6 @@ static signed char status_calc_def(struct block_list *bl, struct status_change *
 		def -= def * (sc->data[SC_FLING]->val2)/100;
 	if(sc->data[SC_FREEZING])
 		def -= def / 10 * 3;
-	if(sc->data[SC_CAMOUFLAGE])
-		def -= def * sc->data[SC_CAMOUFLAGE]->val3/100;	// Need Official Value
 	if(sc->data[SC_ANALYZE])
 		def -= 14 * sc->data[SC_ANALYZE]->val1;
 	if(sc->data[SC_WINDMILL])
@@ -4023,8 +4013,6 @@ static signed short status_calc_def2(struct block_list *bl, struct status_change
 		def2 -= def2 * (sc->data[SC_FLING]->val3)/100;
 	if( sc->data[SC_FREEZING] )
 		def2 -= def2 / 10 * 3;
-	if(sc->data[SC_CAMOUFLAGE])
-		def2 -= def2 * sc->data[SC_CAMOUFLAGE]->val3/100;	//Need Official Value
 	if(sc->data[SC_ANALYZE])
 		def2 -= 14 * sc->data[SC_ANALYZE]->val1;
 	if(sc->data[SC_WINDMILL])
@@ -4185,8 +4173,8 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 					val = max( val, 70 );
 				if( sc->data[SC_MARSHOFABYSS] )
 					val = max( val, 50 );
-				if( sc->data[SC_CAMOUFLAGE] && (sc->data[SC_CAMOUFLAGE]->val4&1) == 0 )
-					val = max( val, sc->data[SC_CAMOUFLAGE]->val1 < 3 ? 300 : 30 - 3 * sc->data[SC_CAMOUFLAGE]->val1 );	//Need official Value
+				if( sc->data[SC_CAMOUFLAGE] && (sc->data[SC_CAMOUFLAGE]->val3&1) == 0 )
+					val = max( val, sc->data[SC_CAMOUFLAGE]->val1 < 3 ? 300 : 25 * (6 - sc->data[SC_CAMOUFLAGE]->val1) );
 				if( sc->data[SC_HALLUCINATIONWALK_DELAY] )
 					val = max( val, 50 );
 				if( sc->data[SC_GROOMY_] )
@@ -4223,8 +4211,6 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				val = max( val, 10 * sc->data[SC_AVOID]->val1 );
 			if( sc->data[SC_INVINCIBLE] && !sc->data[SC_INVINCIBLEOFF] )
 				val = max( val, 75 );
-			if( sc->data[SC_CAMOUFLAGE] && (sc->data[SC_CAMOUFLAGE]->val4&1) == 1 )
-				val = max( val, sc->data[SC_CAMOUFLAGE]->val1 >= 5 ? 25 : 3 * sc->data[SC_CAMOUFLAGE]->val1 - 3 );	// Need official Value
 			if( sc->data[SC_WUGDASH] )
 				val = max( val, 15 );
 			if( sc->data[SC_CLOAKINGEXCEED] && (sc->data[SC_CLOAKINGEXCEED]->val4&1) == 1 )
@@ -5306,11 +5292,6 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		if( sd && pc_checkskill(sd, AS_CLOAKING) < 3 && !skill_check_cloaking(bl,NULL) )
 			return 0;
 	break;
-	case SC_CAMOUFLAGE:
-		//Avoid camouflage with no wall and low skill level. [Skotlex]
-		if( sd && pc_checkskill(sd, RA_CAMOUFLAGE) < 3 && !skill_check_camouflage(bl,NULL) )
-			return 0;
-	break;
 	case SC_CLOAKINGEXCEED:
 		//Avoid cloaking with no wall and low skill level. [Skotlex]
 		if( sd && pc_checkskill(sd, GC_CLOAKINGEXCEED) < 3 && !skill_check_cloaking(bl,NULL) )
@@ -5402,6 +5383,18 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		}
 		if (tick == 1) return 1; //Minimal duration: Only strip without causing the SC
 	break;
+	case SC_MERC_FLEEUP:
+	case SC_MERC_ATKUP:
+	case SC_MERC_HPUP:
+	case SC_MERC_SPUP:
+	case SC_MERC_HITUP:
+		if( bl->type != BL_MER )
+			return 0; // Stats only for Mercenaries
+	break;
+	case SC_CAMOUFLAGE:
+		if( sd && pc_checkskill(sd, RA_CAMOUFLAGE) < 3 && !skill_check_camouflage(bl,NULL) )
+			return 0;
+	break;
 	case SC_STRIPACCESSORY:
 		if (sd) {
 			int i;
@@ -5424,14 +5417,6 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			if (!opt_flag) return 0;
 		}
 		if (tick == 1) return 1; //Minimal duration: Only strip without causing the SC
-	break;
-	case SC_MERC_FLEEUP:
-	case SC_MERC_ATKUP:
-	case SC_MERC_HPUP:
-	case SC_MERC_SPUP:
-	case SC_MERC_HITUP:
-		if( bl->type != BL_MER )
-			return 0; // Stats only for Mercenaries
 	break;
 	case SC_LERADSDEW:
 		if( sc->data[SC_BERSERK] )
@@ -5980,14 +5965,6 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			val3 = skill_get_splash(val2, val1); //Val2 should bring the skill-id.
 			val2 = tick/250;
 			tick = 10;
-			break;
-		case SC_CAMOUFLAGE:
-			if (!sd) //Monsters should be able to walk with no penalties and should not have any SP consumption. [Skotlex]
-			{ val1 = 5; val2 = 0; }
-			else val2 = 7 - pc_checkskill(sd, RA_CAMOUFLAGE); //SP cost p/second.
-			val3 = 5+5*val1; // Def Reduction, Atk and Crit increment
-			if (bl->type == BL_PC) val4 |= battle_config.pc_camouflage_check_type&7; //Standard camouflage.
-			else val4 |= battle_config.monster_camouflage_check_type&7;
 			break;
 		case SC_CLOAKINGEXCEED:
 			if( sc->data[SC_CLOAKING] )	// No overlapping effects? [LimitLine]
@@ -6688,6 +6665,11 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		case SC_ELECTRICSHOCKER:
 			val2 = 1;
 			tick = val2;
+			break;
+		case SC_CAMOUFLAGE:
+			val2 = tick/1000;
+			val3 |= battle_config.pc_camouflage_check_type&7;
+			tick = 1000;
 			break;
 		case SC_REPRODUCE_:
 			if( sd )
@@ -7840,7 +7822,6 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		sc_timer_next(sce->val2+tick, status_change_timer, bl->id, data);
 		return 0;
 
-	case SC_CAMOUFLAGE:
 	case SC_CLOAKINGEXCEED:
 		if(!status_charge(bl, 0, sce->val2))
 			break; //Not enough SP to continue.
@@ -8207,6 +8188,16 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 				sc_timer_next(1000 + tick, status_change_timer, bl->id, data );
 			}
 		return 0;
+
+	case SC_CAMOUFLAGE:
+		if( --(sce->val2)>0 )
+		{
+			if( !status_charge(bl, 0, 7 - sce->val1) )
+			if( status->sp < 0 ) break;
+			sc_timer_next(1000 + tick, status_change_timer, bl->id, data);
+			return 0;
+		}
+		break;
 
 	case SC_RENOVATIO:
 		if( --(sce->val3) > 0 )
@@ -8595,7 +8586,7 @@ static int status_natural_heal(struct block_list* bl, va_list args)
 
 	if (flag && (
 		status_isdead(bl) ||
-		(sc && (sc->option&(OPTION_HIDE|OPTION_CLOAK|OPTION_CHASEWALK)||(sc->data[SC_CAMOUFLAGE])))
+		(sc && (sc->option&(OPTION_HIDE|OPTION_CLOAK|OPTION_CHASEWALK)))
 	))
 		flag=0;
 
