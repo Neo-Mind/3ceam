@@ -3878,7 +3878,13 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 
 	case WL_SIENNAEXECRATE:
 		if( flag&1 )
-			sc_start(bl, SC_STONE, 50 + skilllv * 5, skilllv, skill_get_time(skillid, skilllv));
+		{
+			struct status_change *tsc = status_get_sc(bl);
+			if( tsc && tsc->data[SC_STONE] )
+				status_change_end(bl,SC_STONE,-1);
+			else
+				sc_start(bl, SC_STONE, 40 + skilllv * 8, skilllv, skill_get_time(skillid, skilllv));
+		}
 		else
 			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
 		break;
