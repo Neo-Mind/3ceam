@@ -5,6 +5,12 @@
 // 	- Details.
 //========================================
 
+01/15/2010
+	r101 [LimitLine]
+	* Fixed Chain Lightning hitting allies.
+	* Fixed Freezing duration trough Frost Misty.
+	* Fixed Demonic Fire hitting everyone.
+
 12/27/2009
 	r80 [Rytech]
 	*Added Royal Guard V2 and Minstrel Wanderer V2 translation files to the Google Translated folder.
