@@ -10749,8 +10749,8 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 	case BS_MAXIMIZE:		case NV_TRICKDEAD:	case TF_HIDING:			case AS_CLOAKING:		case CR_AUTOGUARD:
 	case ML_AUTOGUARD:		case CR_DEFENDER:	case ML_DEFENDER:		case ST_CHASEWALK:		case PA_GOSPEL:
 	case CR_SHRINK:			case TK_RUN:		case GS_GATLINGFEVER:	case TK_READYCOUNTER:	case TK_READYDOWN:
-	case TK_READYSTORM:		case TK_READYTURN:	case SG_FUSION:			case RA_CAMOUFLAGE:		case GC_CLOAKINGEXCEED:
-	case GC_HALLUCINATIONWALK:					case SC_INVISIBILITY:
+	case TK_READYSTORM:		case TK_READYTURN:	case SG_FUSION:			case GC_CLOAKINGEXCEED:	case GC_HALLUCINATIONWALK:
+	case SC_INVISIBILITY:
 		if( sc && sc->data[status_skill2sc(skill)] )
 			return 1;
 	}
@@ -11554,8 +11554,8 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
 	case BS_MAXIMIZE:		case NV_TRICKDEAD:	case TF_HIDING:			case AS_CLOAKING:		case CR_AUTOGUARD:
 	case ML_AUTOGUARD:		case CR_DEFENDER:	case ML_DEFENDER:		case ST_CHASEWALK:		case PA_GOSPEL:
 	case CR_SHRINK:			case TK_RUN:		case GS_GATLINGFEVER:	case TK_READYCOUNTER:	case TK_READYDOWN:
-	case TK_READYSTORM:		case TK_READYTURN:	case SG_FUSION:			case RA_CAMOUFLAGE:		case GC_CLOAKINGEXCEED:
-	case GC_HALLUCINATIONWALK:					case SC_INVISIBILITY:
+	case TK_READYSTORM:		case TK_READYTURN:	case SG_FUSION:			case GC_CLOAKINGEXCEED:	case GC_HALLUCINATIONWALK:
+	case SC_INVISIBILITY:
 		if( sc && sc->data[status_skill2sc(skill)] )
 			return req;
 	}

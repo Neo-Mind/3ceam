@@ -6,6 +6,14 @@
 //========================================
 
 01/15/2010
+	r107 [Jobbie]
+	* Uncomment the player setting which can use both warg and falcon.
+	* Re-added the 0xd1 UNT id of feint bomb which has been removed during the merge of SC skills from trunk. (followed up r104)
+	* Minor clean up to Camouflage skill.
+	* When a person which in raising dragon state die, it should not gain any spiritballs.
+	* Removed Freeze and Stone status in status_change_spread as its not included to the status to be spreaded.
+	- Uncommented GX poisons which can be spreaded also using Deadly Infect skill.
+	
 	r104 [pakpil]
 	* Merged all Rune Knight skill from trunk.
 	* Merged all availables Shadow Chanser skill from trunk.

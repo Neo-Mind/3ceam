@@ -7573,7 +7573,7 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 				clif_millenniumshield(sd,0);
 			break;
 		case SC_RAISINGDRAGON:
-			if( sd && sce->val2 ){// After the status duration ended 5 spiritballs will only remain. [Jobbie]
+			if( sd && sce->val2 && !pc_isdead(sd) ){// After the status duration ended 5 spiritballs will only remain. [Jobbie]
 				int i;
 				pc_delspiritball(sd,sd->spiritball,0);
 				status_change_end(bl,SC_EXPLOSIONSPIRITS,-1);
@@ -8616,9 +8616,7 @@ int status_change_spread( struct block_list *src, struct block_list *bl )
 		{				
 			//Debuffs that can be spreaded.
 			// NOTE: We'll add/delte SCs when we are able to confirm it.
-			case SC_STONE:
 			case SC_STUN:
-			case SC_FREEZE:
 			case SC_SLEEP:
 			case SC_POISON:
 			case SC_CURSE:
@@ -8643,8 +8641,6 @@ int status_change_spread( struct block_list *src, struct block_list *bl )
 			case SC_FREEZING:
 			case SC_BURNING:
 			case SC_FEAR:
-			// Uncoment these line when this sc are available. [pakpil]
-			/* 
 			case SC_PYREXIA:
 			case SC_PARALIZE:
 			case SC_DISHEART:
@@ -8653,7 +8649,6 @@ int status_change_spread( struct block_list *src, struct block_list *bl )
 			case SC_TOXIN:
 			case SC_OBLIVIONCURSE:
 			case SC_LEECHEND:
-			*/
 				if (sc->data[i]->timer != -1)
 				{
 					timer = get_timer(sc->data[i]->timer);
