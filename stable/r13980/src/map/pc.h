@@ -515,12 +515,12 @@ extern int duel_count;
 #define pc_ischasewalk(sd)    ( (sd)->sc.option&OPTION_CHASEWALK )
 #define pc_iscarton(sd)       ( (sd)->sc.option&OPTION_CART )
 #define pc_isfalcon(sd)       ( (sd)->sc.option&OPTION_FALCON )
-#define pc_isriding(sd)       ( (sd)->sc.option&OPTION_RIDING && !((sd)->class_&JOBL_THIRD) )
-#define pc_isridingdragon(sd) ( (sd)->sc.option&OPTION_RIDING_DRAGON )
+//#define pc_isriding(sd)       ( (sd)->sc.option&OPTION_RIDING && !((sd)->class_&JOBL_THIRD) )
+//#define pc_isridingdragon(sd) ( (sd)->sc.option&OPTION_RIDING_DRAGON )
 #define pc_iswarg(sd)         ( (sd)->sc.option&OPTION_WUG )
-#define pc_isridingwarg(sd)   ( (sd)->sc.option&OPTION_RIDING_WUG )
-#define pc_isridingmado(sd)   ( (sd)->sc.option&OPTION_MADO )
-#define pc_isridinggryphon(sd) ( (sd)->sc.option&OPTION_RIDING && ((sd)->class_&JOBL_THIRD) )
+//#define pc_isridingwarg(sd)   ( (sd)->sc.option&OPTION_RIDING_WUG )
+//#define pc_isridingmado(sd)   ( (sd)->sc.option&OPTION_MADO )
+//#define pc_isridinggryphon(sd) ( (sd)->sc.option&OPTION_RIDING && ((sd)->class_&JOBL_THIRD) )
 #define pc_isinvisible(sd)    ( (sd)->sc.option&OPTION_INVISIBLE )
 #define pc_is50overweight(sd) ( (sd)->weight*100 >= (sd)->max_weight*battle_config.natural_heal_weight_rate )
 #define pc_is90overweight(sd) ( (sd)->weight*10 >= (sd)->max_weight*9 )
@@ -659,6 +659,7 @@ int pc_setcart(struct map_session_data* sd, int type);
 int pc_setfalcon(struct map_session_data* sd, int flag);
 int pc_setwarg(struct map_session_data* sd, int flag);
 int pc_setriding(struct map_session_data* sd, int flag);
+bool pc_isriding( struct map_session_data *sd, int flag );
 int pc_changelook(struct map_session_data *,int,int);
 int pc_equiplookall(struct map_session_data *sd);
 

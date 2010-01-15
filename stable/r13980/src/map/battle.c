@@ -810,12 +810,12 @@ int battle_addmastery(struct map_session_data *sd,struct block_list *target,int 
 	if((skill = pc_checkskill(sd,NC_RESEARCHFE)) > 0 && (status->def_ele == ELE_FIRE || status->def_ele == ELE_EARTH) )
 		damage += (skill * 10);
 
-	if( pc_isridingwarg(sd) && (skill = pc_checkskill(sd,RA_TOOTHOFWUG)) > 0 )	// Increases wolf damage.
+	if( pc_isriding(sd, OPTION_RIDING_WUG) && (skill = pc_checkskill(sd,RA_TOOTHOFWUG)) > 0 )	// Increases wolf damage.
 	// The reason why pc_iswarg isn't checked above is because when it is active you can only use it via skills (where the bonus
 	// is put somewhere else)
 		damage += 6 * skill;
 
-	if( pc_isridingmado(sd) )
+	if( pc_isriding(sd, OPTION_MADO) )
 		damage += 40 * pc_checkskill(sd, NC_MADOLICENCE);
 
 	if(type == 0)
@@ -838,7 +838,7 @@ int battle_addmastery(struct map_session_data *sd,struct block_list *target,int 
 		case W_1HSPEAR:
 		case W_2HSPEAR:
 			if((skill = pc_checkskill(sd,KN_SPEARMASTERY)) > 0) {
-				if(!pc_isriding(sd))
+				if(!pc_isriding(sd, OPTION_RIDING|OPTION_RIDING_DRAGON))
 					damage += (skill * (4 + pc_checkskill(sd,RK_DRAGONTRAINING)));
 				else
 					damage += (skill * (5 + pc_checkskill(sd,RK_DRAGONTRAINING)));
@@ -1945,7 +1945,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					if( sd )
 					{
 						skillratio += 25 * (pc_checkskill(sd,KN_SPEARMASTERY)-1);
-						if( pc_isridingdragon(sd) )
+						if( pc_isriding(sd, OPTION_RIDING_DRAGON) )
 							skillratio += 50;
 					}
 					break;

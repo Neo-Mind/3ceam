@@ -6750,9 +6750,9 @@ int pc_setwarg(TBL_PC* sd, int flag)
 		return 0;
 
 	if( flag ){
-		if( (pc_checkskill(sd,RA_WUGMASTERY)>0) && !(pc_isfalcon(sd)) && !(pc_iswarg(sd)) && !(pc_isridingwarg(sd)) )
+		if( (pc_checkskill(sd,RA_WUGMASTERY)>0) && !(pc_isfalcon(sd)) && !(pc_iswarg(sd)) && !(pc_isriding(sd, OPTION_RIDING_WUG)) )
 			pc_setoption(sd,sd->sc.option|OPTION_WUG);
-	} else if( pc_isridingwarg(sd) ) {
+	} else if( pc_isriding(sd, OPTION_RIDING_WUG) ) {
 		pc_setoption(sd,sd->sc.option&~OPTION_RIDING_WUG);
 	} else if( pc_iswarg(sd) ){
 		pc_setoption(sd,sd->sc.option&~OPTION_WUG); // remove warg
@@ -6789,7 +6789,7 @@ int pc_setriding(TBL_PC* sd, int flag)
 			skillnum = KN_RIDING;
 			break;
 		case JOB_RUNE_KNIGHT: case JOB_RUNE_KNIGHT2: case JOB_RUNE_KNIGHT_T:  case JOB_RUNE_KNIGHT_T2:
-			option = (pc_isriding(sd))?OPTION_RIDING_DRAGON:((flag==2)?OPTION_BLACK_DRAGON:(flag==3)?OPTION_WHITE_DRAGON:(flag==4)?OPTION_BLUE_DRAGON:(flag==5)?OPTION_RED_DRAGON:OPTION_GREEN_DRAGON);
+			option = (pc_isriding(sd, OPTION_RIDING_DRAGON))?OPTION_RIDING_DRAGON:((flag==2)?OPTION_BLACK_DRAGON:(flag==3)?OPTION_WHITE_DRAGON:(flag==4)?OPTION_BLUE_DRAGON:(flag==5)?OPTION_RED_DRAGON:OPTION_GREEN_DRAGON);
 			skillnum = RK_DRAGONTRAINING;
 			break;
 		case JOB_RANGER: case JOB_RANGER2: case JOB_RANGER_T: case JOB_RANGER_T2:
@@ -6808,12 +6808,53 @@ int pc_setriding(TBL_PC* sd, int flag)
 		if( pc_checkskill(sd,skillnum) > 0 ) // Check if you have the necessary skill to mount.
 			pc_setoption(sd, sd->sc.option|option);
 	}
-	else if( pc_isriding(sd) || pc_isridingdragon(sd) || pc_isridingwarg(sd) || pc_isridingmado(sd) || pc_isridinggryphon(sd) )
+	else if( pc_isriding(sd, OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_RIDING_WUG|OPTION_MADO) )
 	{
 		pc_setoption(sd, sd->sc.option&~option);
 	}
 
 	return 0;
+}
+
+/*========================================
+ * Check if a char is mounted or not.
+ -----------------------------------------*/
+bool pc_isriding( struct map_session_data *sd, int flag )
+{
+	int class_;
+	bool isriding = false;
+	
+	class_ = pc_mapid2jobid(sd->class_&MAPID_THIRDMASK, sd->status.sex);
+	
+	if( class_ == -1 )
+	{
+		ShowError("pc_isriding: Invalid class %d for player %s (%d:%d).\n", sd->status.class_, sd->status.name, sd->status.account_id, sd->status.char_id);
+		return -1;
+	}
+	
+	switch( class_ )
+	{
+		case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
+		case JOB_LORD_KNIGHT: case JOB_LORD_KNIGHT2: case JOB_PALADIN: case JOB_PALADIN2:
+		case JOB_ROYAL_GUARD: case JOB_ROYAL_GUARD2: case JOB_ROYAL_GUARD_T: case JOB_ROYAL_GUARD_T2:
+			if( sd->sc.option&OPTION_RIDING && (flag&OPTION_RIDING) )
+				isriding = true;
+			break;
+		case JOB_RUNE_KNIGHT: case JOB_RUNE_KNIGHT2: case JOB_RUNE_KNIGHT_T:  case JOB_RUNE_KNIGHT_T2:
+			if( sd->sc.option&(OPTION_RIDING_DRAGON) && (flag&(OPTION_RIDING_DRAGON)) )
+				isriding = true;
+			break;
+		case JOB_RANGER: case JOB_RANGER2: case JOB_RANGER_T: case JOB_RANGER_T2:
+			if( sd->sc.option&OPTION_RIDING_WUG  && (flag&OPTION_RIDING_WUG))
+				isriding = true;
+			break;
+		case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
+			if( sd->sc.option&OPTION_MADO  && (flag&OPTION_MADO) )
+				isriding = true;
+			break;
+	}
+
+	return isriding;
 }
 
 /*==========================================

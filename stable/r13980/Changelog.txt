@@ -6,6 +6,11 @@
 //========================================
 
 01/15/2010
+	r110 [pakpil]
+	* Merged riding behavior from trunk and fixed.
+	* Fixed SC_GROOMY that wasn't removed mounts.
+
+01/15/2010
 	r109 [Jobbie]
 	* Fixed some map_freeblock_timer error caused by some skills.
 

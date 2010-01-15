@@ -1988,7 +1988,7 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	status->mode = MD_MASK&~(MD_BOSS|MD_PLANT|MD_DETECTOR|MD_ANGRY);
 
 	status->size = (sd->class_&JOBL_BABY)?0:1;
-	if ( battle_config.character_size && ( pc_isriding(sd) || pc_isridingwarg(sd) || pc_isridingmado(sd) || pc_isridinggryphon(sd)) ) { //[Lupus]
+	if ( battle_config.character_size && pc_isriding(sd, OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_RIDING_WUG|OPTION_MADO) ) { //[Lupus]
 		if (sd->class_&JOBL_BABY) {
 			if (battle_config.character_size&2)
 				status->size++;
@@ -2262,7 +2262,7 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	sd->left_weapon.atkmods[1] = atkmods[1][sd->weapontype2];
 	sd->left_weapon.atkmods[2] = atkmods[2][sd->weapontype2];
 
-	if(pc_isriding(sd) &&
+	if(pc_isriding(sd, OPTION_RIDING|(OPTION_RIDING_DRAGON)) &&
 		(sd->status.weapon==W_1HSPEAR || sd->status.weapon==W_2HSPEAR))
 	{	//When Riding with spear, damage modifier to mid-class becomes 
 		//same as versus large size.
@@ -2525,11 +2525,11 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	if((skill=pc_checkskill(sd,GS_SINGLEACTION))>0 &&
 		(sd->status.weapon >= W_REVOLVER && sd->status.weapon <= W_GRENADE))
 		status->aspd_rate -= ((skill+1)/2) * 10;
-	if(pc_isriding(sd))
+	if(pc_isriding(sd, OPTION_RIDING))
 		if ((skill=pc_checkskill(sd,KN_CAVALIERMASTERY))>0) {
 			status->aspd_rate += 500-100*pc_checkskill(sd,KN_CAVALIERMASTERY);
 		}
-	if(pc_isridingdragon(sd))
+	if(pc_isriding(sd, OPTION_RIDING_DRAGON))
 		if ((skill=pc_checkskill(sd,RK_DRAGONTRAINING))>0) {
 			status->aspd_rate += 500-100*pc_checkskill(sd,RK_DRAGONTRAINING);
 		}
@@ -2549,13 +2549,13 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	// Weight
 	if((skill=pc_checkskill(sd,MC_INCCARRY))>0)
 		sd->max_weight += 2000*skill;
-	if(pc_isriding(sd) && pc_checkskill(sd,KN_RIDING)>0)
+	if(pc_isriding(sd, OPTION_RIDING)  && !(sd->class_&JOBL_THIRD) && pc_checkskill(sd,KN_RIDING)>0)
 		sd->max_weight += 10000;
-	if(pc_isridingdragon(sd) && (skill=pc_checkskill(sd,RK_DRAGONTRAINING))>0)
+	if(pc_isriding(sd, OPTION_RIDING_DRAGON) && (skill=pc_checkskill(sd,RK_DRAGONTRAINING))>0)
 		sd->max_weight += sd->max_weight * (30 + skill) / 100;
-	if(pc_isridingmado(sd))
+	if(pc_isriding(sd, OPTION_MADO))
 		sd->max_weight += 20000;
-	if(pc_isridinggryphon(sd))
+	if(pc_isriding(sd, OPTION_RIDING) && (sd->class_&JOBL_THIRD))
 		sd->max_weight += 10000;
 	if(sc->data[SC_KNOWLEDGE])
 		sd->max_weight += sd->max_weight*sc->data[SC_KNOWLEDGE]->val1/10;
@@ -4120,16 +4120,16 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 			if( sc->data[SC_FUSION] )
 				val = 25;
 			else
-			if( sd && pc_isriding(sd) )
+			if( sd && pc_isriding(sd, OPTION_RIDING) && !(sd->class_&JOBL_THIRD) )
 				val = 25;
 			else
-			if( sd && pc_isridingdragon(sd) )
+			if( sd && pc_isriding(sd, OPTION_RIDING_DRAGON) )
 				val = 25;
 			else
-			if( sd && pc_isridingwarg(sd) )
+			if( sd && pc_isriding(sd, OPTION_RIDING_WUG) )
 				val = 10*(pc_checkskill(sd,RA_WUGRIDER));
 			else
-			if( sd && pc_isridingmado(sd) )
+			if( sd && pc_isriding(sd, OPTION_MADO) )
 			{
 				int valmado = pc_checkskill(sd,NC_MADOLICENCE)*10;
 				val = speed_rate + speed_rate/100*valmado;
@@ -4146,7 +4146,7 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				val = 0;
 			}
 			else
-			if( sd && pc_isridinggryphon(sd) )
+			if( sd && pc_isriding(sd, OPTION_RIDING) && !(sd->class_&JOBL_THIRD) )
 				val = 25;
 			speed_rate -= val;
 		}
@@ -6732,10 +6732,10 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		case SC__GROOMY:
 			val2 = 5 * val1;
 			val3 = 10 + 2 * val1;
-			val_flag |= 1|2|4;			
+			val_flag |= 1|2|4;
 			if( sd )
 			{
-				if( pc_isriding(sd) ) pc_setriding(sd, sd->sc.option&~OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_RIDING_WUG );
+				if( pc_isriding(sd,OPTION_RIDING|OPTION_RIDING_DRAGON|OPTION_RIDING_WUG) ) pc_setriding(sd, 0);
 				if( pc_iswarg(sd) ) pc_setoption(sd, sd->sc.option&~OPTION_WUG);
 				if( pc_isfalcon(sd) ) pc_setoption(sd, sd->sc.option&~OPTION_FALCON);
 				if( sd->status.pet_id > 0 ) pet_menu(sd, 3);
@@ -8240,7 +8240,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		break;
 
 	case SC_OVERHEAT:
-		if( sd && !pc_isridingmado(sd) )
+		if( sd && !pc_isriding(sd, OPTION_MADO) )
 			status_change_end(bl, SC_OVERHEAT, -1);
 		else
 		{
