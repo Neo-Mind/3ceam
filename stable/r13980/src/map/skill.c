@@ -3693,7 +3693,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 			else
 			{
 				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				break;
 			}
 		}
 		break;
@@ -6904,7 +6904,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			sc_start2(bl, type, 40 + skilllv * 10, skilllv, src->id, skill_get_time(skillid, skilllv))) )
 		{
 			clif_skill_fail(sd, skillid, 0, 0);
-			return 0;
+			break;
 		}else
 			return 0;
 		break;
@@ -7118,9 +7118,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			struct status_change *sc = status_get_sc(src);
 			if( sc && !sc->data[SC_HOVERING] )
 			{
-				if( sd )
-					clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+				break;
 			}
 			clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start(bl, type, 100, skilllv, skill_get_time(skillid, skilllv)));
@@ -7172,10 +7171,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			if( !clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start2(bl, type, 40 + skilllv * 10, skilllv, src->id, skill_get_time(skillid, skilllv))) )
 			{
-			
-				if( sd )
-					clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+				break;
 			}
 			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
@@ -7190,14 +7187,13 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			heal = tsd->status.max_hp / 100 * (3 + skilllv * 3);
 			if( !pc_isridingmado(tsd) )
 			{
-				if( sd )
-					clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+				break;
 			}
 			if( status_isimmune(bl) )
 				heal = 0;
-			clif_skill_nodamage(src, bl, skillid, skilllv,
-				status_heal(bl, heal, 0, 2));
+			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
+			clif_skill_nodamage(src, bl, skillid, skilllv, status_heal(bl, heal, 0, 2));
 
 		}
 		break;
@@ -7298,9 +7294,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				sc_start(bl, type, 100, skilllv, skill_get_time(skillid, skilllv)));
 		else
 		{
-			if( sd )
-				clif_skill_fail(sd, skillid, 0, 0);
-			return 0;
+			if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+			break;
 		}
 		break;
 
@@ -7310,7 +7305,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			if( rand()%100 > 88 + 2 * skilllv )
 			{
 				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				break;
 			}
 			clif_skill_nodamage(src, bl, skillid, 0, 1);
 			status_revive(bl, 1, 0);
@@ -7386,7 +7381,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				else if( sd )
 				{
 					clif_skill_fail(sd, skillid, 0, 0);
-					return 0;
+					break;
 				}
 			}
 			else
@@ -7469,7 +7464,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			else
 			{
 				clif_skill_fail(sd,skillid,0x15,0);
-				return 0;
+				break;
 			}
 		}
 		break;
@@ -7481,7 +7476,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			if( ((TBL_PC*)bl)->shadowform_id > 0 )
 			{
 				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				break;
 			}
 			if( clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start4(src, type, 100, skilllv, bl->id, 5, 0, skill_get_time(skillid, skilllv))))
@@ -7519,9 +7514,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case SC_WEAKNESS:
 		if( tsc && tsc->data[type] )
 		{
-			if( sd )
-				clif_skill_fail(sd,skillid,0,0);
-			return 0;
+			if( sd ) clif_skill_fail(sd,skillid,0,0);
+			break;
 		}
 		clif_skill_nodamage(src,bl,skillid,0,
 			sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)));
@@ -7530,9 +7524,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case SC_IGNORANCE:
 		if( tsc && tsc->data[type] )
 		{
-			if( sd )
-				clif_skill_fail(sd,skillid,0,0);
-			return 0;
+			if( sd ) clif_skill_fail(sd,skillid,0,0);
+			break;
 		}
 		if( sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)) )
 		{
@@ -7560,7 +7553,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		else if( sd )
 		{
 			clif_skill_fail(sd,skillid,0,0);
-			return 0;
+			break;
 		}
 		break;
 	
@@ -7591,8 +7584,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			int i;
 			if( !dstsd )
 			{
-				if( sd )
-					clif_skill_fail(sd,skillid,0,0);
+				if( sd ) clif_skill_fail(sd,skillid,0,0);
 				break;
 			}
 			else
@@ -7607,9 +7599,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				}			
 				else
 				{
-					if( sd )
-						clif_skill_fail(sd,skillid,0,0);
-					return 0;
+					if( sd ) clif_skill_fail(sd,skillid,0,0);
+					break;
 				}
 			}
 		}

@@ -6,6 +6,9 @@
 //========================================
 
 01/15/2010
+	r109 [Jobbie]
+	* Fixed some map_freeblock_timer error caused by some skills.
+
 	r107 [Jobbie]
 	* Uncomment the player setting which can use both warg and falcon.
 	* Re-added the 0xd1 UNT id of feint bomb which has been removed during the merge of SC skills from trunk. (followed up r104)
