@@ -4641,7 +4641,7 @@ int atcommand_get_wug(const int fd, struct map_session_data* sd, const char* com
 		return -1;
 	}
 
-	if(pc_isfalcon(sd))	// player has a falcon.
+	if( pc_isfalcon(sd) && !battle_config.warg_can_falcon )	// player has a falcon.
 	{
 		clif_displaymessage(fd, msg_txt(709));
 		return -1;

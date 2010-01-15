@@ -4633,6 +4633,7 @@ static const struct _battle_data {
 	{ "bg_flee_penalty",                    &battle_config.bg_flee_penalty,                 20,     0,      INT_MAX,        },
 // Casting Time Settings
 	{ "renewal_cast_enable",                &battle_config.renewal_cast_enable,              1,     0,            1,        },
+	{ "warg_can_falcon",                    &battle_config.warg_can_falcon,                  0,     0,            1,        },
 };
 
 

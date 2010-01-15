@@ -7178,7 +7178,7 @@ BUILDIN_FUNC(checkwarg)
 		script_pushint(st, 0); 
 
 	return 0; 
-} 
+}
 
 /// Sets if the player has a warg or not. 
 /// <flag> defaults to 1 

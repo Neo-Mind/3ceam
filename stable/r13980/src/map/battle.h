@@ -485,6 +485,8 @@ extern struct Battle_Config
 
 	// Cast Time Settings [Jobbie]
 	int renewal_cast_enable;
+	int warg_can_falcon;
+
 } battle_config;
 
 void do_init_battle(void);
