@@ -785,15 +785,15 @@ int pc_isequip(struct map_session_data *sd,int n)
 
 	if (sd->sc.count) {
 			
-		if(item->equip & EQP_ARMS && item->type == IT_WEAPON && (sd->sc.data[SC_STRIPWEAPON] || sd->sc.data[SC_WEAKNESS_])) // Also works with left-hand weapons [DracoRPG]
+		if(item->equip & EQP_ARMS && item->type == IT_WEAPON && sd->sc.data[SC_STRIPWEAPON]) // Also works with left-hand weapons [DracoRPG]
 			return 0;
-		if(item->equip & EQP_SHIELD && item->type == IT_ARMOR && (sd->sc.data[SC_STRIPSHIELD] || sd->sc.data[SC_WEAKNESS_]))
+		if(item->equip & EQP_SHIELD && item->type == IT_ARMOR && sd->sc.data[SC_STRIPSHIELD])
 			return 0;
 		if(item->equip & EQP_ARMOR && sd->sc.data[SC_STRIPARMOR])
 			return 0;
 		if(item->equip & EQP_HELM && sd->sc.data[SC_STRIPHELM])
 			return 0;
-		if(item->equip & EQP_ACC && sd->sc.data[SC_STRIPACCESSORY])
+		if(item->equip & EQP_ACC && sd->sc.data[SC__STRIPACCESSORY])
 			return 0;
 
 		if (sd->sc.data[SC_SPIRIT] && sd->sc.data[SC_SPIRIT]->val2 == SL_SUPERNOVICE) {
@@ -1062,6 +1062,17 @@ int pc_reg_received(struct map_session_data *sd)
 			sd->status.skill[sd->cloneskill_id].flag = 13;	//cloneskill flag			
 		}
 	}
+	if ((i = pc_checkskill(sd,SC_REPRODUCE)) > 0) {
+		sd->reproduceskill_id = pc_readglobalreg(sd,"REPRODUCE_SKILL");
+		if( sd->reproduceskill_id > 0)
+		{
+			sd->status.skill[sd->reproduceskill_id].id = sd->reproduceskill_id;
+			sd->status.skill[sd->reproduceskill_id].lv = pc_readglobalreg(sd,"REPRODUCE_SKILL_LV");
+			if( i < sd->status.skill[sd->reproduceskill_id].lv)
+				sd->status.skill[sd->reproduceskill_id].lv = i;
+			sd->status.skill[sd->reproduceskill_id].flag = 13;
+		}
+	}
 
 	//Weird... maybe registries were reloaded?
 	if (sd->state.active)
@@ -1142,11 +1153,10 @@ int pc_calc_skilltree(struct map_session_data *sd)
 	int c=0;
 
 	nullpo_retr(0, sd);
-	i = pc_calc_skilltree_normalize_job(sd);
-	c = pc_mapid2jobid(i, sd->status.sex);
+	c = pc_mapid2jobid(sd->class_, sd->status.sex);
 	if( c == -1 )
 	{ //Unable to normalize job??
-		ShowError("pc_calc_skilltree: Unable to normalize job %d for character %s (%d:%d)\n", i, sd->status.name, sd->status.account_id, sd->status.char_id);
+		ShowError("pc_calc_skilltree: Unable to normalize job %d for character %s (%d:%d)\n", sd->class_, sd->status.name, sd->status.account_id, sd->status.char_id);
 		return 1;
 	}
 	c = pc_class2idx(c);
@@ -1297,6 +1307,7 @@ static void pc_check_skilltree(struct map_session_data *sd, int skill)
 		return;
 	}
 	c = pc_class2idx(c);
+
 	do {
 		flag = 0;
 		for( i = 0; i < MAX_SKILL_TREE && (id=skill_tree[c][i].id)>0; i++ )
@@ -1367,26 +1378,27 @@ int pc_calc_skilltree_normalize_job(struct map_session_data *sd)
 	int skill_point;
 	int c = sd->class_;
 	
-	if (!battle_config.skillup_limit)
+	if( !battle_config.skillup_limit )
 		return c;
 	
 	skill_point = pc_calc_skillpoint(sd);
-	if(pc_checkskill(sd, NV_BASIC) < 9) //Consider Novice Tree when you don't have NV_BASIC maxed.
+	if( pc_checkskill(sd, NV_BASIC) < 9 ) //Consider Novice Tree when you don't have NV_BASIC maxed.
 		c = MAPID_NOVICE;
 	else
 	//Do not send S. Novices to first class (Novice)
-	if ((sd->class_&JOBL_2) && (sd->class_&MAPID_UPPERMASK) != MAPID_SUPER_NOVICE &&
+	if( (sd->class_&JOBL_2) && (sd->class_&MAPID_UPPERMASK) != MAPID_SUPER_NOVICE &&
 		sd->status.skill_point >= sd->status.job_level &&
-		((sd->change_level[0] > 0)?(skill_point < sd->change_level[0]+8):(skill_point < 58))) {
+		((sd->change_level[0] > 0 && skill_point < sd->change_level[0]+8) || skill_point < 58))
+	{
 		//Send it to first class.
 		c &= MAPID_BASEMASK;
 		if( (sd->class_&MAPID_THIRDMASK) >= MAPID_RUNE_KNIGHT )
 			c &= MAPID_THIRDMASK;
 	}
 	else
-	if ((sd->class_&MAPID_THIRDMASK) >= MAPID_RUNE_KNIGHT &&
+	if( (sd->class_&MAPID_THIRDMASK) >= MAPID_RUNE_KNIGHT &&
 		sd->status.skill_point >= sd->status.job_level &&
-		((sd->change_level[1] > 0)?(skill_point < sd->change_level[0]+sd->change_level[1]+7):(skill_point < ((sd->class_&JOBL_THIRD_UPPER)?126:107))))
+		((sd->change_level[1] > 0 && skill_point < (sd->change_level[0] + sd->change_level[1] + 7)) || skill_point < (sd->class_&JOBL_THIRD_UPPER) ? 127 : 107) )
 	{
 			// Send it to 2nd class
 		c ^= (sd->class_&JOBL_THIRD_UPPER)?JOBL_THIRD_UPPER:JOBL_THIRD_BASE;
@@ -2985,7 +2997,7 @@ int pc_skill(TBL_PC* sd, int id, int level, int flag)
 			sd->status.skill[id].id = 0;
 		if( !skill_get_inf(id) ) //Only recalculate for passive skills.
 			status_calc_pc(sd, 0);
-		clif_skillinfoblock(sd);
+		(level) ? clif_addskill(sd,id) : clif_skillinfo_delete(sd,id);
 	break;
 	case 2: //Add skill bonus on top of what you had.
 		if( sd->status.skill[id].id == id ){
@@ -3592,19 +3604,23 @@ int pc_useitem(struct map_session_data *sd,int n)
 		return 0;
 
 	// In this case these sc are cooldown for these skills
-	if( itemdb_is_rune(sd->status.inventory[n].nameid) && sd->sc.count )
+	if( itemdb_is_rune(sd->status.inventory[n].nameid) )
 	{
-		if( (sd->status.inventory[n].nameid == ITEMID_NAUTHIZ && sd->sc.data[SC_NAUTHIZ])
-		 || (sd->status.inventory[n].nameid == ITEMID_RAIDO && sd->sc.data[SC_RAIDO])
-		 || (sd->status.inventory[n].nameid == ITEMID_BERKANA && sd->sc.data[SC_BERKANA])
-		 || (sd->status.inventory[n].nameid == ITEMID_ISA && sd->sc.data[SC_ISA])
-		 || (sd->status.inventory[n].nameid == ITEMID_OTHILA && sd->sc.data[SC_OTHILA])
-		 || (sd->status.inventory[n].nameid == ITEMID_URUZ && sd->sc.data[SC_URUZ])
-		 || (sd->status.inventory[n].nameid == ITEMID_THURISAZ && sd->sc.data[SC_THURISAZ])
-		 || (sd->status.inventory[n].nameid == ITEMID_WYRD && sd->sc.data[SC_WYRD])
-		 || (sd->status.inventory[n].nameid == ITEMID_HAGALAZ && sd->sc.data[SC_HAGALAZ])
-			)
-		return 0;
+		int skill = 0;
+		switch(sd->status.inventory[n].nameid)
+		{
+			case ITEMID_NAUTHIZ: skill = RK_REFRESH; break;
+			case ITEMID_RAIDO: skill = RK_CRUSHSTRIKE; break;
+			case ITEMID_BERKANA: skill = RK_MILLENNIUMSHIELD; break;
+			case ITEMID_ISA: skill = RK_VITALITYACTIVATION; break;
+			case ITEMID_OTHILA: skill = RK_FIGHTINGSPIRIT; break;
+			case ITEMID_URUZ: skill = RK_ABUNDANCE; break;
+			case ITEMID_THURISAZ: skill = RK_GIANTGROWTH; break;
+			case ITEMID_WYRD: skill = RK_STORMBLAST; break;
+			case ITEMID_HAGALAZ: skill = RK_STONEHARDSKIN; break;
+		}
+		if (sd->blockskill[skill] > 0)
+			return 0; // Nothing to do.
 	}
 
 	if( !pc_isUseitem(sd,n) )
@@ -3620,8 +3636,8 @@ int pc_useitem(struct map_session_data *sd,int n)
 		sd->sc.data[SC_TRICKDEAD] ||
 		sd->sc.data[SC_HIDING] ||
 		sd->sc.data[SC_WHITEIMPRISON] ||
-		sd->sc.data[SC_SHADOWFORM_] ||
-		sd->sc.data[SC_INVISIBILITY_] ||
+		sd->sc.data[SC__SHADOWFORM] ||
+		sd->sc.data[SC__INVISIBILITY] ||
 		(sd->sc.data[SC_NOCHAT] && sd->sc.data[SC_NOCHAT]->val1&MANNER_NOITEM)
 	))
 		return 0;
@@ -3640,6 +3656,18 @@ int pc_useitem(struct map_session_data *sd,int n)
 
 	amount = sd->status.inventory[n].amount;
 	script = sd->inventory_data[n]->script;
+	
+	// If any other class that isn't Rune Knight class, uses one rune, this is consumed without nothing happends.
+	if( itemdb_is_rune(sd->status.inventory[n].nameid) &&
+		!((sd->class_&MAPID_THIRDMASK) == MAPID_RUNE_KNIGHT || (sd->class_&MAPID_THIRDMASK) == MAPID_RUNE_KNIGHT_T) )
+	{
+		clif_useitemack(sd,n,amount-1,1);
+		if( log_config.enable_logs&0x100 )
+			log_pick_pc(sd, "C", sd->status.inventory[n].nameid, -1, &sd->status.inventory[n]);
+		pc_delitem(sd,n,1,1);
+		return 1;
+	}
+
 	//Check if the item is to be consumed immediately [Skotlex]
 	if( sd->inventory_data[n]->flag.delay_consume )
 		clif_useitemack(sd,n,amount,1);
@@ -4020,10 +4048,6 @@ int pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y
 			}
 			if (sd->sc.data[SC_MAGNETICFIELD])
 				status_change_end(&sd->bl,SC_MAGNETICFIELD,-1);
-			if (sd->sc.data[SC_BODYPAINT_])
-				status_change_end(&sd->bl,SC_BODYPAINT_,-1);
-			if (sd->sc.data[SC_MANHOLE_])
-				status_change_end(&sd->bl,SC_MANHOLE_,-1);
 			if (sd->sc.data[SC_CURSEDCIRCLE])
 				status_change_end(&sd->bl,SC_CURSEDCIRCLE,-1);
 		}
@@ -5192,6 +5216,7 @@ int pc_statusup2(struct map_session_data* sd, int type, int val)
  *------------------------------------------*/
 int pc_skillup(struct map_session_data *sd,int skill_num)
 {
+	int skill_point, i;
 	nullpo_retr(0, sd);
 
 	if( skill_num >= GD_SKILLBASE && skill_num < GD_SKILLBASE+MAX_GUILDSKILL )
@@ -5208,6 +5233,34 @@ int pc_skillup(struct map_session_data *sd,int skill_num)
 
 	if( skill_num < 0 || skill_num >= MAX_SKILL )
 		return 0;
+	
+	skill_point = pc_calc_skillpoint(sd);
+
+	if( (sd->class_&JOBL_2) && (sd->class_&MAPID_UPPERMASK) != MAPID_SUPER_NOVICE &&
+		sd->status.skill_point >= sd->status.job_level && skill_num >= KN_SPEARMASTERY &&
+		((sd->change_level[0] > 0 && skill_point < sd->change_level[0]+8) || skill_point < 58))
+	{
+		i = (sd->change_level[0] > 0 ? sd->change_level[0]+8:58) - skill_point;		
+		clif_msgtable_num(sd->fd,1566,i);
+		return 0;
+	}
+	else if( (sd->class_&MAPID_THIRDMASK) >= MAPID_RUNE_KNIGHT &&
+		sd->status.skill_point >= sd->status.job_level )
+	{
+		if( ((sd->change_level[0] > 0 && skill_point < sd->change_level[0]+8) || skill_point < 58) && skill_num >= KN_SPEARMASTERY)
+		{
+			i = (sd->change_level[0] > 0 ? sd->change_level[0]+8:58) - skill_point;		
+			clif_msgtable_num(sd->fd,1566,i);
+			return 0;
+		}
+		if( skill_point < (sd->change_level[1] > 0 ? sd->change_level[0] + sd->change_level[1] + 7 : (sd->class_&JOBL_THIRD_UPPER) ? 127 : 107) &&
+			skill_num >= RK_ENCHANTBLADE && skill_num <= SR_RIDEINLIGHTNING )
+		{
+			i = (sd->change_level[1] > 0 ? sd->change_level[0] + sd->change_level[1] + 7 : (sd->class_&JOBL_THIRD_UPPER) ? 127 : 107) - skill_point;
+			clif_msgtable_num(sd->fd,1567, i);
+			return 0;
+		}
+	}
 
 	if( sd->status.skill_point > 0 &&
 		sd->status.skill[skill_num].id &&
@@ -5221,15 +5274,16 @@ int pc_skillup(struct map_session_data *sd,int skill_num)
 		else if( sd->status.skill_point == 0 && (sd->class_&MAPID_UPPERMASK) == MAPID_TAEKWON && sd->status.base_level >= 90 && pc_famerank(sd->status.char_id, MAPID_TAEKWON) )
 			pc_calc_skilltree(sd); // Required to grant all TK Ranger skills.
 		else
-			pc_check_skilltree(sd, skill_num); // Check if a new skill can Lvlup
+			pc_check_skilltree(sd, 0); // Check if a new skill can Lvlup
 
 		clif_skillup(sd,skill_num);
 		clif_updatestatus(sd,SP_SKILLPOINT);
 		if( skill_num == GN_REMODELING_CART )
 			clif_updatestatus(sd,SP_CARTINFO);
+		//FIXME: The server have to send clif_skillup() with all skills
+		//available to the current job tab instead clif_skillinfoblock. [pakpil]
 		clif_skillinfoblock(sd);
 	}
-
 	return 0;
 }
 
@@ -5658,6 +5712,19 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 		struct map_session_data *devsd = map_id2sd(sd->devotion[k]);
 		if (devsd) status_change_end(&devsd->bl,SC_DEVOTION,-1);
 		sd->devotion[k] = 0;
+	}
+	
+	if( sd->shadowform_id )
+	{
+		struct map_session_data *s_sd = map_id2sd(sd->shadowform_id);
+		if( s_sd ) status_change_end(&s_sd->bl,SC__SHADOWFORM,-1);
+		sd->shadowform_id = 0;
+	}
+
+	if( sd->sc.count && sd->sc.data[SC__SHADOWFORM] )
+	{
+		struct map_session_data *s_sd = map_id2sd(sd->shadowform_id);
+		if( s_sd ) s_sd->shadowform_id = 0 ;
 	}
 
 	if(sd->status.pet_id > 0 && sd->pd)
@@ -6191,7 +6258,7 @@ int pc_itemheal(struct map_session_data *sd,int itemid, int hp,int sp)
 
 	if( sd->sc.data[SC_ISA] )
 	{
-		hp += hp * 150 / 100; // 1.5 times
+		hp += hp / 2; // 1.5 times
 		sp -= sp / 2;
 	}
 
@@ -6305,7 +6372,11 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 		pc_setglobalreg(sd, "CLONE_SKILL_LV", 0);
 	}
 	if(sd->reproduceskill_id)
+	{
 		sd->reproduceskill_id = 0;
+		pc_setglobalreg(sd, "REPRODUCE_SKILL",0);
+		pc_setglobalreg(sd, "REPRODUCE_SKILL_LV",0);
+	}
 	if ((b_class&&MAPID_THIRDMASK) != (sd->class_&MAPID_THIRDMASK))
 	{ //Things to remove when changing class tree.
 		const int class_ = pc_class2idx(sd->status.class_);
@@ -6653,8 +6724,8 @@ int pc_setcart(struct map_session_data *sd,int type)
  *------------------------------------------*/
 int pc_setfalcon(TBL_PC* sd, int flag)
 {
-	if( sd->sc.data[SC_GROOMY_] )
-		return 0; // While this sc is activated, you cannot get a falcon.
+	if( sd->sc.count && sd->sc.data[SC__GROOMY] )
+		return 0;
 
 	if( flag )
 	{ // You cannot get falcon while riding warg or while you have warg.
@@ -6674,6 +6745,10 @@ int pc_setfalcon(TBL_PC* sd, int flag)
  *------------------------------------------*/
 int pc_setwarg(TBL_PC* sd, int flag)
 {
+
+	if( sd->sc.count && sd->sc.data[SC__GROOMY] )
+		return 0;
+
 	if( flag ){
 		if( (pc_checkskill(sd,RA_WUGMASTERY)>0) && !(pc_isfalcon(sd)) && !(pc_iswarg(sd)) && !(pc_isridingwarg(sd)) )
 			pc_setoption(sd,sd->sc.option|OPTION_WUG);
@@ -6692,6 +6767,9 @@ int pc_setwarg(TBL_PC* sd, int flag)
 int pc_setriding(TBL_PC* sd, int flag)
 {
 	int class_, option=0, skillnum=0;
+
+	if( sd->sc.count && sd->sc.data[SC__GROOMY] )
+		return 0;
 	
 	class_ = pc_mapid2jobid(sd->class_&MAPID_THIRDMASK, sd->status.sex);
 	

@@ -345,6 +345,7 @@ int skill_arrow_create( struct map_session_data *sd,int nameid);
 int skill_poisoningweaon(struct map_session_data *sd, int nameid);
 int skill_spellbook (struct map_session_data *sd, int nameid);
 int skill_magicdecoy (struct map_session_data *sd, int nameid);
+int skill_select_menu( struct map_session_data *sd, int flag, int skill_id); // Shadow Cheser Auto Shadow Spell [pakpil]
 
 // Chain Lightning Functions
 

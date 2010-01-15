@@ -400,9 +400,7 @@ typedef enum sc_type {
 	SC_HALLUCINATIONWALK_DELAY,
 	SC_ROLLINGCUTTER,
 
-	SC_STRIPACCESSORY = 470,
-
-	SC_SWINGDANCE = 490,
+	SC_SWINGDANCE = 470,
 	SC_SYMPHONY,
 	SC_MOONLIT,
 	SC_WINDMILL,
@@ -420,18 +418,22 @@ typedef enum sc_type {
 	SC_WARCRYOFBEYOND,
 	SC_HUMMINGVOICE,
 
-	SC_ENERVATION_ = 510,
-	SC_GROOMY_,
-	SC_IGNORANCE_,
-	SC_LAZINESS_,
-	SC_UNLUCKY_,
-	SC_WEAKNESS_,
-	SC_REPRODUCE_,
-	SC_AUTOSHADOWSPELL_,
-	SC_SHADOWFORM_,
-	SC_BODYPAINT_,
-	SC_INVISIBILITY_,
-	SC_MANHOLE_,
+	SC__ENERVATION = 510,
+	SC__GROOMY,
+	SC__IGNORANCE,
+	SC__LAZINESS,
+	SC__UNLUCKY,
+	SC__WEAKNESS,
+	SC__REPRODUCE,
+	SC__AUTOSHADOWSPELL,
+	SC__SHADOWFORM,
+	SC__STRIPACCESSORY,
+	SC__BODYPAINT,
+	SC__INVISIBILITY,
+	SC__DEADLYINFECT,
+	SC__MANHOLE,
+	SC_CHAOS,
+	SC__BLOODYLUST,
 
 	SC_CRESCENTELBOW = 530,
 	SC_CURSEDCIRCLE,
@@ -915,7 +917,7 @@ enum si_type {
 };
 
 enum wl_spheres {
-	WLS_FIRE = 84,
+	WLS_FIRE = 0x44,//0X54
 	WLS_WIND,
 	WLS_WATER,
 	WLS_STONE,
@@ -1294,6 +1296,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data);
 int status_change_timer_sub(struct block_list* bl, va_list ap);
 int status_change_clear(struct block_list* bl, int type);
 int status_change_clear_buffs(struct block_list* bl, int type);
+int status_change_spread( struct block_list *src, struct block_list *bl );
 
 #define status_calc_bl(bl, flag) status_calc_bl_(bl, flag, false)
 #define status_calc_mob(md, first) status_calc_bl_(&(md)->bl, SCB_ALL, first)

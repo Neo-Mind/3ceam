@@ -303,7 +303,7 @@ int unit_walktoxy( struct block_list *bl, short x, short y, int flag)
 	ud->to_y = y;
 	
 	sc = status_get_sc(bl);
-	if (sc && sc->data[SC_CONFUSION]) //Randomize the target position
+	if (sc && (sc->data[SC_CONFUSION] || sc->data[SC_CHAOS]) ) //Randomize the target position
 		map_random_dir(bl, &ud->to_x, &ud->to_y);
 
 	if(ud->walktimer != -1) {
@@ -371,7 +371,7 @@ int unit_walktobl(struct block_list *bl, struct block_list *tbl, int range, int 
 	ud->state.attack_continue = flag&2?1:0; //Chase to attack.
 
 	sc = status_get_sc(bl);
-	if (sc && sc->data[SC_CONFUSION]) //Randomize the target position
+	if (sc && (sc->data[SC_CONFUSION] || sc->data[SC_CHAOS]) ) //Randomize the target position
 		map_random_dir(bl, &ud->to_x, &ud->to_y);
 
 	if(ud->walktimer != -1) {
@@ -839,7 +839,7 @@ int unit_can_move(struct block_list *bl)
 			|| (sc->data[SC_GRAVITATION] && sc->data[SC_GRAVITATION]->val3 == BCT_SELF)
 			|| sc->data[SC_WHITEIMPRISON]
 			|| sc->data[SC_ELECTRICSHOCKER]
-			|| sc->data[SC_MANHOLE_]
+			|| sc->data[SC__MANHOLE]
 			|| (sc->data[SC_FEAR] && sc->data[SC_FEAR]->val2 > 0)
 			|| sc->data[SC_CURSEDCIRCLE_]
 			|| sc->data[SC_WALLOFTHORN]
@@ -1237,12 +1237,12 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 		if (!src->prev) return 0; //Warped away!
 	}
 
-	if( sc && sc->data[SC_MANHOLE_] )
+	if( sc && sc->data[SC__MANHOLE] )
 	{
-		status_change_end(src,SC_MANHOLE_,-1);
+		status_change_end(src,SC__MANHOLE,-1);
 		if (!src->prev) return 0; //Warped away!
 	}
-
+	
 	if( casttime > 0 )
 	{
 		ud->skilltimer = add_timer( tick+casttime, skill_castend_id, src->id, 0 );
@@ -1358,9 +1358,9 @@ int unit_skilluse_pos2( struct block_list *src, short skill_x, short skill_y, sh
 		if (!src->prev) return 0; //Warped away!
 	}
 
-	if( sc && sc->data[SC_MANHOLE_] )
+	if( sc && sc->data[SC__MANHOLE] )
 	{
-		status_change_end(src,SC_MANHOLE_,-1);
+		status_change_end(src,SC__MANHOLE,-1);
 		if (!src->prev) return 0; //Warped away!
 	}
 
@@ -1937,8 +1937,8 @@ int unit_remove_map_(struct block_list *bl, int clrtype, const char* file, int l
 		status_change_end(bl,SC_ELECTRICSHOCKER,-1);
 		status_change_end(bl,SC_WUGDASH,-1);
 		status_change_end(bl,SC_MAGNETICFIELD,-1);
-		status_change_end(bl,SC_SHADOWFORM_,-1);
-		status_change_end(bl,SC_MANHOLE_,-1);
+		status_change_end(bl,SC__SHADOWFORM,-1);
+		status_change_end(bl,SC__MANHOLE,-1);
 		status_change_end(bl,SC_WALLOFTHORN,-1);
 	}
 

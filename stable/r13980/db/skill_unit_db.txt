@@ -95,7 +95,6 @@
 535,0xbd,    , -1, 0,  20,enemy, 0x010	//NJ_KAENSIN
 538,0xbb,    ,  1:1:1:2:2:2:3:3:3:4,0,-1,all,0x010	//NJ_SUITON
 670,0xc7,    ,  1, 4:7:10:13:16:19:22:25:28:31,1000,all,0x008	//NPC_EVILLAND
-2008,0x86,   ,  0,3:3:3:5:5:5:7:7:9:9,1000,enemy, 0x000	//RK_DRAGONBREATH
 2032,0xe1,   ,  2, 0,1000,enemy, 0x018	//GC_POISONSMOKE
 2044,0xca,   ,  0, 3,1000,all,   0x018	//AB_EPICLESIS
 2209,0x86,   ,  0,7:9:11:13:15,1000,enemy, 0x000	//WL_STASIS
@@ -118,12 +117,10 @@
 2272,0x86,   ,1:2:3,0,1000,enemy,0x002	//NC_MAGNETICFIELD
 2273,0x86,   ,  1, 0,1000,ally,  0x002	//NC_NEUTRALBARRIER
 2274,0xa1,   ,  1, 0,1000,ally,  0x002	//NC_STEALTHFIELD
-2289,0x86,   ,  0, 1,1000,enemy, 0x000	//SC_BODYPAINT
-2299,0xcc,   ,  0, 1,1000,all,   0x004	//SC_MANHOLE
-2300,0xcd,   ,  0, 1,1000,all,   0x004	//SC_DIMENSIONDOOR
-2301,0xce,   ,  0, 1,1000,all,   0x000	//SC_CHAOSPANIC
-2303,0xd0,   ,  0, 1,1000,all,   0x000	//SC_BLOODYLUST
-2304,0xd1,   ,  0, 1,1000,all,   0x000	//SC_FEINTBOMB
+2299,0xcc,   ,  0, 1,1000,all,   0x006	//SC_MANHOLE
+2300,0xcd,   ,  0, 1,1000,all,   0x006	//SC_DIMENSIONDOOR
+2301,0xce,   ,  0, 5,1000,all,   0x00E	//SC_CHAOSPANIC
+2303,0xd0,   ,  0, 3,1000,all,   0x00E	//SC_BLOODYLUST
 2334,0x86,   ,  2, 0,  -1,enemy, 0x010	//SR_CURSEDCIRCLE
 2414,0xda,   ,  0, 0,1000,enemy, 0x000	//WM_REVERBERATION
 2415,0x86,   ,  0, 3,1000,enemy, 0x000	//WM_REVERBERATION_MELEE

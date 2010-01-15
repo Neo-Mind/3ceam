@@ -161,6 +161,44 @@ uint16 clif_getport(void)
 	return map_port;
 }
 
+// msgstringtable.txt
+// This message must be normalized
+// using "unsigned char msg[a][b]"
+// so that it can be displayed correctly.
+void clif_msgtable(int fd, int line)
+{
+	int a,b;
+
+	b = line / 255;
+	a = line - ( b * 255 ) - b;
+
+	WFIFOHEAD(fd, packet_len(0x291));
+	WFIFOW(fd, 0) = 0x291;
+	WFIFOB(fd, 2) = a;
+    WFIFOB(fd, 3) = b;
+	WFIFOSET(fd, packet_len(0x291));
+}
+
+// msgstringtable.txt
+// This message must be normalized
+// using "unsigned char msg[a][b]"
+// so that it can be displayed correctly.
+void clif_msgtable_num(int fd, int line, int num)
+{
+#if PACKETVER >= 20090805
+	int a,b;
+	b = line / 255;
+	a = line - ( b * 255 ) - b;
+
+	WFIFOHEAD(fd, packet_len(0x7e2));
+	WFIFOW(fd, 0) = 0x7e2;
+	WFIFOB(fd, 2) = a;
+    WFIFOB(fd, 3) = b;
+	WFIFOL(fd, 4) = num;
+	WFIFOSET(fd, packet_len(0x7e2));
+#endif
+}
+
 /*==========================================
  * clif_sendでAREA*指定時用
  *------------------------------------------*/
@@ -2947,6 +2985,40 @@ int clif_magicdecoy_list(struct map_session_data *sd)
 	return 1;
 }
 
+/*===========================================
+ * Skill list for Auto Shadow Spell
+ *------------------------------------------*/
+int clif_skill_select_request( struct map_session_data *sd )
+{
+	int fd, i, c;
+
+#if PACKETVER >= 20081210
+	nullpo_retr(0,sd);
+
+	fd = sd->fd;
+
+	if( !fd ) return 0;
+
+	WFIFOHEAD(fd, 2 * 6 + 4);
+	WFIFOW(fd,0) = 0x442;
+	for( i = 0, c = 0; i < MAX_SKILL; i++)
+	{
+		if( sd->status.skill[i].flag >= 13 && sd->status.skill[i].id <= NJ_ISSEN)
+		{
+			// Can't auto cast both Extended class and 3rd class skills.
+			WFIFOW(fd,8+c*2) = sd->reproduceskill_id;
+			c++;
+		}
+	}
+	sd->menuskill_id = SC_AUTOSHADOWSPELL;
+	sd->menuskill_val = c;
+	WFIFOW(fd,2) = 4+c*6;
+	WFIFOL(fd,4) = c;
+	WFIFOSET(fd,WFIFOW(fd,2));
+#endif
+
+	return 1;
+}
 
 /*==========================================
  *
@@ -4294,6 +4366,57 @@ int clif_skillinfoblock(struct map_session_data *sd)
 	return 1;
 }
 
+int clif_addskill(struct map_session_data *sd, int skill )
+{
+	int fd, id;
+
+	nullpo_retr(0, sd);
+
+	fd = sd->fd;
+	if (!fd) return 0;
+
+	if( (id = sd->status.skill[skill].id) <= 0 )
+		return 0;
+
+	WFIFOHEAD(fd, packet_len(0x111));
+	WFIFOW(fd,0) = 0x111;
+	WFIFOW(fd,2) = skill;
+	WFIFOW(fd,4) = sd->status.skill[skill].lv;
+	WFIFOW(fd,6) = 0;
+	WFIFOW(fd,8) = skill_get_inf(id);
+	WFIFOW(fd,10) = skill_get_sp(id,sd->status.skill[skill].lv);
+	WFIFOW(fd,12)= skill_get_range2(&sd->bl, id,sd->status.skill[skill].lv);
+	safestrncpy((char*)WFIFOP(fd,14), skill_get_name(id), NAME_LENGTH);
+	if( sd->status.skill[skill].flag == 0 )
+		WFIFOB(fd,38) = (sd->status.skill[skill].lv < skill_tree_get_max(id, sd->status.class_))? 1:0;
+	else
+		WFIFOB(fd,38) = 0;
+	WFIFOSET(fd,packet_len(0x111));
+
+	return 1;
+}
+
+int clif_skillinfo_delete(struct map_session_data *sd, int skill)
+{
+	int fd;
+
+#if PACKETVER >= 20081217
+	nullpo_retr(0, sd);
+
+	fd = sd->fd;
+
+	if( !fd ) return 0;
+
+	WFIFOHEAD(fd,packet_len(0x441));
+	WFIFOW(fd,0) = 0x441;
+	WFIFOW(fd,2) = skill;
+	WFIFOSET(fd,packet_len(0x441));
+#else
+	clif_skillinfoblock(sd);
+#endif
+	return 1;
+}
+
 /*==========================================
  * スキル割り振り通知
  *------------------------------------------*/
@@ -4323,7 +4446,13 @@ int clif_skillcasting(struct block_list* bl,
 	int src_id,int dst_id,int dst_x,int dst_y,int skill_num,int pl, int casttime)
 {
 	unsigned char buf[32];
-	WBUFW(buf,0) = 0x13e;
+	int cmd = 0x13e;
+
+#if PACKETVER >= 20091103
+	cmd = 0x7fb;
+#endif
+
+	WBUFW(buf,0) = cmd;
 	WBUFL(buf,2) = src_id;
 	WBUFL(buf,6) = dst_id;
 	WBUFW(buf,10) = dst_x;
@@ -4331,12 +4460,15 @@ int clif_skillcasting(struct block_list* bl,
 	WBUFW(buf,14) = skill_num;
 	WBUFL(buf,16) = pl<0?0:pl; //Avoid sending negatives as element [Skotlex]
 	WBUFL(buf,20) = casttime;
+#if PACKETVER >= 20091103
+	WBUFB(buf,24) = 0; // flag?
+#endif
 	if (disguised(bl)) {
-		clif_send(buf,packet_len(0x13e), bl, AREA_WOS);
+		clif_send(buf,packet_len(cmd), bl, AREA_WOS);
 		WBUFL(buf,2) = -src_id;
-		clif_send(buf,packet_len(0x13e), bl, SELF);
+		clif_send(buf,packet_len(cmd), bl, SELF);
 	} else
-		clif_send(buf,packet_len(0x13e), bl, AREA);
+		clif_send(buf,packet_len(cmd), bl, AREA);
 
 	return 0;
 }
@@ -4909,7 +5041,7 @@ int clif_status_change(struct block_list *bl, int type, int flag, unsigned int t
 		type == SI_READYTURN || type == SI_READYCOUNTER || type == SI_DODGE ||
 		type == SI_DEVIL || type == SI_NIGHT || type == SI_INTRAVISION || type == SI_WOLFMOUNT ||
 		type == SI_CLOAKING || type == SI_POISONINGWEAPON ||
-		type == SI_HIDING || type == SI_HALLUCINATIONWALK )
+		type == SI_HIDING || type == SI_HALLUCINATIONWALK || type == SI_REPRODUCE)
 		tick=0;
 
 	if( battle_config.display_status_timers && tick>0 )
@@ -6241,8 +6373,8 @@ int clif_sendegg(struct map_session_data *sd)
 		clif_displaymessage(fd, "Pets are not allowed in Guild Wars.");
 		return 0;
 	}
-	if( sd->sc.data[SC_GROOMY_] )
-		return 0; // While this sc is activated, you cannot hatch a pet.
+	if( sd->sc.count && sd->sc.data[SC__GROOMY] )
+		return 0;
 
 	WFIFOHEAD(fd, MAX_INVENTORY * 2 + 4);
 	WFIFOW(fd,0)=0x1a6;
@@ -8032,19 +8164,10 @@ void clif_viewequip_ack(struct map_session_data* sd, struct map_session_data* ts
 
 /*==========================================
  * View player equip request denied
- * R 0291 <message>.W
- * TODO: this looks like a general-purpose packet to print msgstringtable entries.
  *------------------------------------------*/
 void clif_viewequip_fail(struct map_session_data* sd)
 {
-	int fd;
-	nullpo_retv(sd);
-	fd = sd->fd;
-
-	WFIFOHEAD(fd, packet_len(0x291));
-	WFIFOW(fd, 0) = 0x291;
-	WFIFOW(fd, 2) = 0x54d;	// This controls which message is displayed. 0x54d is the correct one. Maybe it's used for something else too?
-	WFIFOSET(fd, packet_len(0x291));
+	clif_msgtable(sd->fd, 1357);
 }
 
 /// Validates one global/guild/party/whisper message packet and tries to recognize its components.
@@ -8725,7 +8848,8 @@ void clif_parse_QuitGame(int fd, struct map_session_data *sd)
 	WFIFOW(fd,0) = 0x18b;
 
 	/*	Rovert's prevent logout option fixed [Valaris]	*/
-	if( !sd->sc.data[SC_CLOAKING] && !sd->sc.data[SC_HIDING] && !sd->sc.data[SC_CHASEWALK] &&
+	if( !sd->sc.data[SC_CLOAKING] && !sd->sc.data[SC_HIDING] &&
+		!sd->sc.data[SC_CHASEWALK] && !sd->sc.data[SC__INVISIBILITY] &&
 		(!battle_config.prevent_logout || DIFF_TICK(gettick(), sd->canlog_tick) > battle_config.prevent_logout) )
 	{
 		set_eof(fd);
@@ -8967,7 +9091,7 @@ void clif_parse_HowManyConnections(int fd, struct map_session_data *sd)
 
 void clif_parse_ActionRequest_sub(struct map_session_data *sd, int action_type, int target_id, unsigned int tick)
 {
-	struct map_session_data *tsd;
+	struct status_change *tsc = status_get_sc(map_id2bl(target_id));
 
 	if (pc_isdead(sd)) {
 		clif_clearunit_area(&sd->bl, 1);
@@ -8986,8 +9110,6 @@ void clif_parse_ActionRequest_sub(struct map_session_data *sd, int action_type, 
 	if(target_id<0 && -target_id == sd->bl.id) // for disguises [Valaris]
 		target_id = sd->bl.id;
 
-	tsd = map_id2sd(target_id);
-
 	switch(action_type)
 	{
 	case 0x00: // once attack
@@ -9002,6 +9124,12 @@ void clif_parse_ActionRequest_sub(struct map_session_data *sd, int action_type, 
 		if( sd->sc.data[SC_BASILICA] )
 			return;
 
+		if( sd->sc.data[SC__SHADOWFORM] )
+			return;
+
+		if( (sd->sc.count && sd->sc.data[SC__MANHOLE]) || (tsc && tsc->data[SC__MANHOLE]) )
+			return;
+
 		if (!battle_config.sdelay_attack_enable && pc_checkskill(sd, SA_FREECAST) <= 0) {
 			if (DIFF_TICK(tick, sd->ud.canact_tick) < 0) {
 				clif_skill_fail(sd, 1, 4, 0);
@@ -9013,12 +9141,6 @@ void clif_parse_ActionRequest_sub(struct map_session_data *sd, int action_type, 
 			return;
 
 		if( sd->sc.data[SC_VOICEOFSIREN] && sd->sc.data[SC_VOICEOFSIREN]->val3 == target_id )
-			return;
-
-		if( sd->sc.data[SC_SHADOWFORM_] )
-			return;
-
-		if( sd->sc.data[SC_MANHOLE_] || (tsd && tsd->sc.data[SC_MANHOLE_]) )
 			return;
 
 		if( sd->sc.data[SC_CURSEDCIRCLE_] )
@@ -9090,7 +9212,7 @@ void clif_parse_Restart(int fd, struct map_session_data *sd)
 		break;
 	case 0x01:
 		/*	Rovert's Prevent logout option - Fixed [Valaris]	*/
-		if( !sd->sc.data[SC_CLOAKING] && !sd->sc.data[SC_HIDING] && !sd->sc.data[SC_CHASEWALK] &&
+		if( !sd->sc.data[SC_CLOAKING] && !sd->sc.data[SC_HIDING] && !sd->sc.data[SC_CHASEWALK] && !sd->sc.data[SC__INVISIBILITY] &&
 			(!battle_config.prevent_logout || DIFF_TICK(gettick(), sd->canlog_tick) > battle_config.prevent_logout) )
 		{	//Send to char-server for character selection.
 			chrif_charselectreq(sd, session[fd]->client_addr);
@@ -10123,14 +10245,9 @@ void clif_parse_RequestMemo(int fd,struct map_session_data *sd)
  *------------------------------------------*/
 void clif_parse_ProduceMix(int fd,struct map_session_data *sd)
 {
-	int qty = 1;
 	if (sd->menuskill_id !=	AM_PHARMACY && sd->menuskill_id != RK_RUNEMASTERY)
 		return;
 	
-	if( sd->menuskill_id == RK_RUNEMASTERY)
-		qty = rand()%2 + (pc_checkskill(sd,RK_RUNEMASTERY) > 5 )?1:0;
-
-
 	if (pc_istrading(sd)) {
 		//Make it fail to avoid shop exploits where you sell something different than you see.
 		clif_skill_fail(sd,sd->ud.skillid,0,0);
@@ -10139,6 +10256,24 @@ void clif_parse_ProduceMix(int fd,struct map_session_data *sd)
 	}
 	skill_produce_mix(sd,0,RFIFOW(fd,2),RFIFOW(fd,4),RFIFOW(fd,6),RFIFOW(fd,8), 1);
 	sd->menuskill_val = sd->menuskill_id = sd->menuskill_itemused = 0;
+}
+
+/*==========================================
+ * To SC_AUTOSHADOWSPELL
+ *------------------------------------------*/
+void clif_parse_SkillSelectMenu(int fd, struct map_session_data *sd)
+{
+	if( sd->menuskill_id != SC_AUTOSHADOWSPELL )
+		return;
+
+	if( pc_istrading(sd) )
+	{
+		clif_skill_fail(sd,sd->ud.skillid,0x15,0);
+		sd->menuskill_val = sd->menuskill_id = 0;
+		return;
+	}
+	skill_select_menu(sd,RFIFOL(fd,2),RFIFOW(fd,6));
+	sd->menuskill_val = sd->menuskill_id = 0;
 }
 /*==========================================
  *
@@ -13303,17 +13438,14 @@ void clif_parse_mercenary_action(int fd, struct map_session_data* sd)
 
 /*------------------------------------------
  * Mercenary Message
- * 0 = Mercenary soldier's duty hour is over.
- * 1 = Your mercenary soldier has been killed.
- * 2 = Your mercenary soldier has been fired.
- * 3 = Your mercenary soldier has ran away.
+ * 1266 = Mercenary soldier's duty hour is over.
+ * 1267 = Your mercenary soldier has been killed.
+ * 1268 = Your mercenary soldier has been fired.
+ * 1269 = Your mercenary soldier has ran away.
  *------------------------------------------*/
 void clif_mercenary_message(int fd, int message)
 {
-	WFIFOHEAD(fd,4);
-	WFIFOW(fd,0) = 0x0291;
-	WFIFOW(fd,2) = 1266 + message;
-	WFIFOSET(fd,4);
+	clif_msgtable(fd, 1266 + message);
 }
 
 /*------------------------------------------
@@ -13993,7 +14125,7 @@ static int packetdb_readdb(void)
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  0, 25,
 	//#0x0440
-	    8,  0,  0,  0,  0,  0, 14,  0,  0,  0,  6,  0,  0,  0,  0,  0,
+	    8,  4, -1,  0,  0,  0, 14,  0,  0,  0,  6,  0,  0,  0,  0,  0,
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -14069,9 +14201,9 @@ static int packetdb_readdb(void)
 #else // 0x7d9 changed
 	    6,  2, -1,  4,  4,  4,  4,  8,  8,268,  6,  8,  6, 54, 30, 54,
 #endif
-	    0,  0,  0,  0,  0,  8,  8, 32, -1,  5,  0,  0,  0,  0,  0,  0,
-	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	};
+	    0,  0,  8,  0,  0,  8,  8, 32, -1,  5,  0,  0,  0,  0,  0,  0,
+	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0,  0,  0,
+	  };
 	struct {
 		void (*func)(int, struct map_session_data *);
 		char *name;
@@ -14251,6 +14383,7 @@ static int packetdb_readdb(void)
 		{clif_parse_BattleChat,"battlechat"},
 		{clif_parse_mercenary_action,"mermenu"},
 		{clif_parse_progressbar,"progressbar"},
+		{clif_parse_SkillSelectMenu,"skillselectmenu"},
 		{NULL,NULL}
 	};
 

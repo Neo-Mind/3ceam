@@ -131,6 +131,7 @@ int clif_rune_create_list(struct map_session_data *sd, int trigger, int rune_ore
 int clif_selectpoison_list(struct map_session_data *sd); //[pakpil]
 int clif_spellbook_list(struct map_session_data *sd); //[LimitLine]
 int clif_magicdecoy_list(struct map_session_data *sd); //[LimitLine]
+int clif_skill_select_request( struct map_session_data *sd ); //self
 int clif_statusupack(struct map_session_data *,int,int,int);	// self
 int clif_equipitemack(struct map_session_data *,int,int,int);	// self
 int clif_unequipitemack(struct map_session_data *,int,int,int);	// self
@@ -196,6 +197,8 @@ int clif_mob_equip(struct mob_data *md,int nameid); // [Valaris]
 int clif_skillinfo(struct map_session_data *sd,int skillid,int type,int range);
 int clif_skillinfoblock(struct map_session_data *sd);
 int clif_skillup(struct map_session_data *sd,int skill_num);
+int clif_addskill(struct map_session_data *sd, int skill);
+int clif_skillinfo_delete(struct map_session_data *sd, int skill);
 
 int clif_skillcasting(struct block_list* bl,int src_id,int dst_id,int dst_x,int dst_y,int skill_num,int pl,int casttime);
 int clif_skillcastcancel(struct block_list* bl);
@@ -416,6 +419,9 @@ void clif_quest_update_status(struct map_session_data * sd, int quest_id, bool a
 void clif_quest_update_objective(struct map_session_data * sd, struct quest * qd, int index); 
 void clif_quest_show_event(struct map_session_data *sd, struct block_list *bl, short state, short color);
 
+
+void clif_msgtable(int fd, int line);
+void clif_msgtable_num(int fd, int line, int num);
 int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target type);
 int do_final_clif(void);
 int do_init_clif(void);

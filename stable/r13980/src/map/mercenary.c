@@ -66,8 +66,8 @@ int merc_create(struct map_session_data *sd, int class_, unsigned int lifetime)
 	int i;
 	nullpo_retr(1,sd);
 
-	if( sd->sc.data[SC_GROOMY_] )
-		return 0; // While this sc is activated, you cannont get a mercenary.
+	if( sd->sc.data[SC__GROOMY] )
+		return 0;
 
 	if( (i = merc_search_index(class_)) < 0 )
 		return 0;

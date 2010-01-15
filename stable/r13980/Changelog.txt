@@ -5,6 +5,15 @@
 // 	- Details.
 //========================================
 
+01/15/2010
+	r104 [pakpil]
+	* Merged all Rune Knight skill from trunk.
+	* Merged all availables Shadow Chanser skill from trunk.
+	* Merged packets clif_msgtable and clif_msgtable_num from trunk.
+	* Merged packets clif_addskill and clif_skillinfo_delete from trunk.
+	* Merged the new packet clif_skillcasting from trunk.
+	* Merged the new skillup behavior from trunk.
+
 01/11/2010
 	r103 [pakpil]
 	* Fixed WL_SIENNAEXECRATE.

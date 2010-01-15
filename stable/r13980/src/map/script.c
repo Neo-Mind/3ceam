@@ -13420,6 +13420,9 @@ BUILDIN_FUNC(mercenary_create)
 	if( !merc_class(class_) )
 		return 0;
 
+	if( sd->sc.count && sd->sc.data[SC__GROOMY] )
+		return 0;
+
 	contract_time = script_getnum(st,3);
 	merc_create(sd, class_, contract_time);
 
