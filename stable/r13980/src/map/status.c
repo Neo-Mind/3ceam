@@ -4120,34 +4120,17 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 			if( sc->data[SC_FUSION] )
 				val = 25;
 			else
-			if( sd && pc_isriding(sd, OPTION_RIDING) && !(sd->class_&JOBL_THIRD) )
-				val = 25;
+			if( sd && pc_isriding(sd, OPTION_RIDING) )
+			{
+				if( sd->class_&JOBL_THIRD ) val = 25;
+				else val = 25;
+			}
 			else
 			if( sd && pc_isriding(sd, OPTION_RIDING_DRAGON) )
 				val = 25;
 			else
 			if( sd && pc_isriding(sd, OPTION_RIDING_WUG) )
-				val = 10*(pc_checkskill(sd,RA_WUGRIDER));
-			else
-			if( sd && pc_isriding(sd, OPTION_MADO) )
-			{
-				int valmado = pc_checkskill(sd,NC_MADOLICENCE)*10;
-				val = speed_rate + speed_rate/100*valmado;
-				//TOTAL / 100 * required_percent = Final Percent
-				if( pc_checkskill(sd,NC_MADOLICENCE) > 4)
-					val = 0;
-				if( val> 300)
-					val = 300;
-				if( val< 0 )
-					val = 0;
-				if( pc_checkskill(sd,NC_MADOLICENCE) < 1)
-					val = speed_rate + speed_rate/100*50;
-				speed_rate += val;
-				val = 0;
-			}
-			else
-			if( sd && pc_isriding(sd, OPTION_RIDING) && !(sd->class_&JOBL_THIRD) )
-				val = 25;
+				val = 10 * pc_checkskill(sd, RA_WUGRIDER);
 			speed_rate -= val;
 		}
 
@@ -4279,6 +4262,8 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 			speed = speed * 100 / sc->data[SC_WALKSPEED]->val1;
 		if( sc->data[SC_PARALIZE])
 			speed += speed * 50 / 100;
+		if( sd && pc_isriding(sd, OPTION_MADO) )
+			speed += speed * (50 - 10 * pc_checkskill(sd, NC_MADOLICENCE)) / 100;
 	}
 
 	return (short)cap_value(speed,10,USHRT_MAX);
@@ -5501,6 +5486,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		status_change_end(bl,SC_WINDWALK,-1);
 		//Also blocks the ones below...
 	case SC_DECREASEAGI:
+		status_change_end(bl,SC_HALLUCINATIONWALK,-1);//kRO still confirming this. [Jobbie]
 		status_change_end(bl,SC_CARTBOOST,-1);
 		status_change_end(bl,SC_GN_CARTBOOST,-1); // Fixme: is it ok? [pakpil]
 		//Also blocks the ones below...
@@ -6645,7 +6631,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			val2 = 10 + 2 * val1; // succes rate: lvl1 = 12%, lvl2 = 14%, lvl3 = 16%, lvl4 = 18% and lvl5 = 20% [pakpil]
 			break;
 		case SC_HALLUCINATIONWALK:
-			val3 = tick?tick:10000; //HP consumption rate. Need to confirm this?
+			val3 = tick/10000; //HP consumption rate. Need to confirm this?
+			tick = 10000;
 			if( sc->data[SC_HALLUCINATIONWALK_DELAY] )
 				status_change_end(bl, SC_HALLUCINATIONWALK_DELAY, -1);	// Need to confirm this. [LimitLine]
 			break;
@@ -8261,12 +8248,17 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		break;
 
 	case SC_HALLUCINATIONWALK:
-		if( !status_charge(bl, 25, 0) )	{	// Need official HP drain value.
-			status_change_end(bl, SC_HALLUCINATIONWALK, -1);
-			break;	// Not enough HP to continue.
+		//10% of maxHP is consumed.
+		if( --(sce->val3) > 0 )
+		{
+			if( !status_charge(bl, status->max_hp * 10 / 100, 0) ){
+				status_change_end(bl, SC_HALLUCINATIONWALK, -1);
+				break;	// Not enough HP to continue.
+			}
+			sc_timer_next(10000 + tick, status_change_timer, bl->id, data);
+			return 0;
 		}
-		sc_timer_next(sce->val3 + gettick(), status_change_timer, bl->id, data);
-		return 0;
+		break;
 
 	case SC_PYREXIA:
 		if( --(sce->val4) >= 0 )

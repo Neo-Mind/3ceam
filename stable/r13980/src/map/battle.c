@@ -2020,6 +2020,9 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				case GC_CROSSIMPACT:
 					skillratio += 1050 + 50 * skill_lv;
 					break;
+				case GC_DARKILLUSION:
+					skillratio = 100;
+					break;
 				case GC_COUNTERSLASH:
 					skillratio += 200 + 100 * skill_lv;
 					break;
@@ -2031,11 +2034,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				case GC_CROSSRIPPERSLASHER:
 					skillratio += 60 + 40 * skill_lv;
-					if( sc && sc->data[SC_ROLLINGCUTTER] )
-					{
-						skillratio += sc->data[SC_ROLLINGCUTTER]->val1 * 20;// Need official value. [LimitLine]
-						status_change_end(src, SC_ROLLINGCUTTER, -1);
-					}
 					break;
 				case WM_METALICSOUND:
 					{
@@ -2081,6 +2079,9 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				case SR_RAMPAGEBLASTER:
 					skillratio = 50 * skill_lv;
+					if( sc && sc->data[SC_EXPLOSIONSPIRITS] )
+						//assumed chance of 50% to deal x2~x3 damage if in fury state. [Jobbie]
+						skillratio = skillratio*((rand()%100 < 50)?2:3);
 					break;
 				case SR_KNUCKLEARROW:
 					if( skill_lv <= 5 )
@@ -2211,6 +2212,12 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				if(sc && sc->data[SC_SPIRIT] &&
 					sc->data[SC_SPIRIT]->val2 == SL_CRUSADER)
 					ATK_ADDRATE(100);
+				break;
+			case GC_CROSSRIPPERSLASHER:
+				if(sc && sc->data[SC_ROLLINGCUTTER]){
+					ATK_ADDRATE(50*(sc->data[SC_ROLLINGCUTTER]->val1/2));
+					status_change_end(src,SC_ROLLINGCUTTER,-1);
+				}
 				break;
 			case NC_BOOSTKNUCKLE:
 			case NC_PILEBUNKER:

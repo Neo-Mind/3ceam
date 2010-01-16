@@ -1044,7 +1044,7 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 				skill_castend_damage_id(src, bl, NC_AXEBOOMERANG, pc_checkskill(sd, NC_AXEBOOMERANG), tick, 1);
 		break;
 	case GC_DARKILLUSION:
-		if(rand()%100 <= 15) //What's the official Value?
+		if(rand()%100 < 20)
 				skill_castend_damage_id(src, bl, GC_CROSSIMPACT, pc_checkskill(sd, GC_CROSSIMPACT), tick, 1);
 		break;
 	case GC_COUNTERSLASH:
@@ -3861,6 +3861,8 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		break;
 
 	case GC_DARKILLUSION:
+		if( map_flag_gvg(bl->m) || map[bl->m].flag.battleground )
+			return 0;//FIXME: Should be clif_fail message. [Jobbie]
 		if (unit_movepos(src, bl->x, bl->y, 1, 1)) {
 			clif_skill_poseffect(src,skillid,skilllv,bl->x,bl->y,tick);
 			skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
@@ -3926,19 +3928,20 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		break;
 
 	case GC_PHANTOMMENACE:
-	{
-		if( flag&1 )
 		{
-			struct status_change *tsc = status_get_sc(bl);
-			if( tsc && tsc->data[SC_HIDING] )
+			if( flag&1 )
 			{
-				status_change_end(bl, SC_HIDING, -1);
-				skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
+				struct status_change *tsc = status_get_sc(bl);
+				if( tsc && tsc->data[SC_HIDING] )
+				{
+					status_change_end(bl, SC_HIDING, -1);
+					skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
+				}
 			}
+			else
+				map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 		}
-		else
-			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
-	}
 		break;
 		
 	case WM_VOICEOFSIREN:
@@ -11713,7 +11716,7 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
 				}
 				//All spiritballs which is casted during the state of RD will be consumed. [Jobbie]
 				else if( sc->data[SC_RAISINGDRAGON])
-					req.spiritball = sd->spiritball;
+					req.spiritball = sd->spiritball?sd->spiritball:15;
 			}
 			break;
 	}

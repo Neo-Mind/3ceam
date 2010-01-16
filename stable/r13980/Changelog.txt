@@ -6,7 +6,21 @@
 //========================================
 
 01/16/2010
-	r111 [Jobbie]
+	r114 [Jobbie]
+	* Updated AfterCast, Casttime, Cooldown and Duration of some Glt.Cross skills.
+	* Fixed Dark Illusion skill.
+	- Its been a long time since the implementation the damage formula is not added.
+	- The skill cannot be used on WoE. Chance to autocast Cross Impact is 20%.
+	* Fixed Cross Ripper Slasher. Applied the official bonus damage formula from counter.
+	* Fixed animation for Phantom Menace.
+	* Fixed Hallucination Walk.
+	- Should have a duration of 25 seconds and 10% maxHP consumed when used.
+	* Fixed Rampage Blaster bonus damage upto 2~3x with fury state.
+	* Fixed Asura Strike which can be used without spiritballs when RD is first time to be used.
+	* Fixed again the bug of Gryphons movement speed when mounted.
+	* Fixed Mado Licence movement speed calculation.
+
+	r113 [Jobbie]
 	* Fixed the setting of warg_can_falcon which is still no function even its set to 1.
 
 01/15/2010

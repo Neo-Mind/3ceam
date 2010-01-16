@@ -6636,6 +6636,8 @@ int pc_setoption(struct map_session_data *sd,int type)
 		sd->status.sp = sd->status.mado_sp?sd->status.mado_sp:1;*/
 		clif_updatestatus(sd, SP_HP);
 		clif_updatestatus(sd, SP_SP);
+		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
+			status_calc_pc(sd, 0);
 		pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
 	}
 	else if (!(type&OPTION_MADO) && p_type&OPTION_MADO && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
@@ -6651,6 +6653,8 @@ int pc_setoption(struct map_session_data *sd,int type)
 		sd->status.sp = sd->status.mech_sp?sd->status.mech_sp:1;*/
 		clif_updatestatus(sd, SP_HP);
 		clif_updatestatus(sd, SP_SP);
+		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
+			status_calc_pc(sd, 0);
 		if( sd->sc.data[SC_SHAPESHIFT] )
 			status_change_end( &sd->bl, SC_SHAPESHIFT, -1);
 		pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
