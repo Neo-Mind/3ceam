@@ -5,20 +5,21 @@
 // 	- Details.
 //========================================
 
+01/16/2010
+	r111 [Jobbie]
+	* Fixed the setting of warg_can_falcon which is still no function even its set to 1.
+
 01/15/2010
 	r112 [pakpil]
 	* Added "warg_can_falcon" to battle_config to enable/disable wrags and falcon at a time. See conf/battle/player.conf
 
-01/15/2010
 	r111 [pakpil]
 	* Fixed SC_FEINTBOMB. Added deleted entry in skill_unit_db.txt. Sorry :/
 
-01/15/2010
 	r110 [pakpil]
 	* Merged riding behavior from trunk and fixed.
 	* Fixed SC_GROOMY that wasn't removed mounts.
 
-01/15/2010
 	r109 [Jobbie]
 	* Fixed some map_freeblock_timer error caused by some skills.
 
