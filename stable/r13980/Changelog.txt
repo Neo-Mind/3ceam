@@ -6,6 +6,10 @@
 //========================================
 
 01/17/2010
+	r122 [pakpil]
+	* Fixed a bug in the production of runes. Wyrd by Othila and vicebersa.
+
+01/17/2010
 	r121 [pakpil]
 	* Fiexed SC_SHADOWFORM that crashes the map_server when the target or the chaser is teleported.
 
