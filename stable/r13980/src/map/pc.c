@@ -4050,6 +4050,20 @@ int pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y
 				status_change_end(&sd->bl,SC_MAGNETICFIELD,-1);
 			if (sd->sc.data[SC_CURSEDCIRCLE])
 				status_change_end(&sd->bl,SC_CURSEDCIRCLE,-1);
+			if (sd->sc.data[SC__SHADOWFORM])
+			{
+				struct map_session_data *s_sd = map_id2sd(sd->sc.data[SC__SHADOWFORM]->val2);
+				if( s_sd )
+					sd->shadowform_id = 0;					
+				status_change_end(&sd->bl,SC__SHADOWFORM,-1);
+			}
+		}
+		if (sd->shadowform_id)
+		{
+			struct block_list *s_bl = map_id2bl(sd->shadowform_id);
+			if( s_bl )
+				status_change_end(s_bl,SC__SHADOWFORM,-1);
+			sd->shadowform_id = 0;
 		}
 		if (battle_config.clear_unit_onwarp&BL_PC)
 			skill_clear_unitgroup(&sd->bl);

@@ -6696,9 +6696,14 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			tick = 1000;
 			break;
 		case SC__SHADOWFORM:
-			val4 = tick / 1000;
-			val_flag |= 1|2|4;
-			tick = 1000;
+			{
+				struct map_session_data * s_sd = map_id2sd(val2);
+				if( s_sd )
+					s_sd->shadowform_id = bl->id;
+				val4 = tick / 1000;
+				val_flag |= 1|2|4;
+				tick = 1000;
+			}
 			break;
 		case SC__STRIPACCESSORY:
 			if (!sd)

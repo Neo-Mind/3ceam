@@ -7473,9 +7473,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				clif_skill_fail(sd, skillid, 0, 0);
 				break;
 			}
-			if( clif_skill_nodamage(src, bl, skillid, skilllv,
-				sc_start4(src, type, 100, skilllv, bl->id, 5, 0, skill_get_time(skillid, skilllv))))
-				((TBL_PC*)bl)->shadowform_id = src->id;
+			ShowDebug("bl->id = %d\n",bl->id);
+			clif_skill_nodamage(src, bl, skillid, skilllv,
+				sc_start4(src, type, 100, skilllv, bl->id, 5, 0, skill_get_time(skillid, skilllv)));
 		}
 		break;
 

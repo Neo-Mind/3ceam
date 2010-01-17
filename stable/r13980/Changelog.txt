@@ -6,6 +6,10 @@
 //========================================
 
 01/17/2010
+	r121 [pakpil]
+	* Fiexed SC_SHADOWFORM that crashes the map_server when the target or the chaser is teleported.
+
+01/17/2010
 	r120 [Jobbie]
 	* Fixed a riding dragon state.
 
