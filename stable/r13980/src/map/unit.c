@@ -1043,6 +1043,13 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 				return 0;
 			}
 			break;
+		case GC_VENOMPRESSURE:
+			if( !(sd->sc.data[SC_POISONINGWEAPON]) )
+			{
+				clif_skill_fail(sd,skill_num,0x20,0);
+				return 0;
+			}
+			break;
 		case RA_WUGMASTERY:
 			if((pc_isfalcon(sd) && !battle_config.warg_can_falcon) || sd->sc.data[SC__GROOMY])
 			{

@@ -4446,6 +4446,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 	case SA_QUESTION:
 	case SA_GRAVITY:
+	case GC_POISONINGWEAPON:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		break;
 	case SA_CLASSCHANGE:
@@ -7246,15 +7247,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				status_change_end(src, SC_POISONINGWEAPON, -1);
 			}
 			skill_castend_damage_id(src, bl, skillid, skilllv, tick, flag);
-			//status_change_end(src, SC_POISONINGWEAPON, -1);
-		}
-		break;
-
-	case GC_POISONINGWEAPON:
-		{
-			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
-			if( sd && !(clif_selectpoison_list( sd )) )
-				clif_skill_fail(sd,skillid,0,0);
 		}
 		break;
 
@@ -11063,11 +11055,10 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 			skill_check_pc_partner(sd, skill, &lv, 1, 1);
 		}
 		break;
-	case GC_VENOMPRESSURE:
-		if( sc && !(sc->data[SC_POISONINGWEAPON]) )
-		{	// Skill Failed.
-			status_change_end(&sd->bl, SC_POISONINGWEAPON, -1);
-			clif_skill_fail(sd, skill, 0, 0);
+	case GC_POISONINGWEAPON:
+		if( !(clif_selectpoison_list( sd )) )
+		{
+			clif_skill_fail(sd,skill,0x2B,0);
 			return 0;
 		}
 		break;
@@ -11232,7 +11223,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 	case ST_RIDINGWARG:
 		if(skill == RA_WUGRIDER){
 			if(!pc_isriding(sd, OPTION_RIDING_WUG) && !pc_iswarg(sd)) {
-				clif_skill_fail(sd,skill,23,0);
+				clif_skill_fail(sd,skill,0x17,0);
 				return 0;
 			}
 		}
@@ -11284,7 +11275,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 		break;
 	case ST_WEAPONBLOCKING:
 		if(!(sc && sc->data[SC_WEAPONBLOCKING_])) {
-			clif_skill_fail(sd,skill,23,0);
+			clif_skill_fail(sd,skill,0x17,0);
 			return 0;
 		}
 		break;
@@ -11296,7 +11287,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 		break;
 	case ST_ROLLINGCUTTER:
 		if(!(sc && sc->data[SC_ROLLINGCUTTER])) {
-			clif_skill_fail(sd,skill,0,0);
+			clif_skill_fail(sd,skill,0x17,0);
 			return 0;
 		}
 		break;
@@ -14157,16 +14148,23 @@ int skill_poisoningweaon (struct map_session_data *sd, int nameid)
 
 	switch(nameid)
 	{
-		case PARALYZE: p_sc = SC_PARALIZE; break;
-		case LEECHEND: p_sc = SC_LEECHEND; break;
-		case OBLIVIONCURSE: p_sc = SC_OBLIVIONCURSE; break;
-		case DISHEART: p_sc = SC_DISHEART; break;
-		case TOXIN: p_sc = SC_TOXIN; break;
-		case PYREXIA: p_sc = SC_PYREXIA;  break;
-		case MAGICMUSHROOM: p_sc = SC_MUSHROOM; break;
-		case VENOMBLEED: p_sc = SC_PARALIZE; break;
+		case TOXIN: p_sc = SC_TOXIN;		
+			clif_msgtable(sd->fd, 1442); break;
+		case PARALYZE: p_sc = SC_PARALIZE;		
+			clif_msgtable(sd->fd, 1443); break;
+		case VENOMBLEED: p_sc = SC_VENOMBLEED;	
+			clif_msgtable(sd->fd, 1444); break;
+		case MAGICMUSHROOM: p_sc = SC_MUSHROOM;	
+			clif_msgtable(sd->fd, 1445); break;
+		case DISHEART: p_sc = SC_DISHEART;
+			clif_msgtable(sd->fd, 1446); break;
+		case PYREXIA: p_sc = SC_PYREXIA;
+			clif_msgtable(sd->fd, 1447); break;
+		case OBLIVIONCURSE: p_sc = SC_OBLIVIONCURSE;
+			clif_msgtable(sd->fd, 1448); break;
+		case LEECHEND: p_sc = SC_LEECHEND;
+			clif_msgtable(sd->fd, 1449); break;
 		default:
-			clif_skill_fail(sd, GC_POISONINGWEAPON, 0, 0);
 			return 0;
 	}
 
@@ -14174,18 +14172,14 @@ int skill_poisoningweaon (struct map_session_data *sd, int nameid)
 	{
 		if(sd->status.inventory[i].nameid == nameid)
 		{
-			j = i;
-			break;
+			j = i; break;
 		}
 	}
 
 	if( pc_delitem(sd, j, 1, 0) )
-	{
-		clif_skill_fail(sd, GC_POISONINGWEAPON, 0, 0);
-	}
+		clif_skill_fail(sd, GC_POISONINGWEAPON, 0x2B, 0);
 	else
-		clif_skill_nodamage(&sd->bl, &sd->bl, GC_POISONINGWEAPON, pc_checkskill(sd, GC_POISONINGWEAPON),
-		sc_start4(&sd->bl, SC_POISONINGWEAPON, 100, pc_checkskill(sd, GC_POISONINGWEAPON), 2 + 2 * pc_checkskill(sd, GC_POISONINGWEAPON), p_sc, 0, skill_get_time(GC_POISONINGWEAPON, pc_checkskill(sd, GC_POISONINGWEAPON))));
+		sc_start4(&sd->bl, SC_POISONINGWEAPON, 100, pc_checkskill(sd, GC_POISONINGWEAPON), 2 + 2 * pc_checkskill(sd, GC_POISONINGWEAPON), p_sc, 0, skill_get_time(GC_POISONINGWEAPON, pc_checkskill(sd, GC_POISONINGWEAPON)));
 	return 0;
 }
 

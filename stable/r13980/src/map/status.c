@@ -475,8 +475,8 @@ void initChangeTables(void)
 	set_sc( WA_SYMPHONY_OF_LOVER  , SC_SYMPHONY         , SI_SYMPHONYOFLOVERS   , SCB_MDEF|SCB_MDEF2 );
 	set_sc( WA_MOONLIT_SERENADE   , SC_MOONLIT          , SI_MOONLITSERENADE    , SCB_MATK );
 	
-	set_sc( MI_RUSH_WINDMILL      , SC_WINDMILL         , SI_RUSHWINDMILL       , SCB_DEF|SCB_DEF2 );
-	set_sc( MI_ECHOSONG           , SC_ECHO             , SI_ECHOSONG           , SCB_BATK );
+	set_sc( MI_RUSH_WINDMILL      , SC_WINDMILL         , SI_RUSHWINDMILL       , SCB_BATK );
+	set_sc( MI_ECHOSONG           , SC_ECHO             , SI_ECHOSONG           , SCB_DEF|SCB_DEF2 );
 	set_sc( MI_HARMONIZE          , SC_HARMONIZE        , SI_HARMONIZE          , SCB_STR|SCB_AGI|SCB_VIT|SCB_INT|SCB_DEX|SCB_LUK );
 	
 	add_sc( WM_POEMOFNETHERWORLD        , SC_STOP );
@@ -3731,8 +3731,8 @@ static unsigned short status_calc_batk(struct block_list *bl, struct status_chan
 		batk += 100;
 	if(sc->data[SC_HAGALAZ] && sc->data[SC_HAGALAZ]->val3)
 		batk -= batk / 100 * 25;
-	if(sc->data[SC_ECHO])
-		batk += batk / 100 * 10 * sc->data[SC_ECHO]->val1;
+	if(sc->data[SC_WINDMILL])
+		batk += batk / 100 * 10 * sc->data[SC_WINDMILL]->val1;
 	if(sc->data[SC_MELODYOFSINK])
 		batk -= batk / 100 * 15 * sc->data[SC_MELODYOFSINK]->val1;		// Needs official value. [LimitLine]
 	if(sc->data[SC_WARCRYOFBEYOND])
@@ -3933,7 +3933,7 @@ static signed short status_calc_flee(struct block_list *bl, struct status_change
 	if(sc->data[SC_FEAR])
 		flee -= flee * 20 / 100;
 	if( sc->data[SC__LAZINESS] )
-		flee -= flee * sc->data[SC__LAZINESS]->val3 / 100;
+		flee -= flee * sc->data[SC__LAZINESS]->val3 / 100;	
 
 	return (short)cap_value(flee,1,SHRT_MAX);
 }
@@ -3948,7 +3948,7 @@ static signed short status_calc_flee2(struct block_list *bl, struct status_chang
 	if(sc->data[SC_WHISTLE])
 		flee2 += sc->data[SC_WHISTLE]->val3*10;
 	if(sc->data[SC__UNLUCKY])
-		flee2 += flee2 * sc->data[SC__UNLUCKY]->val3 / 100;
+		flee2 -= flee2 * sc->data[SC__UNLUCKY]->val3 / 100;
 
 	return (short)cap_value(flee2,10,SHRT_MAX);
 }
@@ -3996,8 +3996,8 @@ static signed char status_calc_def(struct block_list *bl, struct status_change *
 		def -= def / 10 * 3;
 	if(sc->data[SC_ANALYZE])
 		def -= 14 * sc->data[SC_ANALYZE]->val1;
-	if(sc->data[SC_WINDMILL])
-		def += def / 100 * 20 * sc->data[SC_WINDMILL]->val1;
+	if(sc->data[SC_ECHO])
+		def += def / 100 * 20 * sc->data[SC_ECHO]->val1;
 	if(sc->data[SC_PRESTIGE])
 		def += sc->data[SC_PRESTIGE]->val3;
 	if(sc->data[SC_EARTHDRIVE])
@@ -4041,8 +4041,8 @@ static signed short status_calc_def2(struct block_list *bl, struct status_change
 		def2 -= def2 / 10 * 3;
 	if(sc->data[SC_ANALYZE])
 		def2 -= 14 * sc->data[SC_ANALYZE]->val1;
-	if(sc->data[SC_WINDMILL])
-		def2 += def2 / 100 * 20 * sc->data[SC_WINDMILL]->val1;
+	if(sc->data[SC_ECHO])
+		def2 += def2 / 100 * 20 * sc->data[SC_ECHO]->val1;
 	if(sc->data[SC_EARTHDRIVE])
 		def2 -= def2 * sc->data[SC_EARTHDRIVE]->val1 / 100;
 
@@ -4381,7 +4381,7 @@ static short status_calc_aspd_rate(struct block_list *bl, struct status_change *
 	if( sc->data[SC__INVISIBILITY] )
 		aspd_rate += aspd_rate * sc->data[SC__INVISIBILITY]->val2 / 100;
 	if( sc->data[SC__GROOMY] )
-		aspd_rate += aspd_rate * sc->data[SC__GROOMY]->val3 / 100;
+		aspd_rate += aspd_rate * sc->data[SC__GROOMY]->val2 / 100;
 	if(sc->data[SC_SWINGDANCE])
 		aspd_rate -= sc->data[SC_SWINGDANCE]->val3 / 100;
 	if(sc->data[SC_DANCEWITHWUG])
@@ -5003,7 +5003,7 @@ void status_change_init(struct block_list *bl)
 //the flag values are the same as in status_change_start.
 int status_get_sc_def(struct block_list *bl, enum sc_type type, int rate, int tick, int flag)
 {
-	int sc_def, tick_def = 0;
+	int sc_def = 0, tick_def = 0;
 	struct status_data* status;
 	struct status_change* sc;
 	struct map_session_data *sd;
@@ -5081,11 +5081,6 @@ int status_get_sc_def(struct block_list *bl, enum sc_type type, int rate, int ti
 			tick /= 5;
 		sc_def = status->agi / 2;
 		break;
-	case SC_MAGICMIRROR:
-	case SC_ARMORCHANGE:
-		if (sd) //Duration greatly reduced for players.
-			tick /= 15;
-		//No defense against it (buff).
 	case SC__ENERVATION:
 	case SC__GROOMY:
 	case SC__IGNORANCE:
@@ -5096,6 +5091,11 @@ int status_get_sc_def(struct block_list *bl, enum sc_type type, int rate, int ti
 		if( sd )
 			sc_def += sd->status.base_level / 20;
 		break;
+	case SC_MAGICMIRROR:
+	case SC_ARMORCHANGE:
+		if (sd) //Duration greatly reduced for players.
+			tick /= 15;
+		//No defense against it (buff).
 	default:
 		//Effect that cannot be reduced? Likely a buff.
 		if (!(rand()%10000 < rate))
@@ -6717,8 +6717,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 				pc_delspiritball(sd,sd->spiritball,0);
 			break;
 		case SC__GROOMY:
-			val2 = 5 * val1;
-			val3 = 10 + 2 * val1;
+			val2 = 20 + 10 * val1; //ASPD. Need to confirm if Movement Speed reduction is the same. [Jobbie]
+			val3 = 20 * val1; //HIT
 			val_flag |= 1|2|4;
 			if( sd )
 			{
@@ -6747,7 +6747,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			}
 			break;
 		case SC__WEAKNESS:
-			val2 = 2 * val1;
+			val2 = 10 * val1;
 			val_flag |= 1|2;
 			skill_strip_equip(bl,EQP_WEAPON|EQP_SHIELD,100,val1,tick);
 			break;
