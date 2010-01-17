@@ -6,6 +6,9 @@
 //========================================
 
 01/17/2010
+	r119 [Jobbie]
+	* Cleaned up to Venom Pressure code. (followed up r118)
+
 	r118 [Jobbie]
 	* Fixed Groomy, Weakness, Unlucky status regarding its calculation.
 	* Fixed Weakness should not strip weapon if the player is under chemical protection.
