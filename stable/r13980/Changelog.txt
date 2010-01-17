@@ -6,6 +6,9 @@
 //========================================
 
 01/17/2010
+	r120 [Jobbie]
+	* Fixed a riding dragon state.
+
 	r119 [Jobbie]
 	* Cleaned up to Venom Pressure code. (followed up r118)
 
