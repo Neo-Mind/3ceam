@@ -7556,18 +7556,20 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		if( flag & 1 )
 		{
 			int i = 0;
-			if( bl->type == BL_MOB && tstatus && !(tstatus->mode&MD_BOSS) && dstmd && rand()%100 <= 20 )
+			//iRO wiki information said the skill can't drain SP from monster. [Jobbie]
+			//uncomment if kRO has rebalanced and fixed this Sura skill.
+			/*if( bl->type == BL_MOB && tstatus && !(tstatus->mode&MD_BOSS) && dstmd && rand()%100 <= 20 )
 			{
 				i = dstmd->level * 2;		// 20% chance to obtain 2 SP per monster's level. [LimitLine]
 				mob_target(dstmd, src, 0);
-			}
+			}*/
 			if( dstsd && dstsd->spiritball && (dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER )
 			{
-				i = dstsd->spiritball * 7;	// 7 SP per spirit ball. [LimitLine]
+				i = dstsd->spiritball * 2;
 				pc_delspiritball(dstsd, dstsd->spiritball, 0);
 			}
 			if( i > 0 )
-				status_heal(src, 0, i, 3);
+				status_percent_heal(src, 0, i); 
 			clif_skill_nodamage(src, bl, skillid, skilllv, i?1:0);
 		}
 		else

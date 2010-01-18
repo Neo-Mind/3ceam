@@ -5,15 +5,17 @@
 // 	- Details.
 //========================================
 
+01/18/2010
+	r123 [Jobbie]
+	* Fixed Assimilate Power should be 2% of sp per spiritballs gain. The skill should not drain SP from monster.
+
 01/17/2010
 	r122 [pakpil]
 	* Fixed a bug in the production of runes. Wyrd by Othila and vicebersa.
 
-01/17/2010
 	r121 [pakpil]
 	* Fiexed SC_SHADOWFORM that crashes the map_server when the target or the chaser is teleported.
 
-01/17/2010
 	r120 [Jobbie]
 	* Fixed a riding dragon state.
 
