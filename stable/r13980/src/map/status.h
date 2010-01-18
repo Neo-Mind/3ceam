@@ -1109,7 +1109,7 @@ struct weapon_atk {
 struct status_data {
 	unsigned int
 		hp, sp,
-		max_hp, max_sp,
+		max_hp, max_sp;
 		/*mech_hp, mech_sp,
 		mado_hp, mado_sp;*/
 	unsigned short

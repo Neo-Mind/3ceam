@@ -6,6 +6,9 @@
 //========================================
 
 01/18/2010
+	r125 [Jobbie]
+	* Minor fix to r124 commit which causes compile error.
+
 	r124 [pakpil]
 	* Minor fix in mounting Mado based on info from iRO Wiki. Still need more fix. http://forums.irowiki.org/showpost.php?p=396875&postcount=202
 		
