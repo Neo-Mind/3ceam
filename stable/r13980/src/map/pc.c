@@ -5741,6 +5741,10 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 		if( s_sd ) s_sd->shadowform_id = 0 ;
 	}
 
+	// Every time you die you lose your Magic Gear. [pakpil]
+	if( pc_isriding(sd, OPTION_MADO) )
+		pc_setriding(sd, 0);
+
 	if(sd->status.pet_id > 0 && sd->pd)
 	{
 		struct pet_data *pd = sd->pd;
@@ -6633,45 +6637,45 @@ int pc_setoption(struct map_session_data *sd,int type)
 		clif_status_load(&sd->bl,SI_WOLFMOUNT,0);
 		status_calc_pc(sd,0); //Mounting/Umounting affects walk and attack speeds.
 	}
-
+	// Some info from iRO-Wiki says that MADO are a mount not another class. The HP/SP dealed by damage are the owner ones. [pakpil]
 	if (type&OPTION_MADO && !(p_type&OPTION_MADO) && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
 	{	//We are going to mount. [LimitLine]
 	//	pc_jobchange(sd, sd->class_&JOBL_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_UPPER?1:0, 0);
-		status->mech_hp = status->hp;
+	/*	status->mech_hp = status->hp;
 		status->mech_sp = status->sp;
 		status->hp = status->mado_hp?status->mado_hp:1;
 		status->sp = status->mado_sp?status->mado_sp:1;
 		if( status->mado_heat <= 0 )
 			status->mado_heat = 30 + ( 2 + 8 * pc_checkskill(sd, NC_MAINFRAME) );	// Assuming regular overheat
 																					// limit is 30 + Mainframe bonus.
-	/*	sd->status.mech_hp = sd->status.hp;
+		sd->status.mech_hp = sd->status.hp;
 		sd->status.mech_sp = sd->status.sp;
 		sd->status.hp = sd->status.mado_hp?sd->status.mado_hp:1;
-		sd->status.sp = sd->status.mado_sp?sd->status.mado_sp:1;*/
+		sd->status.sp = sd->status.mado_sp?sd->status.mado_sp:1;
 		clif_updatestatus(sd, SP_HP);
 		clif_updatestatus(sd, SP_SP);
-		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
-			status_calc_pc(sd, 0);
-		pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
+		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )*/
+		status_calc_pc(sd, 0);
+		//pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
 	}
 	else if (!(type&OPTION_MADO) && p_type&OPTION_MADO && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
 	{	//We are going to dismount.
 	//	pc_jobchange(sd, sd->class_&JOBL_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_UPPER?1:0);
-		status->mado_hp = status->hp;
+	/*	status->mado_hp = status->hp;
 		status->mado_sp = status->sp;
 		status->hp = status->mech_hp?status->mech_hp:1;
 		status->sp = status->mech_sp?status->mech_sp:1;
-	/*	sd->status.mado_hp = sd->status.hp;
+		sd->status.mado_hp = sd->status.hp;
 		sd->status.mado_sp = sd->status.sp;
 		sd->status.hp = sd->status.mech_hp?sd->status.mech_hp:1;
-		sd->status.sp = sd->status.mech_sp?sd->status.mech_sp:1;*/
+		sd->status.sp = sd->status.mech_sp?sd->status.mech_sp:1;
 		clif_updatestatus(sd, SP_HP);
 		clif_updatestatus(sd, SP_SP);
-		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
-			status_calc_pc(sd, 0);
+		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )*/
+		status_calc_pc(sd, 0);
 		if( sd->sc.data[SC_SHAPESHIFT] )
 			status_change_end( &sd->bl, SC_SHAPESHIFT, -1);
-		pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
+		//pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
 	}
 
 	if (type&OPTION_FLYING && !(p_type&OPTION_FLYING))

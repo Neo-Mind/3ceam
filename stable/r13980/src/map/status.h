@@ -390,6 +390,7 @@ typedef enum sc_type {
 	SC_MAGNETICFIELD_,
 	SC_OVERHEAT,
 	SC_SHAPESHIFT,
+	SC_STEALTHFIELD,
 
 	SC_VENOMIMPRESS = 450,
 	SC_POISONINGWEAPON,
@@ -1109,8 +1110,8 @@ struct status_data {
 	unsigned int
 		hp, sp,
 		max_hp, max_sp,
-		mech_hp, mech_sp,
-		mado_hp, mado_sp;
+		/*mech_hp, mech_sp,
+		mado_hp, mado_sp;*/
 	unsigned short
 		str, agi, vit, int_, dex, luk,
 		batk,

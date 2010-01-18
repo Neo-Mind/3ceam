@@ -6,6 +6,14 @@
 //========================================
 
 01/18/2010
+	r124 [pakpil]
+	* Minor fix in mounting Mado based on info from iRO Wiki. Still need more fix. http://forums.irowiki.org/showpost.php?p=396875&postcount=202
+		
+		1. Does the invisible Magic Gear have a HP of its own? 
+			- No
+
+
+01/18/2010
 	r123 [Jobbie]
 	* Fixed Assimilate Power should be 2% of sp per spiritballs gain. The skill should not drain SP from monster.
 
