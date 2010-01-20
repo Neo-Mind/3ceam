@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+01/20/2010
+	r127 [pakpil]
+	* Minor fix in SC_MANHOLE. Bug report 57.
+
 01/18/2010
 	r125 [Jobbie]
 	* Minor fix to r124 commit which causes compile error.
