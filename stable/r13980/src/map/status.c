@@ -7564,6 +7564,14 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 			if( sce->val2 )
 				clif_millenniumshield(sd,0);
 			break;
+		case SC__SHADOWFORM:
+			{
+				struct map_session_data *s_sd = map_id2sd(sce->val2);
+				if( !s_sd )
+					break;
+				s_sd->shadowform_id = 0;
+			}
+			break;
 		case SC_RAISINGDRAGON:
 			if( sd && sce->val2 && !pc_isdead(sd) ){// After the status duration ended 5 spiritballs will only remain. [Jobbie]
 				int i;

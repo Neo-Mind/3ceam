@@ -1988,7 +1988,6 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 			clif_combo_delay(src, flag);
 		}
 	}
-
 	
 	if( sc && sc->data[SC__SHADOWFORM] && damage > 0 )
 	{
@@ -2001,8 +2000,8 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 			if( sc->data[SC__SHADOWFORM]->val3 <= 0 || status_isdead(s_bl) )
 			{
 				status_change_end(bl, SC__SHADOWFORM, -1);
-				if( tsd )
-					tsd->shadowform_id = 0;
+				if( s_bl->type == BL_PC )
+					((TBL_PC*)s_bl)->shadowform_id = 0;
 			}
 		}
 	}
@@ -7475,7 +7474,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				clif_skill_fail(sd, skillid, 0, 0);
 				break;
 			}
-			ShowDebug("bl->id = %d\n",bl->id);
 			clif_skill_nodamage(src, bl, skillid, skilllv,
 				sc_start4(src, type, 100, skilllv, bl->id, 5, 0, skill_get_time(skillid, skilllv)));
 		}

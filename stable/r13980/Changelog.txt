@@ -6,6 +6,10 @@
 //========================================
 
 01/21/2010
+	r129 [pakpil]
+	* Fixed some mistake in SC_SHADOWFORM.
+
+01/21/2010
 	r128 [pakpil]
 	* Fixed SC_AUTOSHADOWSPELL. bug report 54.
 

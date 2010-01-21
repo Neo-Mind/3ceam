@@ -5737,7 +5737,7 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 	if( sd->sc.count && sd->sc.data[SC__SHADOWFORM] )
 	{
-		struct map_session_data *s_sd = map_id2sd(sd->shadowform_id);
+		struct map_session_data *s_sd = map_id2sd(sd->sc.data[SC__SHADOWFORM]->val2);
 		if( s_sd ) s_sd->shadowform_id = 0 ;
 	}
 
