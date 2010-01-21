@@ -3003,16 +3003,16 @@ int clif_skill_select_request( struct map_session_data *sd )
 	WFIFOW(fd,0) = 0x442;
 	for( i = 0, c = 0; i < MAX_SKILL; i++)
 	{
-		if( sd->status.skill[i].flag >= 13 && sd->status.skill[i].id <= NJ_ISSEN)
+		if( sd->status.skill[i].flag == 13 && sd->status.skill[i].id > 0 && sd->status.skill[i].id <= NJ_ISSEN)
 		{
 			// Can't auto cast both Extended class and 3rd class skills.
-			WFIFOW(fd,8+c*2) = sd->reproduceskill_id;
+			WFIFOW(fd,8+c*2) = sd->status.skill[i].id;
 			c++;
 		}
 	}
 	sd->menuskill_id = SC_AUTOSHADOWSPELL;
 	sd->menuskill_val = c;
-	WFIFOW(fd,2) = 4+c*6;
+	WFIFOW(fd,2) = 8+c*2;
 	WFIFOL(fd,4) = c;
 	WFIFOSET(fd,WFIFOW(fd,2));
 #endif

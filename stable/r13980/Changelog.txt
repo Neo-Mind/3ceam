@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+01/21/2010
+	r128 [pakpil]
+	* Fixed SC_AUTOSHADOWSPELL. bug report 54.
+
 01/20/2010
 	r127 [pakpil]
 	* Minor fix in SC_MANHOLE. Bug report 57.
