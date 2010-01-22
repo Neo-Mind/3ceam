@@ -6,6 +6,10 @@
 //========================================
 
 01/21/2010
+	r132 [pakpil]
+	* Minor fix in Healing skills and Magic Gears.
+
+01/21/2010
 	r129 [pakpil]
 	* Fixed some mistake in SC_SHADOWFORM.
 

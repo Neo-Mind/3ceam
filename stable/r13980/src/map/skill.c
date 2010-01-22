@@ -4241,7 +4241,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				} else
 				if (tsc->data[SC_BERSERK])
 					heal = 0; //Needed so that it actually displays 0 when healing.
-				if( pc_isriding(sd, OPTION_MADO) )
+				if( dstsd && pc_isriding(dstsd, OPTION_MADO) )
 					heal = 0; //The Magic Gear is not affected by the Heal skill.
 			}
 			heal_get_jobexp = status_heal(bl,heal,0,0);
