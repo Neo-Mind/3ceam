@@ -1,0 +1,61 @@
+3CeAM = Search for Soul and plste the data below the follow line... 	case JOB_SOUL_LINKER: return "Soul Linker";
+
+	case JOB_GANGSI: return "Bongun/Munak";
+	case JOB_DEATH_KNIGHT: return "Death Knight";
+	case JOB_DARK_COLLECTOR: return "Dark Collector";
+	case JOB_RUNE_KNIGHT: return "Rune Knight";
+	case JOB_WARLOCK: return "Warlock";
+	case JOB_RANGER: return "Ranger";
+	case JOB_ARCH_BISHOP: return "Arch Bishop";
+	case JOB_MECHANIC: return "Mechanic";
+	case JOB_GUILLOTINE_CROSS: return "Guillotine Cross";
+	case JOB_RUNE_KNIGHT_T: return "Rune Knight";
+	case JOB_WARLOCK_T: return "Warlock";
+	case JOB_RANGER_T: return "Ranger";
+	case JOB_ARCH_BISHOP_T: return "Arch Bishop";
+	case JOB_MECHANIC_T: return "Mechanic";
+	case JOB_GUILLOTINE_CROSS_T: return "Guillotine Cross";
+	case JOB_ROYAL_GUARD: return "Royal Guard";
+	case JOB_SORCERER: return "Sorcerer";
+	case JOB_MINSTREL: return "Minstrel";
+	case JOB_WANDERER: return "Wanderer";
+	case JOB_SURA: return "Sura";
+	case JOB_GENETIC: return "Genetic";
+	case JOB_SHADOW_CHASER: return "Shadow Chaser";
+	case JOB_ROYAL_GUARD_T: return "Royal Guard";
+	case JOB_SORCERER_T: return "Sorcerer";
+	case JOB_MINSTREL_T: return "Minstrel";
+	case JOB_WANDERER_T: return "Wanderer";
+	case JOB_SURA_T: return "Sura";
+	case JOB_GENETIC_T: return "Genetic";
+	case JOB_SHADOW_CHASER_T: return "Shadow Chaser";
+	case JOB_RUNE_KNIGHT2: return "Rune Knight Dragon";
+	case JOB_RUNE_KNIGHT_T2: return "Rune Knight Dragon";
+	case JOB_ROYAL_GUARD2: return "Royal Guard Gryphon";
+	case JOB_ROYAL_GUARD_T2: return "Royal Guard Gryphon";
+	case JOB_RANGER2: return "Ranger Warg";
+	case JOB_RANGER_T2: return "Ranger Warg";
+	case JOB_MECHANIC2: return "Mechanic Mado Gear";
+	case JOB_MECHANIC_T2: return "Mechanic Mado Gear";
+
+3CeAM = Search for this line and replace the data starting with that line... 					int jobclass = char_dat[i].status.class_;
+
+
+					int jobclass = char_dat[i].status.class_;
+					char_dat[i].status.sex = sex;
+					if (jobclass == JOB_BARD || jobclass == JOB_DANCER ||
+					    jobclass == JOB_CLOWN || jobclass == JOB_GYPSY ||
+					    jobclass == JOB_BABY_BARD || jobclass == JOB_BABY_DANCER ||
+					    jobclass == JOB_MINSTREL || jobclass == JOB_WANDERER ||
+					    jobclass == JOB_MINSTREL_T || jobclass == JOB_WANDERER_T) {
+						// job modification
+						if (jobclass == JOB_BARD || jobclass == JOB_DANCER) {
+							char_dat[i].status.class_ = (sex) ? JOB_BARD : JOB_DANCER;
+						} else if (jobclass == JOB_CLOWN || jobclass == JOB_GYPSY) {
+							char_dat[i].status.class_ = (sex) ? JOB_CLOWN : JOB_GYPSY;
+						} else if (jobclass == JOB_BABY_BARD || jobclass == JOB_BABY_DANCER) {
+							char_dat[i].status.class_ = (sex) ? JOB_BABY_BARD : JOB_BABY_DANCER;
+						} else if (jobclass == JOB_MINSTREL || jobclass == JOB_WANDERER) {
+							char_dat[i].status.class_ = (sex) ? JOB_MINSTREL : JOB_WANDERER;
+						} else if (jobclass == JOB_MINSTREL_T || jobclass == JOB_WANDERER_T) {
+							char_dat[i].status.class_ = (sex) ? JOB_MINSTREL_T : JOB_WANDERER_T;

@@ -1,0 +1,236 @@
+New Skill Desc For Rune Knight
+Format is as follow...
+
+#
+#
+
+Required For:^777777 ^000000
+Max Level:^777777 ^000000
+Type:^33cc00 ^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 ^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+
+Effect:^777777 An advanced Ninja technique that allows one to dissapear instantly from thier location to avoid damage, however if you are struck you will jump back 7 cells in the direction you were hit (you are not pushed back in WoE). It blocks 1 + SkillLV/2 attacks. Not all skills can be blocked including Magic attacks. If you are in mid cast, this jump will not actually interupt your casting.^000000
+
+
+#
+RK_ENCHANTBLADE#
+Enchant Blade
+Required For:^777777 Sonic Wave (L3) Death Bound (L2) Wind Cutter (L5)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 35 + 5*SkillLV^000000
+Target:^777777 Self^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Enchants your blade with magic, allowing your to deal additional magic damage with your physical attacks. Each level increases the magic damage.^000000
+[LV 1]^777777 +60^000000
+[LV 2]^777777 +70^000000
+[LV 3]^777777 +80^000000
+[LV 4]^777777 +90^000000
+[LV 5]^777777 +100^000000
+#
+RK_SONICWAVE#
+Sonic Wave
+Required For:^777777 Ignition Break (L2)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Damage^000000
+SP Cost:^777777 25 + 5*SkillLV^000000
+Target:^777777 ????^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Slam your weapon into the ground to unleash a shockwave that strikes an opponent at a distance. The farther away the target is, the less damage they take.^000000
+[LV 1]^777777 ATK 300%^000000
+[LV 2]^777777 ATK 350%^000000
+[LV 3]^777777 ATK 400%^000000
+[LV 4]^777777 ATK 450%^000000
+[LV 5]^777777 ATK 500%^000000
+#
+RK_DEATHBOUND#
+Death Bound
+Required For:^777777 Ignition Break (L5)^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Damage / Counterattack^000000
+SP Cost:^777777 50 + 5*SkillLV^000000
+Target:^777777 Self^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 The damage you receive is amplified and used against the attacker. However, you still receive a portion of the amplified damage.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+#
+RK_HUNDREDSPEAR#
+Hundred Spear
+Required For:^777777 Nothing^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Damage^000000
+SP Cost:^777777  60^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Spear exclusive skill. A skill that strikes a single target rapidly in quick succession to deal high damage. Also has a chance to invoke spear boomerang.^000000
+[LV 1]^777777 ATK 640%^000000
+[LV 2]^777777 ATK 680%^000000
+[LV 3]^777777 ATK 720%^000000
+[LV 4]^777777 ATK 760%^000000
+[LV 5]^777777 ATK 800%^000000
+[LV 6]^777777 ATK 840%^000000
+[LV 7]^777777 ATK 880%^000000
+[LV 8]^777777 ATK 920%^000000
+[LV 9]^777777 ATK 960%^000000
+[LV 10]^777777 ATK 1000%^000000
+#
+RK_WINDCUTTER#
+Wind Cutter
+Required For:^777777 Ignition Break (L3)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Area Damage^000000
+SP Cost:^777777 16 + 4*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Two Handed Sword exclusive skill. Swinging a large two handed sword, the rune knight can create huge presure that throws enemies away. There is a chance to cause fear status on those affected.^000000
+[LV 1]^777777 ATK 150%^000000
+[LV 2]^777777 ATK 200%^000000
+[LV 3]^777777 ATK 250%^000000
+[LV 4]^777777 ATK 300%^000000
+[LV 5]^777777 ATK 350%^000000
+#
+RK_IGNITIONBREAK#
+Ignition Break
+Required For:^777777 Nothing^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Area Damage^000000
+SP Cost:^777777 30 + 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Two Handed Sword exclusive skill. The rune knight makes their sword incredibly hot, triggering an explosion that deals fire element damage to all targets nearby. Targets closer to the player receive higher damage.^000000
+[LV 1]^777777 400%-200%-200%^000000
+[LV 2]^777777 600%-400%-300%^000000
+[LV 3]^777777 800%-600%-400%^000000
+[LV 4]^777777 1000%-800%-500%^000000
+[LV 5]^777777 1200%-1000%-600%^000000
+#
+RK_DRAGONTRAINING#
+Dragon Training
+Required For:^777777 Dragon Breath (L2) Dragon Howling (L2)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Passive^000000
+SP Cost:^777777 None^000000
+Target:^777777 None^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Allows the user to use a dragon mount. Increasing the skill level recovers your lost attack speed when using the mount, and also slightly increases the damage of dragon breath.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+#
+RK_DRAGONBREATH#
+Dragon Breath
+Required For:^777777 Nothing^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Area Damage^000000
+SP Cost:^777777 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Causes the dragon to breath incredibly hot fire, with a chance to cause burning which deals damage over time. The damage of dragon breath is dependant on the condition of the rider.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+#
+RK_DRAGONHOWLING#
+Dragon Howling
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Debuff^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 The dragon lets out a terrible howl, causing fear status to those within range. Howling however can negatively affect the performance of the dragon.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+#
+RK_RUNEMASTERY#
+Rune Mastery
+Required For:^777777 Enchant Blade (L2)^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Passive^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Rune mastery gives rune knights an understanding to the use and creation of runes. Using this skill rune knights can craft runes, and higher levels influence the success rate. There are 9 different types of runes, and the higher level ones require higher level rune mastery to craft.^000000
+[LV 1]^777777 Thurisaz^000000
+[LV 2]^777777 Isa^000000
+[LV 3]^777777 Wyrd^000000
+[LV 4]^777777 Hagalaz^000000
+[LV 5]^777777 Othila^000000
+[LV 6]^777777 Uruz^000000
+[LV 7]^777777 Raido^000000
+[LV 8]^777777 Nauthiz^000000
+[LV 9]^777777 Berkana^000000
+[LV 10]^777777 ^000000
+#
+RK_PHANTOMTHRUST#
+Phantom Thrust
+Required For:^777777 Hundred Spear (L3)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active^000000
+SP Cost:^777777 12 + 3*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Spear Exclusive Skill. The rune knight strikes a target from far away, pulling that target towards the user. This skill can be used on party members, but when done so it deals no damage. Has a range of 5 cells.^000000
+[LV 1]^777777 ATK 100%^000000
+[LV 2]^777777 ATK 120%^000000
+[LV 3]^777777 ATK 140%^000000
+[LV 4]^777777 ATK 160%^000000
+[LV 5]^777777 ATK 180%^000000

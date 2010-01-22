@@ -1,0 +1,393 @@
+New Skill Desc For Warlock
+Format is as follow...
+
+#
+#
+
+Required For:^777777 ^000000
+Max Level:^777777 ^000000
+Type:^33cc00 ^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 ^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+
+Effect:^777777 An advanced Ninja technique that allows one to dissapear instantly from thier location to avoid damage, however if you are struck you will jump back 7 cells in the direction you were hit (you are not pushed back in WoE). It blocks 1 + SkillLV/2 attacks. Not all skills can be blocked including Magic attacks. If you are in mid cast, this jump will not actually interupt your casting.^000000
+
+#
+WL_WHITEIMPRISON#
+White Imprison
+Required For:^777777 Recognized Spell (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Status Effect^000000
+SP Cost:^777777 70^000000
+Target:^777777 Enemies, Self^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Imprisons the target temporarily behind a white magic curtain, preventing them from moving. While in this state you cannot take damage other than ghost property attacks.
+You can use this skill on yourself, however you will take 2000 hp damage when it ends.
+Success Rate^000000
+[LV 1]^777777 50%^000000
+[LV 2]^777777 60%^000000
+[LV 3]^777777 70%^000000
+[LV 4]^777777 80%^000000
+[LV 5]^777777 90%^000000
+#
+WL_SOULEXPANSION#
+Soul Expansion
+Required For:^777777 White Imprison (L3)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 25 + 5*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Strikes a target at long distance with ghost element damage. If used against a player in White Imprison, the skill deals double damage.^000000
+[LV 1]^777777 MATK 500%^000000
+[LV 2]^777777 MATK 600%^000000
+[LV 3]^777777 MATK 700%^000000
+[LV 4]^777777 MATK 800%^000000
+[LV 5]^777777 MATK 900%^000000
+#
+WL_FROSTMISTY#
+Frosty Misty
+Required For:^777777 Jack Frost (L2)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Debuff^000000
+SP Cost:^777777 32 + 8*SkillLV^000000
+Target:^777777 Ground???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Covers a 15x15 area in a freezing mist, causing water element damage and a chance to inflict Freezing status to targets that enter.
+Targets caught with Freezing status have their defense, attack speed and movement speed lowered, and take longer to cast spells.
+Success Rate / Magic Attack^000000
+[LV 1]^777777 30% / MATK 300%^000000
+[LV 2]^777777 40% / MATK 400%^000000
+[LV 3]^777777 50% / MATK 500%^000000
+[LV 4]^777777 60% / MATK 600%^000000
+[LV 5]^777777 70% / MATK 700%^000000
+#
+WL_JACKFROST#
+Jack Frost
+Required For:^777777 Tetra Vortex (L5)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Debuff^000000
+SP Cost:^777777 20 + 10*SkillLV^000000
+Target:^777777 Self Target???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Deals water element damage to all targets in Freezing status effect.^000000
+[LV 1]^777777 MATK 1300%^000000
+[LV 2]^777777 MATK 1600%^000000
+[LV 3]^777777 MATK 1900%^000000
+[LV 4]^777777 MATK 2200%^000000
+[LV 5]^777777 MATK 2500%^000000
+#
+WL_MARSHOFABYSS#
+Marsh of Abyss
+Max Level:^777777 5^000000
+Type:^33cc00 Debuff^000000
+SP Cost:^777777 35 + 5*SkillLV^000000
+Target:^777777 Enemy???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Curse a target with the marsh of abyss, slowing their movement and decreasing their DEX/AGI. This skill only applies half the reduction to players.
+AGI & DEX Decrease / Movement Speed Decrease^000000
+[LV 1]^777777 6% / 10%^000000
+[LV 2]^777777 12% / 20%^000000
+[LV 3]^777777 18% / 30%^000000
+[LV 4]^777777 24% / 40%^000000
+[LV 5]^777777 30% / 50%^000000
+#
+WL_RECOGNIZEDSPELL#
+Recognized Spell
+Max Level:^777777 5^000000
+Type:^33cc00 Special Status^000000
+SP Cost:^777777 40 + 10*SkillLV^000000
+Target:^777777 Self^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 10s + 10s*SkillLV^000000
+Effect:^777777 By gaining a greater understanding of your magic, you can make all of your magic skills deal max damage.
+However, skills consume 25% more SP.^000000
+[LV 1]^777777 20 seconds^000000
+[LV 2]^777777 30 seconds^000000
+[LV 3]^777777 40 seconds^000000
+[LV 4]^777777 50 seconds^000000
+[LV 5]^777777 60 seconds^000000
+#
+WL_SIENNAEXECRATE#
+Sienna Execrate
+Required For:^777777 Earth Strain (L2)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Status Effect^000000
+SP Cost:^777777 26 + 6*SkillLV^000000
+Target:^777777 ???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Causes petrification status to a single target and all targets nearby.
+Success Rate / Range^000000
+[LV 1]^777777 50% / 3x3 cells^000000
+[LV 2]^777777 55% / 5x5 cells^000000
+[LV 3]^777777 60% / 5x5 cells^000000
+[LV 4]^777777 65% / 7x7 cells^000000
+[LV 5]^777777 70% / 7x7 cells^000000
+#
+WL_RADIUS#
+Radius
+Required For:^777777 Drain Life (L1)^000000
+Max Level:^777777 3^000000
+Type:^33cc00 Passive^000000
+Effect:^777777 Increases the range of warlock magic skills and decreases casting time.
+Increase Casting Range / Decrease Casting Time^000000
+[LV 1]^777777 1 cell / 4%^000000
+[LV 2]^777777 2 cells / 6%^000000
+[LV 3]^777777 3 cells / 8%^000000
+#
+WL_STASIS#
+Stasis
+Required For:^777777 Recognized Spell (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Status Effect^000000
+SP Cost:^777777 50 + 20*SkillLV^000000
+Target:^777777 ???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Distorts the air around the caster, making it impossible for targets within its radius to cast magic.^000000
+[LV 1]^777777 10 seconds^000000
+[LV 2]^777777 15 seconds^000000
+[LV 3]^777777 20 seconds^000000
+[LV 4]^777777 25 seconds^000000
+[LV 5]^777777 30 seconds^000000
+#
+WL_DRAINLIFE#
+Drain Life
+Required For:^777777 Soul Expansion (L1), Stasis (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Damage / Recovery^000000
+SP Cost:^777777 24 + 6*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Strikes a single target with magical neutral element damage, and absorb some of that damage as HP.
+Magic Attack / Damage Absorbed / Success Rate^000000
+[LV 1]^777777 MATK 600% / 10% / 75%^000000
+[LV 2]^777777 MATK 700% / 15% / 80%^000000
+[LV 3]^777777 MATK 800% / 20% / 85%^000000
+[LV 4]^777777 MATK 900% / 25% / 90%^000000
+[LV 5]^777777 MATK 1000% / 30% / 95%^000000
+#
+WL_CRIMSONROCK#
+Crimson Rock
+Required For:^777777 Hell Inferno (L2)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 35 + 3*SkillLV^000000
+Target:^777777 Enemy???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Summons a huge meteorite on the target, striking all targets nearby with fire element damage. When the meteorite hits the ground it lets out a shock wave that throws enemies back and causes stun.^000000
+[LV 1]^777777 MATK 1600%^000000
+[LV 2]^777777 MATK 1900%^000000
+[LV 3]^777777 MATK 2200%^000000
+[LV 4]^777777 MATK 2500%^000000
+[LV 5]^777777 MATK 2800%^000000
+#
+WL_HELLINFERNO#
+Hell Inferno
+Required For:^777777 Comet (L3), Tetra Vortex (L5)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Damage / Status Effect^000000
+SP Cost:^777777 46 + 4*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Conjures the fires of hell to burn a target. The skill deals fire element damage and causes Burning status effect, which continually deals fire element damage over time.^000000
+[LV 1]^777777 MATK 300%^000000
+[LV 2]^777777 MATK 360%^000000
+[LV 3]^777777 MATK 420%^000000
+[LV 4]^777777 MATK 480%^000000
+[LV 5]^777777 MATK 540%^000000
+#
+WL_COMET#
+Comet
+Max Level:^777777 5^000000
+Type:^33cc00 Damage / Status Effect^000000
+SP Cost:^777777 1000 + 200*SkillLV^000000
+Target:^777777 Ground^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Calls a comet from space to crash down down into the ground dealing huge fire element damage in a 15x15 radius. The skill causes Burning status effect, which continually deals fire element damage over time.
+Enemies closer to the center of the blast takes increased damage. This skill requires two Warlocks to be together to cast.^000000
+[LV 1]^777777 MATK 1000 - 3000%^000000
+[LV 2]^777777 MATK 1200 - 3500%^000000
+[LV 3]^777777 MATK 1400 - 4000%^000000
+[LV 4]^777777 MATK 1600 - 4500%^000000
+[LV 5]^777777 MATK 1800 - 5000%^000000
+#
+WL_CHAINLIGHTNING#
+Chain Lightning
+Required For:^777777 Tetra Vortex (L5)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 38 + 4*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Deals wind element damage to a single target. When a target is struck by chain lightening, chain lightening will also chain to enemies near the target.
+Higher levels of the skill increase the amount of times it can chain.
+Number Of Random Attacks^000000
+[LV 1]^777777 MATK 500% / 5 times^000000
+[LV 2]^777777 MATK 600% / 6 times^000000
+[LV 3]^777777 MATK 700% / 7 times^000000
+[LV 4]^777777 MATK 800% / 8 times^000000
+[LV 5]^777777 MATK 900% / 9 times^000000
+#
+WL_EARTHSTRAIN#
+Earth Strain
+Required For:^777777 Tetra Vortex (L5)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Damage / Debuff^000000
+SP Cost:^777777 62 + 8*SkillLV^000000
+Target:^777777 Ground???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Causes the earth near you to shake and shoot up from below, dealing earth element damage to those in range. The shaking caused by the skill can cause players to lose their weapon and helment.
+Magic Attack / Success Rate Of Striping Weapons And Helments^000000
+[LV 1]^777777 MATK 2100% / 6%^000000
+[LV 2]^777777 MATK 2200% / 14%^000000
+[LV 3]^777777 MATK 2300% / 24%^000000
+[LV 4]^777777 MATK 2400% / 36%^000000
+[LV 5]^777777 MATK 2500% / 50%^000000
+#
+WL_TETRAVORTEX#
+Tetra Vortex
+Max Level:^777777 5^000000
+Type:^33cc00 Damage / Debuff^000000
+SP Cost:^777777 740 + 60*SkillLV^000000
+Target:^777777 Enemy Or Ground???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Summons the power of the 4 basic elements, to deal magic damage of each element. Tetra Vortex requires you to have summoned one Fire Ball, Water Ball, Ball Lightening, and Stone before casting or the skill will fail.
+Targets struck by Tetra Vortex will receive one random status effect from Burning, Freezing, Stun, and Bleeding status ailments.^000000
+[LV 1]^777777 4 Element Magic Damage 1000% * 4 hits^000000
+[LV 2]^777777 4 Element Magic Damage 1200% * 4 hits^000000
+[LV 3]^777777 4 Element Magic Damage 1400% * 4 hits^000000
+[LV 4]^777777 4 Element Magic Damage 1600% * 4 hits^000000
+[LV 5]^777777 4 Element Magic Damage 1800% * 4 hits^000000
+#
+WL_SUMMONFB#
+Summon Fire Ball
+Required For:^777777 Crimson Rock (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 15 + 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 20s + 10s*SkillLV^000000
+Effect:^777777 Summons a ball of fire near the caster that explodes when touched. Higher skill level increases the number of balls that can be summoned at once.
+Maintaining the fire balls drains SP over time.
+Max Fire Balls / Damage / Duration^000000
+[LV 1]^777777 1 ball / MATK 100% / 30 seconds^000000
+[LV 2]^777777 2 balls/ MATK 150% / 40 seconds^000000
+[LV 3]^777777 3 balls/ MATK 200% / 50 seconds^000000
+[LV 4]^777777 4 balls/ MATK 250% / 60 seconds^000000
+[LV 5]^777777 5 balls/ MATK 300% / 70 seconds^000000
+#
+WL_SUMMONBL#
+Summon Lightning Ball
+Required For:^777777 Chain Lightening (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 15 + 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 20s + 10s*SkillLV^000000
+Effect:^777777 Summons a ball of lightning near the caster that explodes when touched. Higher skill level increases the number of balls that can be summoned at once.
+Maintaining the ball lightening drains SP over time.
+Max Lightning Balls / Damage / Duration^000000
+[LV 1]^777777 1 ball / MATK 100% / 30 seconds^000000
+[LV 2]^777777 2 balls/ MATK 150% / 40 seconds^000000
+[LV 3]^777777 3 balls/ MATK 200% / 50 seconds^000000
+[LV 4]^777777 4 balls/ MATK 250% / 60 seconds^000000
+[LV 5]^777777 5 balls/ MATK 300% / 70 seconds^000000
+#
+WL_SUMMONWB#
+Summon Water Ball
+Required For:^777777 Frost Misty (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 15 + 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 20s + 10s*SkillLV^000000
+Effect:^777777 Summons a ball of water near the caster that explodes when touched. Higher skill level increases the number of balls that can be summoned at once.
+Maintaining the water balls drains SP over time.
+Max Water Balls / Damage / Duration^000000
+[LV 1]^777777 1 ball / MATK 100% / 30 seconds^000000
+[LV 2]^777777 2 balls/ MATK 150% / 40 seconds^000000
+[LV 3]^777777 3 balls/ MATK 200% / 50 seconds^000000
+[LV 4]^777777 4 balls/ MATK 250% / 60 seconds^000000
+[LV 5]^777777 5 balls/ MATK 300% / 70 seconds^000000
+#
+WL_SUMMONSTONE#
+Summon Stone
+Required For:^777777 Sienna Execrate (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 15 + 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 20s + 10s*SkillLV^000000
+Effect:^777777 Summons a magic stone near the caster that explodes when touched. Higher skill level increases the number of stones that can be summoned at once.
+Maintaining the stone drains SP over time.
+Max Stones / Damage / Duration^000000
+[LV 1]^777777 1 stone / MATK 100% / 30 seconds^000000
+[LV 2]^777777 2 stones/ MATK 150% / 40 seconds^000000
+[LV 3]^777777 3 stones/ MATK 200% / 50 seconds^000000
+[LV 4]^777777 4 stones/ MATK 250% / 60 seconds^000000
+[LV 5]^777777 5 stones/ MATK 300% / 70 seconds^000000
+#
+WL_RELEASE#
+Release
+Required For:^777777 Recognized Spell (L2)^000000
+Max Level:^777777 2^000000
+Type:^33cc00 Active / Special^000000
+SP Cost:^777777 3 For Lv 1, 20 For Lv 2^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Throws your active Fire Ball / Ball Lightening / Water Ball / Stone that you currently have summoned to deal damage to a single target.^000000
+[LV 1]^777777 Throws a single magic stone at the target^000000
+[LV 2]^777777 Throws all remaining magic stones at the target^000000

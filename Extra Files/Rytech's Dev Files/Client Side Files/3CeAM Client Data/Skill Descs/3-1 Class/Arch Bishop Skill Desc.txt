@@ -1,0 +1,360 @@
+New Skill Desc For Arch Bishop
+Format is as follow...
+
+#
+#
+
+Required For:^777777 ^000000
+Max Level:^777777 ^000000
+Type:^33cc00 ^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 ^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+
+Effect:^777777 An advanced Ninja technique that allows one to dissapear instantly from thier location to avoid damage, however if you are struck you will jump back 7 cells in the direction you were hit (you are not pushed back in WoE). It blocks 1 + SkillLV/2 attacks. Not all skills can be blocked including Magic attacks. If you are in mid cast, this jump will not actually interupt your casting.^000000
+
+
+#
+AB_JUDEX#
+Judex
+Required For:^777777 Adoramus (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Holy Attribute Magic^000000
+SP Cost:^777777 27 + 3*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 A magic attack that deals holy attribute damage to a target and all targets in the surounding 3 cells.^000000
+[LV 1]^777777 MATK 300%^000000
+[LV 2]^777777 MATK 320%^000000
+[LV 3]^777777 MATK 340%^000000
+[LV 4]^777777 MATK 360%^000000
+[LV 5]^777777 MATK 400%^000000
+#
+AB_ANCILLA#
+Ancilla
+Required For:^777777 Adoramus (L1) Epiclesis (L1)^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Ancilla Creation^000000
+SP Cost:^777777 30% of Max SP^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Allows creation of the magic stone known as Ancilla. Ancilla item recovers 15% of Max SP, Maximum of 3 can be held at a time.
+(Requires 1 Blue Gemstone)^000000
+#
+AB_ADORAMUS#
+Adoramus
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Holy Attribute Magic^000000
+SP Cost:^777777 16 + 4*SkillLV^000000
+Target:^777777 Single Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Strikes a single target for damage with a powerful holy light that also causes blind and agility down effect. This skill consumes 1 blue gemstone.
+If the caster is standing next to another priest type character however, the gemstone requirement is negated, but the other priest incurs a portion of the SP casting cost.^000000
+[LV 1]^777777 MATK 300%^000000
+[LV 2]^777777 MATK 400%^000000
+[LV 3]^777777 MATK 500%^000000
+[LV 4]^777777 MATK 600%^000000
+[LV 5]^777777 MATK 700%^000000
+[LV 6]^777777 MATK 800%^000000
+[LV 7]^777777 MATK 900%^000000
+[LV 8]^777777 MATK 1000%^000000
+[LV 9]^777777 MATK 1100%^000000
+[LV 10]^777777 MATK 1200%^000000
+#
+AB_CLEMENTIA#
+Crementia
+Required For:^777777 Ancilla (L3)^000000
+Max Level:^777777 3^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 180 + 20*SkillLV^000000
+Target:^777777 Party Member^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777  Casts the skill 'Blessing' on the target and any party members within a radius of that target.
+Area of Effect Size^000000
+[LV 1]^777777 7x7^000000
+[LV 2]^777777 11x11^000000
+[LV 3]^777777 15x15^000000
+#
+AB_CANTO#
+Canto Candidus
+Required For:^777777 ^000000
+Max Level:^777777 3^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 130 + 15*SkillLV^000000
+Target:^777777 Party Member^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Casts the skill 'Increase AGI' on the target and any party members within a radius of that target.
+Area of Effect Size^000000
+[LV 1]^777777 7x7^000000
+[LV 2]^777777 11x11^000000
+[LV 3]^777777 15x15^000000
+#
+AB_CHEAL#
+Coluceo Heal
+Required For:^777777 Renovatio (L3)^000000
+Max Level:^777777 3^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 115 + 15*SkillLV^000000
+Target:^777777 Party Member^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Casts the skill 'Heal' on the target and any party members within a radius of that target.
+Area of Effect Size^000000
+[LV 1]^777777 7x7^000000
+[LV 2]^777777 11x11^000000
+[LV 3]^777777 15x15^000000
+#
+AB_EPICLESIS#
+Epiclesis
+Required For:^777777 Eucharistica (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Summons^000000
+SP Cost:^777777  300^000000
+Target:^777777 Ground???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Summons a holy tree of life for a short period of time, resurrecting the dead and recovering HP/SP of all players nearby. Undead and Demon monsters that approach the tree receive holy damage.
+Consumes 300 SP regardless of level and one Ancilla stone.
+MaxHP Increase / HP Regen Per Second / SP Regen Per Second^000000
+[LV 1]^777777 5% / 300 / 2^000000
+[LV 2]^777777 10% / 350 / 3^000000
+[LV 3]^777777 15% / 400 / 4^000000
+[LV 4]^777777 20% / 450 / 5^000000
+[LV 5]^777777 25% / 500 / 6^000000
+#
+AB_PRAEFATIO#
+Praefatio
+Required For:^777777 Oratio (L5)^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 Unknown + *SkillLV^000000
+Target:^777777 Party^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 All party members receive the protection of the skill 'Kyrie Eleison' from the caster.
+Maximum Number Of Hits Blocked^000000
+[LV 1]^777777 7^000000
+[LV 2]^777777 8^000000
+[LV 3]^777777 9^000000
+[LV 4]^777777 10^000000
+[LV 5]^777777 11^000000
+[LV 6]^777777 12^000000
+[LV 7]^777777 13^000000
+[LV 8]^777777 14^000000
+[LV 9]^777777 15^000000
+[LV 10]^777777 16^000000
+#
+AB_ORATIO#
+Oratio
+Required For:^777777 Expiatio (L5)^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Debuff^000000
+SP Cost:^777777 Unknown + *SkillLV^000000
+Target:^777777 All Enemies On Screen^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Decreases the holy attribute resistance of all enemies on screen.
+Success Rate / Holy Resistance Reduction^000000
+[LV 1]^777777 45% / 2%^000000
+[LV 2]^777777 50% / 4%^000000
+[LV 3]^777777 55% / 6%^000000
+[LV 4]^777777 60% / 8%^000000
+[LV 5]^777777 65% / 10%^000000
+[LV 6]^777777 70% / 12%^000000
+[LV 7]^777777 75% / 14%^000000
+[LV 8]^777777 80% / 16%^000000
+[LV 9]^777777 85% / 18%^000000
+[LV 10]^777777 90% / 20%^000000
+#
+AB_LAUDAAGNUS#
+Lauda Agnus
+Required For:^777777 Lauda Ramus (L2)^000000
+Max Level:^777777 4^000000
+Type:^33cc00 Recovery^000000
+SP Cost:^777777 40 + 10*SkillLV^000000
+Target:^777777 All Party Members^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Cures status effects Freeze, Petrification, and Blind from all party members.
+Success Rate^000000
+[LV 1]^777777 35%^000000
+[LV 2]^777777 40%^000000
+[LV 3]^777777 45%^000000
+[LV 4]^777777 50%^000000
+#
+AB_LAUDARAMUS#
+Lauda Ramus
+Required For:^777777 Clearance (L2)^000000
+Max Level:^777777 4^000000
+Type:^33cc00 Recovery^000000
+SP Cost:^777777 40 + 10*SkillLV^000000
+Target:^777777 All Party Members^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Cures status effects Sleep, Stun and Silence from all party members.
+Success Rate^000000
+[LV 1]^777777 35%^000000
+[LV 2]^777777 40%^000000
+[LV 3]^777777 45%^000000
+[LV 4]^777777 50%^000000
+#
+AB_EUCHARISTICA#
+Eucharistica
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Passive^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Increases attack power and reduces damage when facing demon race and shadow property monsters.
+Attack / Resistance^000000
+[LV 1]^777777 1% / 1%^000000
+[LV 2]^777777 2% / 2%^000000
+[LV 3]^777777 3% / 3%^000000
+[LV 4]^777777 4% / 4%^000000
+[LV 5]^777777 5% / 5%^000000
+[LV 6]^777777 6% / 6%^000000
+[LV 7]^777777 7% / 7%^000000
+[LV 8]^777777 8% / 8%^000000
+[LV 9]^777777 9% / 9%^000000
+[LV 10]^777777 10% / 10%^000000
+#
+AB_RENOVATIO#
+Renovatio
+Required For:^777777 Highness Heal (L1)^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Recovery^000000
+SP Cost:^777777 Unknown + *SkillLV^000000
+Target:^777777 Player^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Recovers 500HP every 5 seconds.^000000
+#
+AB_HIGHNESSHEAL#
+Highness Heal
+Required For:^777777 Epiclesis (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Recovery^000000
+SP Cost:^777777 40 + 20*SkillLV^000000
+Target:^777777 Player^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Heals a target for much more than the normal 'Heal' skill.
+Heal Recovery Rate^000000
+[LV 1]^777777 2.0x^000000
+[LV 2]^777777 2.5x^000000
+[LV 3]^777777 3.0x^000000
+[LV 4]^777777 3.5x^000000
+[LV 5]^777777 4.0x^000000
+#
+AB_CLEARANCE#
+Clearance
+Required For:^777777 Silentium (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Special^000000
+SP Cost:^777777 48 + 6*SkillLV^000000
+Target:^777777 Everything On Screen^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Affects all party members and enemies on screen and removes all of their buffs, debuffs, and status ailments.
+Success Rate^000000
+[LV 1]^777777 40%^000000
+[LV 2]^777777 50%^000000
+[LV 3]^777777 60%^000000
+[LV 4]^777777 70%^000000
+[LV 5]^777777 80%^000000
+#
+AB_EXPIATIO#
+Expiatio
+Required For:^777777 Eucharistica (L1)^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 30 + 5*SkillLV^000000
+Target:^777777 Player^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 30*SkillLV^000000
+Effect:^777777 Infusing a weapon with holy power allows the target to bypass a portion of an enemies physical defense.
+Defense Bypass^000000
+[LV 1]^777777 5%^000000
+[LV 2]^777777 10%^000000
+[LV 3]^777777 15%^000000
+[LV 4]^777777 20%^000000
+[LV 5]^777777 25%^000000
+#
+AB_DUPLELIGHT#
+Duple Light
+Required For:^777777 Expiato (L5)^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Active^000000
+SP Cost:^777777 50 + 5*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 40 + 5*SkillLV^000000
+Effect:^777777 Summons two holy lights which periodically assist while dealing melee damage. One light deals magical damage, and one deals physical damage.
+Attack Damage^000000
+[LV 1]^777777 55%^000000
+[LV 2]^777777 60%^000000
+[LV 3]^777777 65%^000000
+[LV 4]^777777 70%^000000
+[LV 5]^777777 75%^000000
+[LV 6]^777777 80%^000000
+[LV 7]^777777 85%^000000
+[LV 8]^777777 90%^000000
+[LV 9]^777777 95%^000000
+[LV 10]^777777 100%^000000
+#
+AB_SILENTIUM#
+Silentium
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Debuff^000000
+SP Cost:^777777 20 + 4*SkillLV^000000
+Target:^777777 Enemies^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Strikes all enemies in range centered around your character with the skill 'Lex Divina'.
+Area of Effact Size^000000
+[LV 1]^777777 15x15^000000
+[LV 2]^777777 19x19^000000
+[LV 3]^777777 23x23^000000
+[LV 4]^777777 27x27^000000
+[LV 5]^777777 31x31^000000
+

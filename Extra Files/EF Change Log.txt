@@ -4,6 +4,12 @@
 // 	- Details.
 //========================================
 
+1/21/2010
+	*Uploaded latest TXT and LUB files from 2010-01-19 patch updates to the changes detection folder.
+	*Uploaded my development files so I can have 24/7 access to them no matter what computer im on.
+	-Yea I run between 3 computers sometimes with a flash drive in hand. So it gets annoying after a while.
+	-Feel free to look at my work, but dont take it and claim it as your own.
+
 12/24/2009
 	rev 76
 	*Added 12/23/2009 patch text files to the changes detection folder.

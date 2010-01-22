@@ -1,0 +1,27 @@
+=Prontera Kafra Warps
+izlude
+geffen
+payon
+morroc
+some orc area
+alberta (town with the dock)
+
+=Geffen Warps
+prontera
+aldebaran (water everywhere)
+
+=Aldebaran Warps
+geffen
+yuno
+izlude
+mjolnir_02 (A field?)
+
+=Yuno Warps
+aldebaran
+
+=Morroc
+prontera
+
+
+
+cmd_fild07

@@ -1,0 +1,325 @@
+New Skill Desc For Guillotine Cross
+Format is as follow...
+
+#
+#
+
+Required For:^777777 ^000000
+Max Level:^777777 ^000000
+Type:^33cc00 ^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 ^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+
+Effect:^777777 An advanced Ninja technique that allows one to dissapear instantly from thier location to avoid damage, however if you are struck you will jump back 7 cells in the direction you were hit (you are not pushed back in WoE). It blocks 1 + SkillLV/2 attacks. Not all skills can be blocked including Magic attacks. If you are in mid cast, this jump will not actually interupt your casting.^000000
+
+#
+GC_VENOMIMPRESS#
+Venom Impress
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Debuff^000000
+SP Cost:^777777 8 + 4*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Weakens a target's resistance to poison element attacks.
+Poison Resistance^000000
+[LV 1]^777777 10%^000000
+[LV 2]^777777 20%^000000
+[LV 3]^777777 30%^000000
+[LV 4]^777777 40%^000000
+[LV 5]^777777 50%^000000
+#
+GC_CROSSIMPACT#
+Cross Impact
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 Emeny^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Strikes a single target rapidly for 7 hits. Range 3 cells.^000000
+[LV 1]^777777 ATK 1200%^000000
+[LV 2]^777777 ATK 1250%^000000
+[LV 3]^777777 ATK 1300%^000000
+[LV 4]^777777 ATK 1350%^000000
+[LV 5]^777777 ATK 1400%^000000
+#
+GC_DARKILLUSION#
+Dark Illusion
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage - Special^000000
+SP Cost:^777777 40^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Rapidly closes the distance to a target and deals 100% damage. Has a low chance to trigger Cross Impact.
+If used in siege mode, the skill will fail.
+Max Range^000000
+[LV 1]^777777 3 cells^000000
+[LV 2]^777777 4 cells^000000
+[LV 3]^777777 5 cells^000000
+[LV 4]^777777 6 cells^000000
+[LV 5]^777777 7 cells^000000
+#
+GC_RESEARCHNEWPOISON#
+Research New Poison
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Passive^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Allows creation of new poisons. Higher levels of the skills unlocks new types of poisons and increases the probability of success.
+It is necessary to have medicine bottle and a poison creation kit.
+Success Rate / Poison Type^000000
+[LV 1]^777777 35% / Paralize^000000
+[LV 2]^777777 40% / Pyrexia^000000
+[LV 3]^777777 45% / Disheart^000000
+[LV 4]^777777 50% / Leech End^000000
+[LV 5]^777777 55% / Antidote^000000
+[LV 6]^777777 60% / Venom Bleed^000000
+[LV 7]^777777 65% / Magic Mushroom^000000
+[LV 8]^777777 70% / Toxin^000000
+[LV 9]^777777 75% / Oblivion Curse^000000
+[LV 10]^777777 80% / ^000000
+#
+GC_CREATENEWPOISON#
+Create New Poison
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Creates a new poison. Presents a list of poisons you can make with your current items.^000000
+#
+GC_ANTIDOTE#
+Antidote
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Detox^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Using 1 Antidote, cancels out the effects of a Guillotine Cross poison on a single target.^000000
+#
+GC_POISONINGWEAPON#
+Poisoning Weapon
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777 16 + 4*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 60s*SkillLV^000000
+Effect:^777777 Coats your weapon with one of the Guillotine Cross poisons. While attacking there is a chance to poison the target with the selected poison.
+Poisoning Chance^000000
+[LV 1]^777777 4%^000000
+[LV 2]^777777 6%^000000
+[LV 3]^777777 8%^000000
+[LV 4]^777777 10%^000000
+[LV 5]^777777 12%^000000
+#
+GC_WEAPONBLOCKING#
+Weapon Blocking
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777 44 - 4*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 180s^000000
+Effect:^777777 Has a chance to completely block a short range physical attack. When an attack is blocked you have a chance to use counter slash or weapon crush.
+While its active it continually drains SP. Reusing the skill cancels the effect.
+Blocking Chance^000000
+[LV 1]^777777 12%^000000
+[LV 2]^777777 14%^000000
+[LV 3]^777777 16%^000000
+[LV 4]^777777 18%^000000
+[LV 5]^777777 20%^000000
+#
+GC_COUNTERSLASH#
+Counter Slash
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777 2 + 3*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 When successfully blocking an attack with Weapon Blocking, you can counter using Counter Slash. Damages all targets in a 3x3 radius around the user.
+The damage is increased by the user's AGI.^000000
+[LV 1]^777777 ATK 400%^000000
+[LV 2]^777777 ATK 500%^000000
+[LV 3]^777777 ATK 600%^000000
+[LV 4]^777777 ATK 700%^000000
+[LV 5]^777777 ATK 800%^000000
+#
+GC_WEAPONCRUSH#
+Weapon Crush
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Debuff^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 When successfully blocking an attack with Weapon Blocking, you can counter using Weapon Crush. When used it divests the attackers weapon.
+Increased skill level increases the success rate and duration.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+#
+GC_VENOMPRESSURE#
+Venom Pressure
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 While your weapon is enchanted with Poisoning Weapon there's a very high chance to inflict the endowed poison on the target. When used, you lose the poisoning weapon status.
+Poisoning Chance / Hit Rate^000000
+[LV 1]^777777 75% / +14^000000
+[LV 2]^777777 80% / +18^000000
+[LV 3]^777777 85% / +22^000000
+[LV 4]^777777 90% / +26^000000
+[LV 5]^777777 95% / +30^000000
+#
+GC_POISONSMOKE#
+Poison Smoke
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 4s + 2*SkillLv^000000
+Effect:^777777 While your weapon is enchanted with Poisoning Weapon, you create a poisoning cloud in a 5x5 area. Every second there's a 20% chance to inflict that poison on the target.
+When used, you lose the poisoning weapon status. Range 5 cells.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+#
+GC_CLOAKINGEXCEED#
+Cloaking Exceed
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Special^000000
+SP Cost:^777777 10 Every Second - 1*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777  Unlike regular cloaking it allows hiding from Insect and Demon. When active it allows you to receive up to 3 hits without being unhidden.
+Skill Level increases the number of hit and movement speed.
+Movement Speed / Number Of Hits^000000
+[LV 1]^777777 100% / 1 hit^000000
+[LV 2]^777777 110% / 1 hit^000000
+[LV 3]^777777 120% / 2 hits^000000
+[LV 4]^777777 130% / 2 hits^000000
+[LV 5]^777777 140% / 3 hits^000000
+#
+GC_PHANTOMMENACE#
+Phantom Menace
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Detecting^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 The Guillotine Cross strikes from the shadows to hit all targets in a 7x7 area for 300% damage. Cancels hidden status on all targets that are hit.^000000
+#
+GC_HALLUCINATIONWALK#
+Hallucination Walk
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Momentarily increases the users speed to the limit, granting high evasion rate of physical and magical attacks.
+Using the skill consumes HP, and when the skill ends for 25 seconds you receive half movement speed and half attack speed.
+Evasion Rate / Magic Damage Evasion^000000
+[LV 1]^777777 +50 / 10%^000000
+[LV 2]^777777 +100 / 20%^000000
+[LV 3]^777777 +150 / 30%^000000
+[LV 4]^777777 +200 / 40%^000000
+[LV 5]^777777 +250 / 50%^000000
+#
+GC_ROLLINGCUTTER#
+Rolling Cutter
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Attack^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Katar Exclusive Skill. Using the katar strikes in a rotation in a 3x3 area around the player striking all enemies in range.
+Each rotation increases your rotation counter, which increases the damage of Cross Ripper Slasher. You can't have more than 10 rotation counters.^000000
+[LV 1]^777777 ATK 120%^000000
+[LV 2]^777777 ATK 140%^000000
+[LV 3]^777777 ATK 160%^000000
+[LV 4]^777777 ATK 180%^000000
+[LV 5]^777777 ATK 200%^000000
+#
+GC_CROSSRIPPERSLASHER#
+Cross Ripper Slasher
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Attack^000000
+SP Cost:^777777 16 + 4*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Consumes the rotation counters accumulated from Rolling Cutter. The spinning blade is shot out dealing strong damage to a target. The damage is increased by the number of counters.
+After using Cross Ripper Slasher your counters are reset to 0. Range 7 cells.^000000
+[LV 1]^777777 ATK 200%^000000
+[LV 2]^777777 ATK 240%^000000
+[LV 3]^777777 ATK 280%^000000
+[LV 4]^777777 ATK 320%^000000
+[LV 5]^777777 ATK 360%^000000

@@ -1,0 +1,40 @@
+Skill Tree Database For Bongun/Munak (Gangsi)
+
+//JobNo,Skill-ID,MaxLV,Prerequisite Skill-ID-1,Prerequisite Skill-ID-1-Lv,PrereqSkill-ID-2,PrereqSkill-ID-2-Lv,
+//PrereqSkill-ID-3,PrereqSkill-ID-3-Lv,PrereqSkill-ID-4,PrereqSkill-ID-4-Lv,PrereqSkill-ID-5,PrereqSkill-ID-5-Lv
+//CLASS_SKILLNAME#Skill Name#
+
+Job ID is 4050
+
+Note: When the job is played as a male, the job name will be Bongun. When played as a female, the job name will
+be Munak. Its kinda the same way with how Taekwon Boy and Taekwon Girl appears. Its unknown right now if the
+M and B skills will appear on seprate skill trees in the future.
+
+//Bongun/Munak (Gangsi)
+4050,545,,0,0,0,0,0,0,0,0,0,0 //MB_FIGHTING##
+4050,546,,0,0,0,0,0,0,0,0,0,0 //MB_NEUTRAL##
+4050,547,,0,0,0,0,0,0,0,0,0,0 //MB_TAIMING_PUTI##
+4050,548,,0,0,0,0,0,0,0,0,0,0 //MB_WHITEPOTION##
+4050,549,,0,0,0,0,0,0,0,0,0,0 //MB_MENTAL##
+4050,550,,0,0,0,0,0,0,0,0,0,0 //MB_CARDPITCHER##
+4050,551,,0,0,0,0,0,0,0,0,0,0 //MB_PETPITCHER##
+4050,552,,0,0,0,0,0,0,0,0,0,0 //MB_BODYSTUDY##
+4050,553,,0,0,0,0,0,0,0,0,0,0 //MB_BODYALTER##
+4050,554,,0,0,0,0,0,0,0,0,0,0 //MB_PETMEMORY##
+4050,555,,0,0,0,0,0,0,0,0,0,0 //MB_M_TELEPORT##
+4050,556,,0,0,0,0,0,0,0,0,0,0 //MB_B_GAIN##
+4050,557,,0,0,0,0,0,0,0,0,0,0 //MB_M_GAIN##
+4050,558,,0,0,0,0,0,0,0,0,0,0 //MB_MISSION##
+4050,559,,0,0,0,0,0,0,0,0,0,0 //MB_MUNAKKNOWLEDGE##
+4050,560,,0,0,0,0,0,0,0,0,0,0 //MB_MUNAKBALL##
+4050,561,,0,0,0,0,0,0,0,0,0,0 //MB_SCROLL##
+4050,562,,0,0,0,0,0,0,0,0,0,0 //MB_B_GATHERING##
+4050,563,,0,0,0,0,0,0,0,0,0,0 //MB_M_GATHERING##
+4050,564,,0,0,0,0,0,0,0,0,0,0 //MB_B_EXCLUDE##
+4050,565,,0,0,0,0,0,0,0,0,0,0 //MB_B_DRIFT##
+4050,566,,0,0,0,0,0,0,0,0,0,0 //MB_B_WALLRUSH##
+4050,567,,0,0,0,0,0,0,0,0,0,0 //MB_M_WALLRUSH##
+4050,568,,0,0,0,0,0,0,0,0,0,0 //MB_B_WALLSHIFT##
+4050,569,,0,0,0,0,0,0,0,0,0,0 //MB_M_WALLCRASH##
+4050,570,,0,0,0,0,0,0,0,0,0,0 //MB_M_REINCARNATION##
+4050,571,,0,0,0,0,0,0,0,0,0,0 //MB_B_EQUIP##

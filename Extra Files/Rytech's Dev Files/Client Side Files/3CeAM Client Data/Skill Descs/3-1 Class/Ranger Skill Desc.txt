@@ -1,0 +1,377 @@
+New Skill Desc For Warlock
+Format is as follow...
+
+#
+#
+
+Required For:^777777 ^000000
+Max Level:^777777 ^000000
+Type:^33cc00 ^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 ^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+[LV 4]^777777 ^000000
+[LV 5]^777777 ^000000
+[LV 6]^777777 ^000000
+[LV 7]^777777 ^000000
+[LV 8]^777777 ^000000
+[LV 9]^777777 ^000000
+[LV 10]^777777 ^000000
+
+Effect:^777777 An advanced Ninja technique that allows one to dissapear instantly from thier location to avoid damage, however if you are struck you will jump back 7 cells in the direction you were hit (you are not pushed back in WoE). It blocks 1 + SkillLV/2 attacks. Not all skills can be blocked including Magic attacks. If you are in mid cast, this jump will not actually interupt your casting.^000000
+
+#
+RA_ARROWSTORM#
+Arrow Storm
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 28 + 2*SkillLV^000000
+Target:^777777 Enemy or Ground???^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Fires a storm of arrows on a designated target and a 5x5 area around them. Consumes 10 arrows.^000000
+[LV 1]^777777 ATK 250%^000000
+[LV 2]^777777 ATK 300%^000000
+[LV 3]^777777 ATK 350%^000000
+[LV 4]^777777 ATK 400%^000000
+[LV 5]^777777 ATK 450%^000000
+[LV 6]^777777 ATK 500%^000000
+[LV 7]^777777 ATK 550%^000000
+[LV 8]^777777 ATK 600%^000000
+[LV 9]^777777 ATK 650%^000000
+[LV 10]^777777 ATK 700%^000000
+#
+RA_FEARBREEZE#
+Fear Breeze
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Support^000000
+SP Cost:^777777 32 + 4*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 30s + 30s*SkillLV^000000
+Effect:^777777 Durring the durration has a chance of increasing the number of attacks. When you deal additional hits, it consumes additional arrows.
+Number of Attacks / Chance Each Attack^000000
+[LV 1]^777777 +1 / 4%^000000
+[LV 2]^777777 +1 / 4%^000000
+[LV 3]^777777 +1 ~ +2 / 7%^000000
+[LV 4]^777777 +1 ~ +3 / 9%^000000
+[LV 5]^777777 +1 ~ +4 / 10%^000000
+#
+RA_RANGERMAIN#
+Ranger Main
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Passive^000000
+Effect:^777777 When fighting Brute, Plant, and Fish type monsters, increases your attack power and decreases received damage.
+Attack Power / Resistance^000000
+[LV 1]^777777 +5 / +5^000000
+[LV 2]^777777 +10 / +10^000000
+[LV 3]^777777 +15 / +15^000000
+[LV 4]^777777 +20 / +20^000000
+[LV 5]^777777 +25 / +25^000000
+[LV 6]^777777 +30 / +30^000000
+[LV 7]^777777 +35 / +35^000000
+[LV 8]^777777 +40 / +40^000000
+[LV 9]^777777 +45 / +45^000000
+[LV 10]^777777 +50 / +50^000000
+#
+RA_AIMEDBOLT#
+Aimed Bolt
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 28 + 2*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 When used against an immobile status target (Ankle Snare, Electric Shocker, Warg Bite effect), deals a huge amount of damage. Deals additional damage based on the size of the target.
+The skill will fail if you do not have enough arrows. Using this skill cancels the immobile status.^000000
+[LV 1]^777777 ATK 220%^000000
+[LV 2]^777777 ATK 240%^000000
+[LV 3]^777777 ATK 260%^000000
+[LV 4]^777777 ATK 280%^000000
+[LV 5]^777777 ATK 300%^000000
+[LV 6]^777777 ATK 320%^000000
+[LV 7]^777777 ATK 340%^000000
+[LV 8]^777777 ATK 360%^000000
+[LV 9]^777777 ATK 380%^000000
+[LV 10]^777777 ATK 400%^000000
+#
+RA_DETONATOR#
+Detonator
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Special^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Immediately activates a trap on the ground. The trap has an area of effect of 7 x 7 cells around the trap. It can be used with both Hunter and Ranger traps. However, you cannot detonate traps of another player.^000000
+#
+RA_ELECTRICSHOCKER#
+Electric Shocker
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 20s^000000
+Effect:^777777 Like Ankle Snare causes immobile status while at the same time draining the targets SP. Electric Shocker cannot be removed with the hunter skill Remove Trap.
+To place you need one Special Alloy Trap.
+Ammount Of SP Drained Per Second^000000
+[LV 1]^777777 1%^000000
+[LV 2]^777777 2%^000000
+[LV 3]^777777 3%^000000
+[LV 4]^777777 4%^000000
+[LV 5]^777777 5%^000000
+#
+RA_CLUSTERBOMB#
+Cluster Bomb
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 15s^000000
+Effect:^777777 A maximum of 3 traps can be placed at once. The trap detonates in an area 3 cells in front (away from the trap layer) and a width of 5 cells. The trap can be detonated via Detonator. Cluster Bomb cannot be removed by the hunter skill Remove Trap.
+Placing a cluster bomb consumes 1 special alloy trap.^000000
+[LV 1]^777777 ATK 100%^000000
+[LV 2]^777777 ATK 200%^000000
+[LV 3]^777777 ATK 300%^000000
+[LV 4]^777777 ATK 400%^000000
+[LV 5]^777777 ATK 500%^000000
+#
+RA_WUGMASTERY#
+Warg Mastery
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Special^000000
+Effect:^777777 Allows you to summon a loyal 'Warg' wolf using a special wolf flute. In order to summon a warg you need to have the item Wolf Flute. Re-using the skill returns the Warg to the wild.^000000
+#
+RA_WUGRIDER#
+Warg Rider
+Required For:^777777 ^000000
+Max Level:^777777 3^000000
+Type:^33cc00 Active / Special^000000
+SP Cost:^777777  + *SkillLV^000000
+Effect:^777777 Allows a ranger to mount their summoned Warg. Skill level increases your movement speed. While mounted a warg, you can't use any bow attacks or skills that are not Warg exclusive.^000000
+[LV 1]^777777 ^000000
+[LV 2]^777777 ^000000
+[LV 3]^777777 ^000000
+#
+RA_WUGDASH#
+Warg Dash
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Special^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Usable only when mounted on your Warg. Your warg runs in a straight line, and re-using the skill stops. You will automatically stop when hitting a wall or enemy.
+If you learn Warg Strike, you'll deal damage when running into the enemy.^000000
+#
+RA_WUGSTRIKE#
+Warg Strike
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 28 + 2*SkillLV^000000
+Target:^777777 Enemy^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Can't be used while mounted on the Warg. The warg deals damage to a single target. Skill level increases the damage.^000000
+[LV 1]^777777 ATK 120%^000000
+[LV 2]^777777 ATK 240%^000000
+[LV 3]^777777 ATK 360%^000000
+[LV 4]^777777 ATK 480%^000000
+[LV 5]^777777 ATK 600%^000000
+#
+RA_WUGBITE#
+Warg Bite
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Damage^000000
+SP Cost:^777777 36 + 4*SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Can't be used while mounted on the Warg. The warg leaps at a target, dealing damage and temporarially causing immibile status.
+Duration for the immibile status caused by Warg Bite is 10s + Tooth of Warg Bonus (Unknown)^000000
+[LV 1]^777777 ATK 150%^000000
+[LV 2]^777777 ATK 200%^000000
+[LV 3]^777777 ATK 250%^000000
+[LV 4]^777777 ATK 300%^000000
+[LV 5]^777777 ATK 350%^000000
+#
+RA_TOOTHOFWUG#
+Tooth Of Warg
+Required For:^777777 ^000000
+Max Level:^777777 10^000000
+Type:^33cc00 Passive^000000
+Effect:^777777 Increases wolf damage and effect of wolf skills. Increased skill level increases damage.
+Attack Increase^000000
+[LV 1]^777777 +6^000000
+[LV 2]^777777 +12^000000
+[LV 3]^777777 +18^000000
+[LV 4]^777777 +24^000000
+[LV 5]^777777 +30^000000
+[LV 6]^777777 +36^000000
+[LV 7]^777777 +42^000000
+[LV 8]^777777 +48^000000
+[LV 9]^777777 +54^000000
+[LV 10]^777777 +60^000000
+#
+RA_SENSITIVEKEEN#
+Sensitive Keen
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Detecting^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 The wolf uses his sense of danger to reveal hidden traps and players in a 7 x 7 area around the caster and deals damage. There's a chance to cast Warg Bite on targets in range.
+Attack Power / Warg Bite Chance^000000
+[LV 1]^777777 ATK 150% / 8%^000000
+[LV 2]^777777 ATK 200% / 16%^000000
+[LV 3]^777777 ATK 250% / 24%^000000
+[LV 4]^777777 ATK 300% / 32%^000000
+[LV 5]^777777 ATK 350% / 40%^000000
+#
+RA_CAMOUFLAGE#
+Camouflage
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Buff^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 Self^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 Hide yourself from view of monsters while standing near walls and obstacles. Your character will appear transparant.
+While in camouflage status your critical chance and attack power is increased, but decreases your defense. When camouflage status ends your attack power, critical, and defense returns to normal. Until you re-use the skill to cancel its effect, it will continaully drain SP.
+With high enough level you can use the skill without being near an obstacle.
+SP Cost Per Second / Movement^000000
+[LV 1]^777777 6 / Can't Move^000000
+[LV 2]^777777 5 / Can't Move^000000
+[LV 3]^777777 4 / Move Slowly^000000
+[LV 4]^777777 3 / Move Slowly^000000
+[LV 5]^777777 2 / Move Slowly^000000
+#
+RA_RESEARCHTRAP#
+Research Trap
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Passive^000000
+Effect:^777777 Increases damage with Hunter and Ranger trap damage, and increases INT and MaxSP.
+Added Damage / INT Increase / MaxSP Increase^000000
+[LV 1]^777777 +40 / +1 / +10^000000
+[LV 2]^777777 +80 / +2 / +20^000000
+[LV 3]^777777 +120 / +3 / +30^000000
+[LV 4]^777777 +160 / +4 / +40^000000
+[LV 5]^777777 +200 / +5 / +50^000000
+#
+RA_MAGENTATRAP#
+Magenta Trap
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 A monster that steps on this trap has its attribute changed to fire property. Does not affect boss type monsters or players, and consumes one Red Blood and a Special Alloy Trap.^000000
+#
+RA_COBALTTRAP#
+Cobalt Trap
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777  A monster that steps on this trap has its attribute changed to water property. Does not affect boss type monsters or players, and consumes one Crystal Blue and a Special Alloy Trap.^000000
+#
+RA_MAIZETRAP#
+Maize Trap
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 A monster that steps on this trap has its attribute changed to earth property. Does not affect boss type monsters or players, and consumes one Green Live and a Special Alloy Trap.^000000
+#
+RA_VERDURETRAP#
+Verdure Trap
+Required For:^777777 ^000000
+Max Level:^777777 1^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 A monster that steps on this trap has its attribute changed to wind property. Does not affect boss type monsters or players, and consumes one Wind of Vedure and a Special Alloy Trap.^000000
+#
+RA_FIRINGTRAP#
+Firing Trap
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 When the trap activates it deals damage in a 3x3 area and causes Burning status. Increased skill level increases the chance to status. To use the skill you need one Special Alloy Trap.
+Success Rate^000000
+[LV 1]^777777 50%^000000
+[LV 2]^777777 60%^000000
+[LV 3]^777777 70%^000000
+[LV 4]^777777 80%^000000
+[LV 5]^777777 90%^000000
+#
+RA_ICEBOUNDTRAP#
+Icebound Trap
+Required For:^777777 ^000000
+Max Level:^777777 5^000000
+Type:^33cc00 Active / Trap^000000
+SP Cost:^777777  + *SkillLV^000000
+Target:^777777 ^000000
+Cast Time:^777777 ????^000000
+Cool Down:^777777 ????^000000
+Duration:^777777 ????^000000
+Effect:^777777 When the trap activates it deals damage in a 3x3 area and causes Freezing status. Increased skill level increases the chance to status. To use the skill you need one Special Alloy Trap.
+Success Rate^000000
+[LV 1]^777777 50%^000000
+[LV 2]^777777 60%^000000
+[LV 3]^777777 70%^000000
+[LV 4]^777777 80%^000000
+[LV 5]^777777 90%^000000

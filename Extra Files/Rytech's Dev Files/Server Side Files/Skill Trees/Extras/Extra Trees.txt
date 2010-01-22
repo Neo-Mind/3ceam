@@ -1,0 +1,25 @@
+Skill Tree Database For Extra Skills
+
+//JobNo,Skill-ID,MaxLV,Prerequisite Skill-ID-1,Prerequisite Skill-ID-1-Lv,PrereqSkill-ID-2,PrereqSkill-ID-2-Lv,
+//PrereqSkill-ID-3,PrereqSkill-ID-3-Lv,PrereqSkill-ID-4,PrereqSkill-ID-4-Lv,PrereqSkill-ID-5,PrereqSkill-ID-5-Lv
+//CLASS_SKILLNAME#Skill Name#
+
+For misc job ID's. These are mainly for new Soul Linker skills and soul link enabled skills.
+
+//New Soul Linker And Soul Link Enabled Skills
+4049,572,5,0,0,0,0,0,0,0,0,0,0 //SL_DEATHKNIGHT##
+4049,573,5,0,0,0,0,0,0,0,0,0,0 //SL_COLLECTOR##
+4049,574,5,0,0,0,0,0,0,0,0,0,0 //SL_NINJA##
+4049,575,5,0,0,0,0,0,0,0,0,0,0 //SL_GUNNER##
+4051,578,1,0,0,0,0,0,0,0,0,0,0 //DE_BERSERKAIZER##
+4052,579,1,0,0,0,0,0,0,0,0,0,0 //DA_DARKPOWER##
+
+18,576,228,10,0,0,0,0,0,0,0,0,0 //AM_TWILIGHT4##
+4019,576,228,10,0,0,0,0,0,0,0,0,0 //AM_TWILIGHT4##
+4041,576,228,10,0,0,0,0,0,0,0,0,0 //AM_TWILIGHT4##
+4071,576,228,10,0,0,0,0,0,0,0,0,0 //AM_TWILIGHT4##
+4078,576,228,10,0,0,0,0,0,0,0,0,0 //AM_TWILIGHT4##
+
+// Extra refernce and unused ID's
+4050,576,228,10,0,0,0,0,0,0,0,0,0 //AM_TWILIGHT4##
+4050,577,,0,0,0,0,0,0,0,0,0,0 //##
