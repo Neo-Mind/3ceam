@@ -3728,12 +3728,12 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 				if( !( spell = sc->data[i]->val1) )
 				{
 					clif_skill_fail(sd, skillid, 0, 0);
-					return 0;
+					break;
 				}
 				if( spell <= 0 || spell > MAX_SKILL )
 				{
 					clif_skill_fail(sd, skillid, 0, 0);
-					return 0;
+					break;
 				}
 				switch( skill_get_casttype(spell) )
 				{
@@ -3762,7 +3762,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 						if( i > SC_SPHERE_5 )
 						{
 							clif_skill_fail(sd, skillid, 0, 0 );
-							return 0;
+							break;
 						}
 						if( !sc )
 							break;
@@ -3875,7 +3875,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 			if( !sc_start(bl, SC_STRIPWEAPON, 30 + 5 * skilllv, skilllv, skill_get_time(skillid, skilllv)) )
 			{
 				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				break;
 			}
 			status_change_end(src, SC_WEAPONBLOCKING_, -1);
 		}
@@ -4205,7 +4205,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		{
 			int heal = skill_calc_heal(src, bl, skillid, skilllv, true);
 			int heal_get_jobexp;
-			struct map_session_data *tsd = map_id2sd(bl->id);
 
 			if( skillid == AB_HIGHNESSHEAL)
 			{
@@ -4214,12 +4213,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				}
 			}
 
-			if( tsd && pc_isriding(tsd, OPTION_MADO) )
-			{
-				if( sd )
-					clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
-			}
+			if( dstsd && pc_isriding(dstsd, OPTION_MADO) )
+				heal = 0; //The Magic Gear is not affected by the Heal skill.
+
 			if( status_isimmune(bl) || (dstmd && (dstmd->class_ == MOBID_EMPERIUM || mob_is_battleground(dstmd))) )
 				heal=0;
 
@@ -4241,8 +4237,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				} else
 				if (tsc->data[SC_BERSERK])
 					heal = 0; //Needed so that it actually displays 0 when healing.
-				if( dstsd && pc_isriding(dstsd, OPTION_MADO) )
-					heal = 0; //The Magic Gear is not affected by the Heal skill.
 			}
 			heal_get_jobexp = status_heal(bl,heal,0,0);
 			clif_skill_nodamage (src, bl, skillid, heal, 1);
@@ -6998,11 +6992,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			int bless_lv = pc_checkskill(sd,AL_BLESSING);
 			int agi_lv = pc_checkskill(sd,AL_INCAGI);
 			if( sd == NULL || sd->status.party_id == 0 || (flag & 1) )
-				clif_skill_nodamage(bl, bl, skillid, 
-					(skillid == AB_CLEMENTIA)?bless_lv:(skillid == AB_CANTO)?agi_lv:skilllv, sc_start(bl,type,100,skilllv,skill_get_time(skillid,skilllv)));
+				clif_skill_nodamage(bl, bl, skillid, skilllv, sc_start(bl,type,100,
+					(skillid == AB_CLEMENTIA)? bless_lv : (skillid == AB_CANTO)? agi_lv : skilllv,skill_get_time(skillid,skilllv)));
 			else if( sd )
 				party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skillid, skilllv), src, skillid, 
-					(skillid == AB_CLEMENTIA)?bless_lv:(skillid == AB_CANTO)?agi_lv:skilllv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
+					(skillid == AB_CLEMENTIA)? bless_lv : (skillid == AB_CANTO)? agi_lv : skilllv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
 		}
 		break;
 
@@ -7028,7 +7022,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			else
 			{
 				clif_skill_fail(sd, skillid, 0, 0);
-				return 0;
+				break;
 			}
 		}
 		break;
@@ -8581,9 +8575,8 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 						x += type;
 						break;
 					default:
-						if( sd )
-							clif_skill_fail(sd, skillid, 0, 0);
-						return 0;
+						if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+						break;
 				}
 				skill_addtimerskill(src, gettick() + 250 * i, src->id, x, y, skillid, skilllv, 0, 0);
 			}
@@ -8666,9 +8659,8 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 	case NC_MAGNETICFIELD:
 		if( sc && sc->data[SC_HOVERING] )
 		{
-			if( sd )
-				clif_skill_fail(sd, skillid, 0, 0);
-			return 0;
+			if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+			break;
 		}
 		skill_clear_unitgroup(src);
 		if( (sg = skill_unitsetting(src, skillid, skilllv, src->x, src->y, 0)) )

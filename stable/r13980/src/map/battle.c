@@ -2995,16 +2995,12 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 50 * skill_lv - 50;
 						break;
 					case AB_JUDEX:
+						skillratio += 180 + 20 * skill_lv + (status_get_lv(src)/100);
 						if ( skill_lv == 5 )
-							skillratio += 300;
-						else
-							skillratio += 180 + 20 * skill_lv;
-						skillratio += status_get_lv(src);	// Whats the official value? [Rytech]
+							skillratio += 300 + (status_get_lv(src)/100);
 						break;
 					case AB_ADORAMUS:
-						skillratio += 400 + 100 * skill_lv;
-						if( sd )
-							skillratio += sd->status.base_level;	// Whats the official value? [Rytech]
+						skillratio += 400 + 100 * skill_lv + (status_get_lv(src)/100);
 						break;
 					case AB_RENOVATIO:
 						if( sd )

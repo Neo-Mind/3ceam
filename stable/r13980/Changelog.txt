@@ -5,15 +5,20 @@
 // 	- Details.
 //========================================
 
-01/21/2010
-	r132 [pakpil]
-	* Minor fix in Healing skills and Magic Gears.
+01/23/2010
+	r137 [Jobbie]
+	* Redone the function of Clementia and Canto in stable branch.
+	* Fixed Judex sub hits to 3.
+	* Moved the code of mado cannot be healed outside tsc checking.
+	* Cleaned up some remains which causes map_freeblock warning errors.
 
 01/21/2010
+	r134 [pakpil]
+	* Minor fix in Healing skills and Magic Gears.
+
 	r129 [pakpil]
 	* Fixed some mistake in SC_SHADOWFORM.
 
-01/21/2010
 	r128 [pakpil]
 	* Fixed SC_AUTOSHADOWSPELL. bug report 54.
 
