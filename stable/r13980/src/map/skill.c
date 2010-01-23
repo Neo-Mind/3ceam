@@ -11137,7 +11137,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 	case WM_UNLIMITED_HUMMING_VOICE:
 		if( skill_check_pc_partner(sd, skill, &lv, 1, 0) < 1 )
 		{
-			clif_skill_fail(sd, skill, 0, 0);
+			clif_skill_fail(sd, skill, 0, 0x11);
 			return 0;
 		}
 		break;

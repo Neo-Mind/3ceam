@@ -6,6 +6,13 @@
 //========================================
 
 01/23/2010
+	r138 [pakpil]
+	* Fixed cooldown time from NC_MAGNETICFIELD.
+	* Fixed unit_id from NC_STEALTHFIELD.
+	* Fixed SC_SHADOWFORM.
+	* Added INF2_CHORUS_SKILL to be used with Wanderer/Minstrel skill later.
+
+01/23/2010
 	r137 [Jobbie]
 	* Redone the function of Clementia and Canto in stable branch.
 	* Fixed Judex sub hits to 3.

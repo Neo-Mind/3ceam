@@ -4054,7 +4054,7 @@ int pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y
 			{
 				struct map_session_data *s_sd = map_id2sd(sd->sc.data[SC__SHADOWFORM]->val2);
 				if( s_sd )
-					sd->shadowform_id = 0;					
+					s_sd->shadowform_id = 0;					
 				status_change_end(&sd->bl,SC__SHADOWFORM,-1);
 			}
 		}
@@ -5730,8 +5730,8 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 	
 	if( sd->shadowform_id )
 	{
-		struct map_session_data *s_sd = map_id2sd(sd->shadowform_id);
-		if( s_sd ) status_change_end(&s_sd->bl,SC__SHADOWFORM,-1);
+		struct block_list *s_bl = map_id2bl(sd->shadowform_id);
+		if( s_bl ) status_change_end(s_bl,SC__SHADOWFORM,-1);
 		sd->shadowform_id = 0;
 	}
 
