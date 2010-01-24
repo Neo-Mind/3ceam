@@ -1043,6 +1043,13 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 				return 0;
 			}
 			break;
+		case WL_WHITEIMPRISON:
+			if( battle_check_target(src,target,BCT_SELF|BCT_ENEMY)<0 )
+			{
+				clif_skill_fail(sd,skill_num,0xb,0);
+				return 0;
+			}
+			break;
 		case RA_WUGMASTERY:
 			if((pc_isfalcon(sd) && !battle_config.warg_can_falcon) || sd->sc.data[SC__GROOMY])
 			{
@@ -1148,10 +1155,6 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 	break;
 	case RK_ENCHANTBLADE:
 		if( battle_check_target(src,target,BCT_ENEMY)>0 )
-			return 0;
-	break;
-	case WL_WHITEIMPRISON:
-		if( battle_check_target(src,target,BCT_SELF|BCT_ENEMY)<0 )
 			return 0;
 	break;
 	case WL_RELEASE:

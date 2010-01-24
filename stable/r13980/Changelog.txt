@@ -6,6 +6,13 @@
 //========================================
 
 01/24/2010
+	r144 [Jobbie]
+	* Fixed the radius of effect of Clementia, Canto and Coloceo Heal.
+	* Aimedbold and ArrowStorm should carry the weapon element.
+	* Fixed Cross Ripper Slasher dealing high amount of damage.
+	* Fixed when mounted in a warg you cannot use item skills.
+	* Fixed no gemstone state when using Mistress card.
+
 	r143 [pakpil]
 	* Fixed WL_FROSTMISTY and WL_JACKFROST that aren't working propertly.
 	- Bug report 81.

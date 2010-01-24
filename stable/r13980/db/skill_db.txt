@@ -923,15 +923,15 @@
 2034,0,6,4,0,0x2,7,1,1,no,0,0,0,weapon,0,	GC_PHANTOMMENACE,Phantom Menace
 2035,0,6,4,0,0x1,0,5,1,no,0,0,0,weapon,0,	GC_HALLUCINATIONWALK,Hallucination Walk
 2036,0,8,4,0,0x3,3,5,1,no,0,0,0,weapon,0,	GC_ROLLINGCUTTER,Rolling Cutter
-2037,7,8,1,0,0,0,5,5,no,0,0,0,weapon,0,		GC_CROSSRIPPERSLASHER,Cross Ripper Slasher
+2037,7,8,1,0,0,0,5,-5,no,0,0,0,weapon,0,		GC_CROSSRIPPERSLASHER,Cross Ripper Slasher
 
 // Arch Bishop
 2038,3,8,1,6,0x2,3,5,-3,yes,0,0,0,magic,0,	AB_JUDEX,Judex
 2039,0,6,4,0,0x1,0,1,1,yes,0,0,0,magic,0,	AB_ANCILLA,Ancilla
 2040,9,8,1,6,0,0,10,-10,no,0,0x40,0,magic,0,	AB_ADORAMUS,Adoramus
-2041,9,6,4,0,0x3,3:5:7,3,1,yes,0,0x400,0,magic,0,	AB_CLEMENTIA,Crementia
-2042,9,6,4,0,0x3,3:5:7,3,1,yes,0,0x400,0,magic,0,	AB_CANTO,Canto Candidus
-2043,9,6,4,6,0x3,3:5:7,3,1,yes,0,0x400,0,magic,0,	AB_CHEAL,Coluceo Heal
+2041,9,6,4,0,0x3,3:7:15,3,1,yes,0,0x400,0,magic,0,	AB_CLEMENTIA,Crementia
+2042,9,6,4,0,0x3,3:7:15,3,1,yes,0,0x400,0,magic,0,	AB_CANTO,Canto Candidus
+2043,9,6,4,6,0x3,3:7:15,3,1,yes,0,0x400,0,magic,0,	AB_CHEAL,Coluceo Heal
 2044,7,6,2,6,0x21,0,5,1,yes,0,0,1,magic,1,	AB_EPICLESIS,Epiclesis
 2045,0,6,4,0,0x3,-1,10,1,yes,0,0,0,magic,0,	AB_PRAEFATIO,Praefatio
 2046,0,6,4,0,0x3,-1,10,1,yes,0,0,0,magic,0,	AB_ORATIO,Oratio
@@ -982,10 +982,10 @@
 2232,0,0,0,0,0,0,5,0,no,0,0,0,none,0,		WL_FREEZE_SP,Freeze Spell
 
 // Ranger
-2233,9,8,1,0,0x2,5,10,3,yes,0,0,0,weapon,0,	RA_ARROWSTORM,Arrow Storm
+2233,9,8,1,-1,0x2,5,10,3,yes,0,0,0,weapon,0,	RA_ARROWSTORM,Arrow Storm
 2234,0,8,4,0,0,0,5,5,no,0,0,0,none,0,		RA_FEARBREEZE,Fear Breeze
 2235,0,0,0,0,0,0,10,0,no,0,0,0,none,0,		RA_RANGERMAIN,Ranger Main
-2236,9,8,1,0,0,0,10,1,yes,0,0,0,weapon,0,	RA_AIMEDBOLT,Aimed Bolt
+2236,9,8,1,-1,0,0,10,-1,yes,0,0,0,weapon,0,	RA_AIMEDBOLT,Aimed Bolt
 2237,6,6,2,0,0x3,3,1,1,no,0,0,0,none,0,		RA_DETONATOR,Detonator
 2238,6,6,2,0,0x3,5,5,1,no,0,0x80,3,misc,0,	RA_ELECTRICSHOCKER,Electric Shocker
 2239,6,6,2,0,0x42,7,5,1,no,0,0x80,3,weapon,0,	RA_CLUSTERBOMB,Cluster Bomb
@@ -1187,7 +1187,7 @@
 2515,9,6,16,0,0x1,0,5,1,yes,0,0,0,magic,0,	AB_SECRAMENT,Sacrament
 2516,0,0,0,0,0,0,5,0,no,0,0,0,none,0,		WM_SEVERE_RAINSTORM_MELEE,Severe Rainstorm Melee
 2517,0,0,0,0,0,0,5,0,no,0,0,0,none,0,		SR_HOWLINGOFLION,Howling of Lion
-2518,3,6,2,-1,0x2,5:5:7:9:9,5,1,no,0,0,0,weapon,0,	SR_RIDEINLIGHTNING,Ride In Lightening
+2518,3,6,2,-1,0x2,5:5:7:9:9,5,-1,no,0,0,0,weapon,0,	SR_RIDEINLIGHTNING,Ride In Lightening
 
 2533,0,0,0,0,0,0,1,0,no,0,0,0,none,0,		ALL_ODINS_RECALL,Odin's Recall
 2534,0,0,0,0,0,0,1,0,no,0,0,0,none,0,		RETURN_TO_ELDICASTES,Return To Eldicastes

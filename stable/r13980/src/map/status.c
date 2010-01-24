@@ -1346,7 +1346,7 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 		}
 		if (sc->option&OPTION_CHASEWALK && skill_num != ST_CHASEWALK)
 			return 0;
-		if (sc->option&OPTION_RIDING_WUG)
+		if (sc->option&OPTION_RIDING_WUG && ((TBL_PC*)src)->skillitem != skill_num)
 		switch (skill_num) { //Usable skills while riding warg
 			case HT_ANKLESNARE:		case HT_SHOCKWAVE:
 			case HT_SANDMAN:		case HT_FLASHER:			
