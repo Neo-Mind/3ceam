@@ -1,8 +1,0 @@
-3CeAM = Change MAX_PC_BONUS from 10 to 20...
-
-#define MAX_PC_BONUS 20
-
-3CeAM = Change MAX_SKILL_TREE FROM 54 TO 89
-
-//Update this max as necessary. 54 is the value needed for Super Baby currently
-#define MAX_SKILL_TREE 89
