@@ -3010,14 +3010,18 @@ int clif_skill_select_request( struct map_session_data *sd )
 			c++;
 		}
 	}
-	sd->menuskill_id = SC_AUTOSHADOWSPELL;
-	sd->menuskill_val = c;
 	WFIFOW(fd,2) = 8+c*2;
 	WFIFOL(fd,4) = c;
 	WFIFOSET(fd,WFIFOW(fd,2));
+	if( c > 0 )
+	{
+		sd->menuskill_id = SC_AUTOSHADOWSPELL;
+		sd->menuskill_val = c;
+		return 1;
+	}
 #endif
 
-	return 1;
+	return 0;
 }
 
 /*==========================================

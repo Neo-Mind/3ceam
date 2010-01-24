@@ -3043,6 +3043,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 	case RA_WUGBITE:
 	case RA_SENSITIVEKEEN:
 	case AB_DUPLELIGHT_MELEE:
+	case WL_FROSTMISTY:
 	case NC_BOOSTKNUCKLE:
 	case NC_VULCANARM:
 	case NC_POWERSWING:
@@ -3264,7 +3265,6 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 	case NPC_VAMPIRE_GIFT:
 	case RK_IGNITIONBREAK:
 	case WL_SOULEXPANSION:
-	case WL_FROSTMISTY:
 	case WL_CRIMSONROCK:
 	case WL_COMET:
 	case RA_ARROWSTORM:
@@ -3889,29 +3889,31 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		break;
 
 	case WL_JACKFROST:
-	{
-		if( flag&1 )
 		{
 			struct status_change *tsc = status_get_sc(bl);
+			if( bl->id == skill_area_temp[1] )
+				break;
 			if( tsc && tsc->data[SC_FREEZING] )
 				skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
 		}
-		else
-			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
-	}
 		break;
 
 	case WL_SIENNAEXECRATE:
 		if( flag&1 )
 		{
 			struct status_change *tsc = status_get_sc(bl);
+			if( bl->id == skill_area_temp[1] )
+				break;
 			if( tsc && tsc->data[SC_STONE] )
 				status_change_end(bl,SC_STONE,-1);
 			else
 				sc_start(bl, SC_STONE, 40 + skilllv * 8, skilllv, skill_get_time(skillid, skilllv));
 		}
 		else
-			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+		{
+			skill_area_temp[1] = bl->id;
+			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
+		}
 		break;
 
 	case NC_INFRAREDSCAN:
@@ -5004,8 +5006,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case GS_SPREADATTACK:
 	case NPC_EARTHQUAKE:
 	case WL_SOULEXPANSION:
-	case WL_FROSTMISTY:
-	case WL_JACKFROST:
 	case WL_SIENNAEXECRATE:
 	case WL_CRIMSONROCK:
 	case RA_ARROWSTORM:
@@ -6916,6 +6916,15 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		}
 		break;
 
+	case WL_FROSTMISTY:
+	case WL_JACKFROST:
+		{			
+			clif_skill_nodamage(src,bl,skillid,skilllv,1);
+			skill_area_temp[1] = bl->id;
+			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
+		}
+		break;
+
 	case RA_WUGMASTERY:
 		if( sd )
 		{
@@ -7445,7 +7454,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case SC_AUTOSHADOWSPELL:
 		if( sd )
 		{
-			if( sd->reproduceskill_id || sd->cloneskill_id )
+			if( sd->status.skill[sd->reproduceskill_id].id || sd->status.skill[sd->cloneskill_id].id )
 			{
 				clif_skill_select_request(sd);
 				sc_start(bl,SC_STOP,100,skilllv,9999);
@@ -9532,7 +9541,7 @@ static int skill_unit_onplace (struct skill_unit *src, struct block_list *bl, un
 				case SR_CURSEDCIRCLE:
 					if( !sce && !(status_get_mode(bl)&MD_BOSS) )
 						sc_start4(bl,type,100,sg->skill_lv,sg->group_id,0,0,sg->limit);
-						break;
+					break;
 			}
 			break;
 		}
@@ -10195,7 +10204,7 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			break;
 
 		case UNT_BLOODYLUST:
-			if( sg->src_id == bl->id )
+			if( ss->id == bl->id )
 				break; //Does not affect the caster.
 		case UNT_CHAOSPANIC:
 			sc_start(bl, type, 100, sg->skill_lv,
@@ -14310,13 +14319,13 @@ int skill_select_menu( struct map_session_data *sd, int flag, int skill_id)
 
 	nullpo_retr(0,sd);
 
+	status_change_end(&sd->bl,SC_STOP,-1);
+
 	if( (id = sd->status.skill[skill_id].id) == 0 || sd->status.skill[skill_id].flag != 13 || skill_id > NJ_ISSEN )
 	{
-		clif_skill_fail(sd,SC_AUTOSHADOWSPELL,0x15,0);
+		clif_skill_fail(sd,SC_AUTOSHADOWSPELL,0,0);
 		return 0;
 	}
-
-	status_change_end(&sd->bl,SC_STOP,-1);
 
 	if( (lv = sd->status.skill[skill_id].lv) == 0 )
 		lv = pc_checkskill(sd,SC_AUTOSHADOWSPELL);

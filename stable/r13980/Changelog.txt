@@ -5,6 +5,12 @@
 // 	- Details.
 //========================================
 
+01/24/2010
+	r143 [pakpil]
+	* Fixed WL_FROSTMISTY and WL_JACKFROST that aren't working propertly.
+	- Bug report 81.
+	* Minor fix in SC_AUTOSHADOWSPELL.
+
 01/23/2010
 	r138 [pakpil]
 	* Fixed cooldown time from NC_MAGNETICFIELD.
