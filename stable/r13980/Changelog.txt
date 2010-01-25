@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+01/25/2010
+	r152 [pakpil]
+	* Fixed SC_MANHOLE that was allow skill attacks to targets under this status. Bug report 70.
+
 01/24/2010
 	r144 [Jobbie]
 	* Fixed the radius of effect of Clementia, Canto and Coloceo Heal.

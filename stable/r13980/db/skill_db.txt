@@ -950,7 +950,7 @@
 // Warlock
 2201,9,6,16,0,0x1,0,5,0,yes,0,0,0,magic,0,	WL_WHITEIMPRISON,White Imprison
 2202,9,8,1,8,0x2,3,5,-2,yes,0,0,0,magic,0,	WL_SOULEXPANSION,Soul Expansion
-2203,9,8,4,1,0x2,13,5,-7,yes,0,0,0,magic,0,	WL_FROSTMISTY,Frosty Misty
+2203,0,8,4,1,0x2,13,5,-7,yes,0,0,0,magic,0,	WL_FROSTMISTY,Frosty Misty
 2204,0,8,4,1,0x2,13,5,-7,yes,0,0,0,magic,0,	WL_JACKFROST,Jack Frost
 2205,9,6,1,0,0x1,0,5,0,yes,0,0,0,magic,0,	WL_MARSHOFABYSS,Marsh of Abyss
 2206,0,6,4,0,0x1,0,5,1,yes,0,0,0,magic,0,	WL_RECOGNIZEDSPELL,Recognized Spell
@@ -1056,7 +1056,7 @@
 2300,7,6,2,0,0,0,3,1,no,0,0,1,misc,0,		SC_DIMENSIONDOOR,Dimension Door
 2301,9,6,2,0,0,0,3,1,no,0,0,0,misc,0,		SC_CHAOSPANIC,Chaos Panic
 2302,0,0,0,0,0,0,3,0,no,0,0,0,none,0,		SC_MAELSTROM,Maelstrom
-2303,9,6,2,0,0,0,3,1,no,0,0,0,misc,0,		SC_BLOODYLUST,Bloody Lust
+2303,9,6,2,0,0x1,0,3,1,no,0,0,0,misc,0,		SC_BLOODYLUST,Bloody Lust
 2304,0,6,4,0,0x1,6,3,0,no,0,0,1,weapon,0,		SC_FEINTBOMB,Feint Bomb
 
 // Royal Guard
