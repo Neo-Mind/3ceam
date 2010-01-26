@@ -47,7 +47,7 @@ Millenium Shield
 Skill Type:^777777 Item Triggered^000000
 Item Trigger:^777777 Rune Stone Berkana^000000
 Max Level:^777777 1^000000
-Effect:^777777 Summons randomly 2-4 magic shields. These shields can absorb physical and magical attacks and have 1000HP each.
+Effect:^777777 Summons randomly 2-4 magic shields. These shields can absorb physical and magical attacks and have 1000 HP each.
 The Millennium Shields can block hits regardless of their remaining HP.^000000
 #
 RK_CRUSHSTRIKE#
@@ -55,7 +55,7 @@ Crush Strike
 Skill Type:^777777 Item Triggered^000000
 Item Trigger:^777777 Rune Stone Raido^000000
 Max Level:^777777 1^000000
-Effect:^777777 You use the entire power of a weapon to strike a target with full force.
+Effect:^777777 You use the entire power of a weapon to strike a target with full force. The refine rate increases this damage.
 When used, it will break your weapon.^000000
 #
 RK_REFRESH#
@@ -63,7 +63,7 @@ Refresh
 Skill Type:^777777 Item Triggered^000000
 Item Trigger:^777777 Rune Stone Nauthiz^000000
 Max Level:^777777 1^000000
-Effect:^777777 When used, you will automatically be cured of all debuffs and recover 25% of your max HP. Then, for the next 10 seconds you will be immune to all debuffs and status ailments.
+Effect:^777777 When used, you will automatically be cured of all debuffs and recover 25% of your max HP. Then, for the next 30 seconds you will be immune to all debuffs and status ailments.
 There are two exceptions, you can still be inflicted with stun, and freezing status.^000000
 #
 RK_GIANTGROWTH#
@@ -103,7 +103,7 @@ Fighting Spirit
 Skill Type:^777777 Item Triggered^000000
 Item Trigger:^777777 Rune Stone Othila^000000
 Max Level:^777777 1^000000
-Effect:^777777 For 3 minutes, you increase the attack power of yourself and your party members.
+Effect:^777777 For 3 minutes, you increase the attack power and attack speed of yourself and only attack power of your party members.
 When used, you gain an amount of attack power equal to 7 times the number of players in your party, and each of your party members receives 1/4 of the total bonus.^000000
 #
 RK_ABUNDANCE#
@@ -111,7 +111,7 @@ Abundance
 Skill Type:^777777 Item Triggered^000000
 Item Trigger:^777777 Rune Stone Uruz^000000
 Max Level:^777777 1^000000
-Effect:^777777 For 3 minutes, you recover 60 sp every 10 seconds.^000000
+Effect:^777777 For 3 minutes, you recover 60 SP every 10 seconds.^000000
 #
 AB_DUPLELIGHT_MELEE#
 Duple Light Melee
@@ -120,16 +120,16 @@ Skill Used In:^777777 Duple Light^000000
 Max Level:^777777 10^000000
 Effect:^777777 Summons two holy lights which periodically assist while dealing melee damage.
 One of the holy lights deals holy physichal damage by using this skill.^000000
-[LV 1]^777777 ATK 55%^000000
-[LV 2]^777777 ATK 60%^000000
-[LV 3]^777777 ATK 65%^000000
-[LV 4]^777777 ATK 70%^000000
-[LV 5]^777777 ATK 75%^000000
-[LV 6]^777777 ATK 80%^000000
-[LV 7]^777777 ATK 85%^000000
-[LV 8]^777777 ATK 90%^000000
-[LV 9]^777777 ATK 95%^000000
-[LV 10]^777777 ATK 100%^000000
+[LV 1]^777777 ATK 110%^000000
+[LV 2]^777777 ATK 120%^000000
+[LV 3]^777777 ATK 130%^000000
+[LV 4]^777777 ATK 140%^000000
+[LV 5]^777777 ATK 150%^000000
+[LV 6]^777777 ATK 160%^000000
+[LV 7]^777777 ATK 170%^000000
+[LV 8]^777777 ATK 180%^000000
+[LV 9]^777777 ATK 190%^000000
+[LV 10]^777777 ATK 200%^000000
 #
 AB_DUPLELIGHT_MAGIC#
 Duple Light Magic
@@ -138,16 +138,16 @@ Skill Used In:^777777 Duple Light^000000
 Max Level:^777777 10^000000
 Effect:^777777 Summons two holy lights which periodically assist while dealing melee damage.
 One of the holy lights deals holy magical damage by using this skill.^000000
-[LV 1]^777777 MATK 55%^000000
-[LV 2]^777777 MATK 60%^000000
-[LV 3]^777777 MATK 65%^000000
-[LV 4]^777777 MATK 70%^000000
-[LV 5]^777777 MATK 75%^000000
-[LV 6]^777777 MATK 80%^000000
-[LV 7]^777777 MATK 85%^000000
-[LV 8]^777777 MATK 90%^000000
-[LV 9]^777777 MATK 95%^000000
-[LV 10]^777777 MATK 100%^000000
+[LV 1]^777777 MATK 220%^000000
+[LV 2]^777777 MATK 240%^000000
+[LV 3]^777777 MATK 260%^000000
+[LV 4]^777777 MATK 280%^000000
+[LV 5]^777777 MATK 300%^000000
+[LV 6]^777777 MATK 320%^000000
+[LV 7]^777777 MATK 340%^000000
+[LV 8]^777777 MATK 360%^000000
+[LV 9]^777777 MATK 380%^000000
+[LV 10]^777777 MATK 400%^000000
 #
 WL_CHAINLIGHTNING_ATK#
 Chain Lightning Attack
@@ -167,59 +167,59 @@ Tetra Vortex Fire
 Skill Type:^777777 Multi ID^000000
 Skill Used In:^777777 Tetra Vortex^000000
 Max Level:^777777 5^000000
-Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills at the exact same time to deal the 4 hit 4 element damage.
-This skill controls the fire damage hitting part.^000000
+Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills one after another every 0.3 seconds to deal the 4 hit 4 element damage.
+This skill controls the fire damage hitting part and is the 1st one out of the 4 to be triggered.^000000
 [LV 1]^777777 MATK 1000%^000000
-[LV 2]^777777 MATK 1200%^000000
-[LV 3]^777777 MATK 1400%^000000
-[LV 4]^777777 MATK 1600%^000000
-[LV 5]^777777 MATK 1800%^000000
+[LV 2]^777777 MATK 1500%^000000
+[LV 3]^777777 MATK 2000%^000000
+[LV 4]^777777 MATK 2500%^000000
+[LV 5]^777777 MATK 3000%^000000
 #
 WL_TETRAVORTEX_WATER#
 Tetra Vortex Water
 Skill Type:^777777 Multi ID^000000
 Skill Used In:^777777 Tetra Vortex^000000
 Max Level:^777777 5^000000
-Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills at the exact same time to deal the 4 hit 4 element damage.
-This skill controls the water damage hitting part.^000000
+Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills one after another every 0.3 seconds to deal the 4 hit 4 element damage.
+This skill controls the water damage hitting part and is the 2nd one out of the 4 to be triggered.^000000
 [LV 1]^777777 MATK 1000%^000000
-[LV 2]^777777 MATK 1200%^000000
-[LV 3]^777777 MATK 1400%^000000
-[LV 4]^777777 MATK 1600%^000000
-[LV 5]^777777 MATK 1800%^000000
+[LV 2]^777777 MATK 1500%^000000
+[LV 3]^777777 MATK 2000%^000000
+[LV 4]^777777 MATK 2500%^000000
+[LV 5]^777777 MATK 3000%^000000
 #
 WL_TETRAVORTEX_WIND#
 Tetra Vortex Wind
 Skill Type:^777777 Multi ID^000000
 Skill Used In:^777777 Tetra Vortex^000000
 Max Level:^777777 5^000000
-Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills at the exact same time to deal the 4 hit 4 element damage.
-This skill controls the wind damage hitting part.^000000
+Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills one after another every 0.3 seconds to deal the 4 hit 4 element damage.
+This skill controls the wind damage hitting part and is the 3rd one out of the 4 to be triggered.^000000
 [LV 1]^777777 MATK 1000%^000000
-[LV 2]^777777 MATK 1200%^000000
-[LV 3]^777777 MATK 1400%^000000
-[LV 4]^777777 MATK 1600%^000000
-[LV 5]^777777 MATK 1800%^000000
+[LV 2]^777777 MATK 1500%^000000
+[LV 3]^777777 MATK 2000%^000000
+[LV 4]^777777 MATK 2500%^000000
+[LV 5]^777777 MATK 3000%^000000
 #
 WL_TETRAVORTEX_GROUND#
 Tetra Vortex Earth
 Skill Type:^777777 Multi ID^000000
 Skill Used In:^777777 Tetra Vortex^000000
 Max Level:^777777 5^000000
-Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills at the exact same time to deal the 4 hit 4 element damage.
-This skill controls the earth damage hitting part.^000000
+Effect:^777777 When tetra vortex is casted, this skill is triggered, along with 3 other skills one after another every 0.3 seconds to deal the 4 hit 4 element damage.
+This skill controls the earth damage hitting part and is the 4th one out of the 4 to be triggered.^000000
 [LV 1]^777777 MATK 1000%^000000
-[LV 2]^777777 MATK 1200%^000000
-[LV 3]^777777 MATK 1400%^000000
-[LV 4]^777777 MATK 1600%^000000
-[LV 5]^777777 MATK 1800%^000000
+[LV 2]^777777 MATK 1500%^000000
+[LV 3]^777777 MATK 2000%^000000
+[LV 4]^777777 MATK 2500%^000000
+[LV 5]^777777 MATK 3000%^000000
 #
 WL_SUMMON_ATK_FIRE#
 Summon Attack Fire
 Skill Type:^777777 Multi ID^000000
-Skill Used In:^777777 Summon Fire Ball^000000
+Skill Used In:^777777 Summon Fire Ball, Release^000000
 Max Level:^777777 5^000000
-Effect:^777777 If the player has a fire ball summoned and is attacked by something, this skill triggers, makeing the fire ball explode and deal fire element damage.^000000
+Effect:^777777 If the player has a fire ball summoned and throws it at a target through the Release skill, this skill triggers, makeing the fire ball explode and deal fire element damage.^000000
 [LV 1]^777777 MATK 100%^000000
 [LV 2]^777777 MATK 150%^000000
 [LV 3]^777777 MATK 200%^000000
@@ -229,9 +229,9 @@ Effect:^777777 If the player has a fire ball summoned and is attacked by somethi
 WL_SUMMON_ATK_WIND#
 Summon Attack Wind
 Skill Type:^777777 Multi ID^000000
-Skill Used In:^777777 Summon Lightning Ball^000000
+Skill Used In:^777777 Summon Lightning Ball, Release^000000
 Max Level:^777777 5^000000
-Effect:^777777 If the player has a lightning ball summoned and is attacked by something, this skill triggers, makeing the lightning ball explode and deal wind element damage.^000000
+Effect:^777777 If the player has a lightning ball summoned and throws it at a target through the Release skill, this skill triggers, makeing the lightning ball explode and deal wind element damage.^000000
 [LV 1]^777777 MATK 100%^000000
 [LV 2]^777777 MATK 150%^000000
 [LV 3]^777777 MATK 200%^000000
@@ -241,9 +241,9 @@ Effect:^777777 If the player has a lightning ball summoned and is attacked by so
 WL_SUMMON_ATK_WATER#
 Summon Attack Water
 Skill Type:^777777 Multi ID^000000
-Skill Used In:^777777 Summon Water Ball^000000
+Skill Used In:^777777 Summon Water Ball, Release^000000
 Max Level:^777777 5^000000
-Effect:^777777 If the player has a water ball summoned and is attacked by something, this skill triggers, makeing the water ball explode and deal water element damage.^000000
+Effect:^777777 If the player has a water ball summoned and throws it at a target through the Release skill, this skill triggers, makeing the water ball explode and deal water element damage.^000000
 [LV 1]^777777 MATK 100%^000000
 [LV 2]^777777 MATK 150%^000000
 [LV 3]^777777 MATK 200%^000000
@@ -253,9 +253,9 @@ Effect:^777777 If the player has a water ball summoned and is attacked by someth
 WL_SUMMON_ATK_GROUND#
 Summon Attack Earth
 Skill Type:^777777 Multi ID^000000
-Skill Used In:^777777 Summon Stone^000000
+Skill Used In:^777777 Summon Stone, Release^000000
 Max Level:^777777 5^000000
-Effect:^777777 If the player has a stone summoned and is attacked by something, this skill triggers, makeing the stone explode and deal earth element damage.^000000
+Effect:^777777 If the player has a stone summoned and throws it at a target through the Release skill, this skill triggers, makeing the stone explode and deal earth element damage.^000000
 [LV 1]^777777 MATK 100%^000000
 [LV 2]^777777 MATK 150%^000000
 [LV 3]^777777 MATK 200%^000000
