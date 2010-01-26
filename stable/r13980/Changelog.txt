@@ -6,6 +6,10 @@
 //========================================
 
 01/26/2010
+	r154 [Jobbie]
+	* Minor fix to Frost Misty. Bug report 83.
+	* Minor fix to Drain Life. Bug report 94.
+
 	r153 [pakpil]
 	* Fixed WL_SIENNAEXECRATE. Bug report 91.
 	* Added missing code in r152.

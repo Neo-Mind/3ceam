@@ -3043,7 +3043,6 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 	case RA_WUGBITE:
 	case RA_SENSITIVEKEEN:
 	case AB_DUPLELIGHT_MELEE:
-	case WL_FROSTMISTY:
 	case NC_BOOSTKNUCKLE:
 	case NC_VULCANARM:
 	case NC_POWERSWING:
@@ -3447,6 +3446,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 	case WL_SUMMON_ATK_GROUND:
 	case AB_HIGHNESSHEAL:
 	case AB_DUPLELIGHT_MAGIC:
+	case WL_FROSTMISTY:
 	case NC_REPAIR:
 		skill_attack(BF_MAGIC,src,src,bl,skillid,skilllv,tick,flag);
 		break;
@@ -3627,14 +3627,12 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 
 	case WL_DRAINLIFE:
 		{
-			int heal = skill_attack(BF_MAGIC, src, src, bl, skillid, skilllv, tick, flag);
-			heal = heal / 100 * (5 + skilllv * 5);
-			if( sd && sd->status.hp + heal > sd->status.max_hp )
-				heal = sd->status.max_hp - sd->status.hp;
-			if( heal > 0 && rand()%100 <= 70 + skilllv * 5 )
+			int heal = skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
+			heal = heal * (5 + 5 * skilllv) / 100;
+			if( heal && rand()%100 < 70 + 5 * skilllv )
 			{
-				clif_skill_nodamage(NULL, src, AL_HEAL, heal, 1);
 				status_heal(src, heal, 0, 2);
+				clif_skill_nodamage(NULL, src, AL_HEAL, heal, 1);
 			}
 		}
 		break;
