@@ -3898,24 +3898,6 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		}
 		break;
 
-	case WL_SIENNAEXECRATE:
-		if( flag&1 )
-		{
-			struct status_change *tsc = status_get_sc(bl);
-			if( bl->id == skill_area_temp[1] )
-				break;
-			if( tsc && tsc->data[SC_STONE] )
-				status_change_end(bl,SC_STONE,-1);
-			else
-				sc_start(bl, SC_STONE, 40 + skilllv * 8, skilllv, skill_get_time(skillid, skilllv));
-		}
-		else
-		{
-			skill_area_temp[1] = bl->id;
-			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
-		}
-		break;
-
 	case NC_INFRAREDSCAN:
 		if( flag&1 )
 		{
@@ -5006,7 +4988,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 	case GS_SPREADATTACK:
 	case NPC_EARTHQUAKE:
 	case WL_SOULEXPANSION:
-	case WL_SIENNAEXECRATE:
 	case WL_CRIMSONROCK:
 	case RA_ARROWSTORM:
 	case AB_JUDEX:
@@ -6904,7 +6885,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		{
 			clif_skill_fail(sd, skillid, 0, 0);
 			break;
-		}else
+		}
+		else
 			return 0;
 		break;
 
@@ -6922,6 +6904,22 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
 			skill_area_temp[1] = bl->id;
 			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
+		}
+		break;	
+
+	case WL_SIENNAEXECRATE:
+		if(flag&1)
+		{
+			struct status_change *tsc = status_get_sc(bl);
+			if( tsc && tsc->data[SC_STONE] )
+				status_change_end(bl,SC_STONE,-1);
+			else
+				sc_start(bl, SC_STONE, 40 + skilllv * 8, skilllv, skill_get_time(skillid, skilllv));
+		}
+		else
+		{			
+			clif_skill_nodamage(src,bl,skillid,skilllv,1);
+			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|1, skill_castend_nodamage_id);
 		}
 		break;
 

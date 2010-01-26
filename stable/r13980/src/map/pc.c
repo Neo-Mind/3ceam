@@ -6407,6 +6407,9 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 		}
 	}
 	
+	if( sd->sc.option&OPTION_MADO )
+		pc_setoption(sd,sd->sc.option&~OPTION_MADO);
+	
 	sd->status.class_ = job;
 	fame_flag = pc_famerank(sd->status.char_id,sd->class_&MAPID_THIRDMASK);
 	sd->class_ = (unsigned short)b_class;
