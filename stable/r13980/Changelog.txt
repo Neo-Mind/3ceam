@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+01/27/2010
+	r161 [Jobbie]
+	* Minor fix in clif_addskill
+
 01/26/2010
 	r156 [pakpil]
 	* Fixed pc_skillup that wasn't working propertly with all extended class.
