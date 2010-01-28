@@ -1992,17 +1992,27 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 	if( sc && sc->data[SC__SHADOWFORM] && damage > 0 )
 	{
 		struct block_list *s_bl = map_id2bl(sc->data[SC__SHADOWFORM]->val2);
-		if( s_bl && !status_isdead(s_bl) )
+		
+		if( !s_bl )
+		{
+				status_change_end(bl, SC__SHADOWFORM, -1);
+		}
+		else if( status_isdead(s_bl) )
+		{
+				status_change_end(bl, SC__SHADOWFORM, -1);
+				if( s_bl->type == BL_PC )
+					((TBL_PC*)s_bl)->shadowform_id = 0;
+		}
+		else
 		{
 			clif_damage(s_bl,s_bl,tick,dmg.amotion,dmg.dmotion,damage,dmg.div_,dmg.type,dmg.damage2);
-			status_fix_damage(NULL, s_bl, damage, 0);
-			sc->data[SC__SHADOWFORM]->val3--;
-			if( sc->data[SC__SHADOWFORM]->val3 <= 0 || status_isdead(s_bl) )
+			if( (--sc->data[SC__SHADOWFORM]->val3) <= 0 )
 			{
 				status_change_end(bl, SC__SHADOWFORM, -1);
 				if( s_bl->type == BL_PC )
 					((TBL_PC*)s_bl)->shadowform_id = 0;
 			}
+			status_fix_damage(NULL, s_bl, damage, 0);
 		}
 	}
 
@@ -4196,7 +4206,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			}
 
 			if( dstsd && pc_isriding(dstsd, OPTION_MADO) )
-				heal = 0; //The Magic Gear is not affected by the Heal skill.
+				heal = 0; //The Magic Gear is not affected by any Heal skill.
 
 			if( status_isimmune(bl) || (dstmd && (dstmd->class_ == MOBID_EMPERIUM || mob_is_battleground(dstmd))) )
 				heal=0;

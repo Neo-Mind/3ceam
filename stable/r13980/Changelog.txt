@@ -5,6 +5,13 @@
 // 	- Details.
 //========================================
 
+01/28/2010
+	r162 [pakpil]
+	* Fixed increased damage by NC_MADOLICENCE, adjusted to official.
+	* Fixed SC_SHADOWFORM that was causing crash servers. Bug report 100.
+	* Some fixed in the Mechanics behavior adjusted to official.
+	
+
 01/27/2010
 	r161 [Jobbie]
 	* Minor fix in clif_addskill

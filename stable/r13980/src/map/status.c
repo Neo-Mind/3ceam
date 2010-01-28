@@ -2553,8 +2553,8 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 		sd->max_weight += 10000;
 	if(pc_isriding(sd, OPTION_RIDING_DRAGON) && (skill=pc_checkskill(sd,RK_DRAGONTRAINING))>0)
 		sd->max_weight += sd->max_weight * (30 + skill) / 100;
-	if(pc_isriding(sd, OPTION_MADO))
-		sd->max_weight += 20000;
+	/*if(pc_isriding(sd, OPTION_MADO)) // Don't change when you mount a mado.
+		sd->max_weight += 20000;*/ 
 	if(pc_isriding(sd, OPTION_RIDING) && (sd->class_&JOBL_THIRD))
 		sd->max_weight += 10000;
 	if(sc->data[SC_KNOWLEDGE])

@@ -6407,10 +6407,7 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 				status_change_end(&sd->bl, sc, -1);
 		}
 	}
-	
-	if( sd->sc.option&OPTION_MADO )
-		pc_setoption(sd,sd->sc.option&~OPTION_MADO);
-	
+		
 	sd->status.class_ = job;
 	fame_flag = pc_famerank(sd->status.char_id,sd->class_&MAPID_THIRDMASK);
 	sd->class_ = (unsigned short)b_class;
@@ -6440,7 +6437,7 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 	pc_calc_skilltree(sd);
 	clif_skillinfoblock(sd);
 
-	//Remove peco/cart/falcon
+	//Remove peco/cart/falcon/dragon/mado/gryphon
 	i = sd->sc.option;
 	if(i&OPTION_RIDING && !pc_checkskill(sd, KN_RIDING))
 		i&=~OPTION_RIDING;
@@ -6450,6 +6447,8 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 		i&=~OPTION_FALCON;
 	if(i&(OPTION_RIDING_DRAGON) && !pc_checkskill(sd, RK_DRAGONTRAINING))
 		i&=~(OPTION_RIDING_DRAGON);
+	if(i&OPTION_MADO && !((sd->class_&MAPID_THIRDMASK) == MAPID_MECHANIC || (sd->class_&MAPID_THIRDMASK) == MAPID_MECHANIC_T) )
+		i&=~OPTION_MADO; // Don't check NC_MADOLICENCE skill because you can mount in mado even without this skill.
 
 	if(i != sd->sc.option)
 		pc_setoption(sd, i);
@@ -6641,45 +6640,18 @@ int pc_setoption(struct map_session_data *sd,int type)
 		clif_status_load(&sd->bl,SI_WOLFMOUNT,0);
 		status_calc_pc(sd,0); //Mounting/Umounting affects walk and attack speeds.
 	}
-	// Some info from iRO-Wiki says that MADO are a mount not another class. The HP/SP dealed by damage are the owner ones. [pakpil]
+	// Confirmed directly from RE server, Megic Gears are a mount not a new class. HP/SP don't change and only moviment speed should be check. [pakpil]
 	if (type&OPTION_MADO && !(p_type&OPTION_MADO) && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
 	{	//We are going to mount. [LimitLine]
-	//	pc_jobchange(sd, sd->class_&JOBL_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_UPPER?1:0, 0);
-	/*	status->mech_hp = status->hp;
-		status->mech_sp = status->sp;
-		status->hp = status->mado_hp?status->mado_hp:1;
-		status->sp = status->mado_sp?status->mado_sp:1;
-		if( status->mado_heat <= 0 )
-			status->mado_heat = 30 + ( 2 + 8 * pc_checkskill(sd, NC_MAINFRAME) );	// Assuming regular overheat
-																					// limit is 30 + Mainframe bonus.
-		sd->status.mech_hp = sd->status.hp;
-		sd->status.mech_sp = sd->status.sp;
-		sd->status.hp = sd->status.mado_hp?sd->status.mado_hp:1;
-		sd->status.sp = sd->status.mado_sp?sd->status.mado_sp:1;
-		clif_updatestatus(sd, SP_HP);
-		clif_updatestatus(sd, SP_SP);*/
 		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
-			status_calc_pc(sd, 0); // Apply speed penalty.
-		//pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T2:JOB_MECHANIC2, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
+			status_calc_pc(sd, 0);
 	}
 	else if (!(type&OPTION_MADO) && p_type&OPTION_MADO && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)
 	{	//We are going to dismount.
-	//	pc_jobchange(sd, sd->class_&JOBL_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_UPPER?1:0);
-	/*	status->mado_hp = status->hp;
-		status->mado_sp = status->sp;
-		status->hp = status->mech_hp?status->mech_hp:1;
-		status->sp = status->mech_sp?status->mech_sp:1;
-		sd->status.mado_hp = sd->status.hp;
-		sd->status.mado_sp = sd->status.sp;
-		sd->status.hp = sd->status.mech_hp?sd->status.mech_hp:1;
-		sd->status.sp = sd->status.mech_sp?sd->status.mech_sp:1;
-		clif_updatestatus(sd, SP_HP);
-		clif_updatestatus(sd, SP_SP);*/
 		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
 			status_calc_pc(sd, 0); // Apply speed penalty.
 		if( sd->sc.data[SC_SHAPESHIFT] )
 			status_change_end( &sd->bl, SC_SHAPESHIFT, -1);
-		//pc_jobchange(sd, sd->class_&JOBL_THIRD_UPPER?JOB_MECHANIC_T:JOB_MECHANIC, sd->class_&JOBL_THIRD_UPPER?JOBL_THIRD_UPPER:JOBL_THIRD_BASE);
 	}
 
 	if (type&OPTION_FLYING && !(p_type&OPTION_FLYING))
@@ -6824,14 +6796,14 @@ int pc_setriding(TBL_PC* sd, int flag)
 			break;
 		case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
 			option = OPTION_MADO;
-			skillnum = NC_MADOLICENCE;
+			skillnum = 0; // You don't need any skill to mount in a mado.
 			break;
 		default:
 			return -1;
 	}
 	if( flag )
-	{		
-		if( pc_checkskill(sd,skillnum) > 0 ) // Check if you have the necessary skill to mount.
+	{
+		if( option&OPTION_MADO || pc_checkskill(sd,skillnum) > 0 ) // Check if you have the necessary skill to mount.
 			pc_setoption(sd, sd->sc.option|option);
 	}
 	else if( pc_isriding(sd, OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_RIDING_WUG|OPTION_MADO) )
