@@ -4,6 +4,11 @@
 // 	- Details.
 //========================================
 
+1/28/2010
+	r165
+	*Uploaded text files and lub files from 2009-01-26 patch.
+	*Updated Royal Guard V2 and Sorcerer V2 google translations.
+
 1/21/2010
 	*Uploaded latest TXT and LUB files from 2010-01-19 patch updates to the changes detection folder.
 	*Uploaded my development files so I can have 24/7 access to them no matter what computer im on.
