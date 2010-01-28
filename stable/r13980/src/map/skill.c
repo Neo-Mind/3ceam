@@ -2005,14 +2005,17 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 		}
 		else
 		{
-			clif_damage(s_bl,s_bl,tick,dmg.amotion,dmg.dmotion,damage,dmg.div_,dmg.type,dmg.damage2);
-			if( (--sc->data[SC__SHADOWFORM]->val3) <= 0 )
+			if( (--sc->data[SC__SHADOWFORM]->val3) < 0 )
 			{
 				status_change_end(bl, SC__SHADOWFORM, -1);
 				if( s_bl->type == BL_PC )
 					((TBL_PC*)s_bl)->shadowform_id = 0;
 			}
-			status_fix_damage(NULL, s_bl, damage, 0);
+			else
+			{
+				clif_damage(s_bl,s_bl,tick,dmg.amotion,dmg.dmotion,damage,dmg.div_,dmg.type,dmg.damage2);
+				status_fix_damage(NULL, s_bl, damage, 0);
+			}
 		}
 	}
 
