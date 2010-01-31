@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+01/31/2010
+	r169 [Jobbie]
+	* Merge eAthena Updates upto r14328(excluding those stable updates).
+
 01/28/2010
 	r163 [pakpil]
 	* Minor fix in my last commit.

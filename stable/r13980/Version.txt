@@ -11,6 +11,10 @@
 //	Merging NOTE: From the last rev merge, include all what eA's SVN has. (Disregard if the update is for charmerge of eA).
 //========================================
 
+01/31/2010
+	r169 [Jobbie]
+	* Merge eAthena Updates upto r14328(excluding those stable updates).
+
 01/01/2010
 	r87 [Jobbie]
 	* Merge eAthena trunk updates up to r14215
