@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+02/01/2010
+	r171 [Jobbie]
+	* Fixed clearance_sub missing sd check.
+	* Fixed riding state which is if rune knight and use skill Brandish Spear the skill fail.
+
 01/31/2010
 	r169 [Jobbie]
 	* Merge eAthena Updates upto r14328(excluding those stable updates).

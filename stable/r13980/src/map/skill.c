@@ -2352,7 +2352,7 @@ int skill_area_clearance_sub (struct block_list *bl, va_list ap)
 	sd = BL_CAST(BL_PC, src);
 	dstsd = BL_CAST(BL_PC, bl);
 
-	if(battle_check_target(src,bl,flag) > 0)
+	if( sd && battle_check_target(src,bl,flag) > 0)
 	{
 /*		// several splash skills need this initial dummy packet to display correctly
 		if (flag&SD_PREAMBLE && skill_area_temp[2] == 0)
@@ -11207,7 +11207,7 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 		}
 		break;
 	case ST_RIDING:
-		if(!pc_isriding(sd, OPTION_RIDING) ) {
+		if(!pc_isriding(sd,OPTION_RIDING|OPTION_RIDING_DRAGON)) {
 			clif_skill_fail(sd,skill,0,0);
 			return 0;
 		}
