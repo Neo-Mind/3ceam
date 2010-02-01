@@ -6873,6 +6873,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		case SC_SPIDERWEB:
 		case SC_ELECTRICSHOCKER:
 		case SC_FEAR:
+		case SC_CURSEDCIRCLE:
 		case SC_CURSEDCIRCLE_:
 		case SC_WALLOFTHORN:
 		case SC__MANHOLE:
@@ -7571,6 +7572,9 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 					break;
 				s_sd->shadowform_id = 0;
 			}
+			break;
+		case SC_CURSEDCIRCLE:
+			skill_clear_unitgroup(bl);
 			break;
 		case SC_RAISINGDRAGON:
 			if( sd && sce->val2 && !pc_isdead(sd) ){// After the status duration ended 5 spiritballs will only remain. [Jobbie]

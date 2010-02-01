@@ -5775,43 +5775,43 @@ void clif_closevendingboard(struct block_list* bl, int fd)
  *------------------------------------------*/
 void clif_vendinglist(struct map_session_data* sd, int id, struct s_vending* vending)
 {
-	int i,fd;
+	int i,fd,cmd = 0x133,offset = 0;
 	int count;
 	struct map_session_data* vsd;
-#if PACKETVER < 20100105
-	const int offset = 8;
-#else
-	const int offset = 12;
-#endif
-
+	
 	nullpo_retv(sd);
 	nullpo_retv(vending);
 	nullpo_retv(vsd=map_id2sd(id));
-
+	
 	fd = sd->fd;
+	
 	count = vsd->vend_num;
 
-	WFIFOHEAD(fd, offset+count*22);
-	WFIFOW(fd,0) = 0x133;
-	WFIFOW(fd,2) = offset+count*22;
-	WFIFOL(fd,4) = id;
-#if PACKETVER >= 20100105
-	WFIFOL(fd,8) = vsd->status.char_id;
+#if PACKETVER >= 20091208
+	cmd = 0x800;
+	offset = 4;
 #endif
-
+	
+	WFIFOHEAD(fd, 8+count*22);
+	WFIFOW(fd,0) = cmd;
+	WFIFOW(fd,2) = 12+count*22;
+#if PACKETVER >= 20091208
+	WFIFOL(fd,4) = id;
+#endif
+	WFIFOL(fd,offset + 4) = sd->status.char_id; // temporary, could be shop_id??
 	for( i = 0; i < count; i++ )
 	{
 		int index = vending[i].index;
 		struct item_data* data = itemdb_search(vsd->status.cart[index].nameid);
-		WFIFOL(fd,offset+ 0+i*22) = vending[i].value;
-		WFIFOW(fd,offset+ 4+i*22) = vending[i].amount;
-		WFIFOW(fd,offset+ 6+i*22) = vending[i].index + 2;
-		WFIFOB(fd,offset+ 8+i*22) = itemtype(data->type);
-		WFIFOW(fd,offset+ 9+i*22) = ( data->view_id > 0 ) ? data->view_id : vsd->status.cart[index].nameid;
-		WFIFOB(fd,offset+11+i*22) = vsd->status.cart[index].identify;
-		WFIFOB(fd,offset+12+i*22) = vsd->status.cart[index].attribute;
-		WFIFOB(fd,offset+13+i*22) = vsd->status.cart[index].refine;
-		clif_addcards(WFIFOP(fd,offset+14+i*22), &vsd->status.cart[index]);
+		WFIFOL(fd,offset +  8+i*22) = vending[i].value;
+		WFIFOW(fd,offset + 12+i*22) = vending[i].amount;
+		WFIFOW(fd,offset + 14+i*22) = vending[i].index + 2;
+		WFIFOB(fd,offset + 16+i*22) = itemtype(data->type);
+		WFIFOW(fd,offset + 17+i*22) = ( data->view_id > 0 ) ? data->view_id : vsd->status.cart[index].nameid;
+		WFIFOB(fd,offset + 19+i*22) = vsd->status.cart[index].identify;
+		WFIFOB(fd,offset + 20+i*22) = vsd->status.cart[index].attribute;
+		WFIFOB(fd,offset + 21+i*22) = vsd->status.cart[index].refine;
+		clif_addcards(WFIFOP(fd, offset + 22+i*22), &vsd->status.cart[index]);
 	}
 	WFIFOSET(fd,WFIFOW(fd,2));
 }
@@ -13842,6 +13842,29 @@ void clif_millenniumshield(struct map_session_data *sd, short shields )
 #endif
 }
 
+// Display gain exp
+// flag = 1 -> base_exp
+// flag = 2 -> job_exp
+int clif_displayexp(struct map_session_data *sd, int exp, short flag)
+{
+#if PACKETVER >= 20091027
+	int fd;
+
+	nullpo_retr(0, sd);
+
+	fd = sd->fd;
+
+	WFIFOHEAD(fd, packet_len(0x7f6));
+	WFIFOW(fd,0) = 0x7f6;
+	WFIFOL(fd,2) = sd->bl.id;
+	WFIFOL(fd,6) = exp;
+	WFIFOW(fd,10) = flag;
+	WFIFOW(fd,12) = (exp > 0)?0:1;
+	WFIFOSET(fd,packet_len(0x7f6));
+#endif
+	return 0;
+}
+
 /*==========================================
  * パケットデバッグ
  *------------------------------------------*/
@@ -14233,10 +14256,10 @@ static int packetdb_readdb(void)
 	    6,  2, -1,  4,  4,  4,  4,  8,  8,268,  6,  8,  6, 54, 30, 54,
 #endif
 	    0,  0,  8,  0,  0,  8,  8, 32, -1,  5,  0,  0,  0,  0,  0,  0,
-	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0,  0,  0,
-	 //#0x0800
-		0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	  };
+	    0,  0,  0,  0,  0,  0, 14,  0,  0,  0,  8, 25,  0,  0,  0,  0,
+	  //#0x0800
+	   -1, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 14,  0,
+	};
 	struct {
 		void (*func)(int, struct map_session_data *);
 		char *name;

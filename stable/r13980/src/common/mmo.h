@@ -31,6 +31,7 @@
 // 20090617 - 2009-06-17aRagexeRE+ - 0x7d9
 // 20090805 - 2009-08-05aRagexeRE+ - 0x7e2
 // 20090922 - 2009-09-22aRagexeRE+ - 0x7e5, 0x7e7, 0x7e8, 0x7e9
+// 20091027 - 2009-10-27aRagexeRE+ - 0x7f6
 // 20091103 - 2009-11-03aRagexeRE+ - 0x7fb
 // 20091208 - 2009-12-08aRagexeRE+ - 0x800
 #ifndef PACKETVER

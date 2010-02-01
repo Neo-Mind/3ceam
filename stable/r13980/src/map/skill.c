@@ -394,6 +394,7 @@ int skillnotok (int skillid, struct map_session_data *sd)
 
 	switch (skillid) {
 		case AL_WARP:
+		case RETURN_TO_ELDICASTES:
 			if(map[m].flag.nowarp) {
 				clif_skill_teleportmessage(sd,0);
 				return 1;
@@ -7651,6 +7652,22 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		map_foreachinrange(skill_area_sub, src, skill_get_splash(skillid, skilllv), BL_SKILL|BL_CHAR,src,skillid,skilllv,tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
 		clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 		break;
+	case RETURN_TO_ELDICASTES:
+		if( sd )
+		{
+			short x = 198, y = 187; // Destiny position.
+			unsigned short mapindex;
+
+			mapindex  = mapindex_name2id(MAP_ERISCASTLE);
+
+			if(!mapindex)
+			{ //Given map not found?
+				clif_skill_fail(sd,skillid,0,0);
+				return 0;
+			}
+			pc_setpos(sd, mapindex, x, y, 3);
+		}
+		break;
 	default:
 		ShowWarning("skill_castend_nodamage_id: Unknown skill used:%d\n",skillid);
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
@@ -8703,7 +8720,6 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 		}
 		break;
 	case SR_CURSEDCIRCLE:
-		skill_clear_unitgroup(src);
 		if( (sg = skill_unitsetting(src, skillid, skilllv, src->x, src->y, 0)) )
 		{
 			clif_skill_damage(src, src, tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
@@ -10304,6 +10320,17 @@ int skill_unit_onout (struct skill_unit *src, struct block_list *bl, unsigned in
 				sg->limit = DIFF_TICK(tick,sg->tick)+1000;
 			}
 			break;
+		}
+	case UNT_DUMMYSKILL:
+		switch( sg->skill_id )
+		{
+			case SR_CURSEDCIRCLE:
+				if( sce )
+					status_change_end(bl,type,-1);
+				if( sg->src_id == bl->id )
+					status_change_end(bl,SC_CURSEDCIRCLE,-1);
+			default:
+				break;
 		}
 	}
 	return sg->skill_id;

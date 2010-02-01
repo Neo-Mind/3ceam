@@ -6,6 +6,15 @@
 //========================================
 
 02/01/2010
+	r172 [pakpil]
+	* Added some new maps.
+	* Added the new offiical packet that show won/lost experience. Plz check your packetver.
+	* Added RETURN_TO_ELDICASTE skill.
+	* Minor fix in SC_FEINTBOMB.
+	* Fixed battle_conf: max_lv and aura_lv to show auras propertly.
+	* Fixed SR_CURSEDCIRCLE that was haveing a malfunction and didn't remove its effect propertly. Bug report 77.
+
+02/01/2010
 	r171 [Jobbie]
 	* Fixed clearance_sub missing sd check.
 	* Fixed riding state which is if rune knight and use skill Brandish Spear the skill fail.

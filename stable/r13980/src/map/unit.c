@@ -842,6 +842,7 @@ int unit_can_move(struct block_list *bl)
 			|| sc->data[SC__MANHOLE]
 			|| (sc->data[SC_FEAR] && sc->data[SC_FEAR]->val2 > 0)
 			|| sc->data[SC_CURSEDCIRCLE_]
+			|| sc->data[SC_CURSEDCIRCLE]
 			|| sc->data[SC_WALLOFTHORN]
 			|| sc->data[SC_DEEPSLEEP]
 		))
@@ -1250,6 +1251,10 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 		status_change_end(src,SC__MANHOLE,-1);
 		if (!src->prev) return 0; //Warped away!
 	}
+
+	if( sc && sc->data[SC_CURSEDCIRCLE] )
+		status_change_end(src,SC_CURSEDCIRCLE,-1);
+
 	
 	if( casttime > 0 )
 	{
@@ -1371,6 +1376,9 @@ int unit_skilluse_pos2( struct block_list *src, short skill_x, short skill_y, sh
 		status_change_end(src,SC__MANHOLE,-1);
 		if (!src->prev) return 0; //Warped away!
 	}
+
+	if( sc && sc->data[SC_CURSEDCIRCLE] )
+		status_change_end(src,SC_CURSEDCIRCLE,-1);
 
 	if( casttime > 0 )
 	{

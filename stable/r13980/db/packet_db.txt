@@ -1420,8 +1420,8 @@ packet_ver: 25
 //0x07f4,3
 
 //2009-10-27aRagexeRE
-//0x07f5,6
-//0x07f6,14
+0x07f5,6
+0x07f6,14
 
 //2009-11-03aRagexeRE
 //0x07f7,-1
@@ -1441,7 +1441,7 @@ packet_ver: 25
 //0x07ff,-1
 
 //2009-12-08aRagexeRE
-//0x0800,-1
+0x0800,-1
 0x0801,-1,purchasereq2,2:4:8:12
 
 //2009-12-22aRagexeRE
