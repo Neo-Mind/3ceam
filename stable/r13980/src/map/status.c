@@ -7574,7 +7574,11 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 			}
 			break;
 		case SC_CURSEDCIRCLE:
-			skill_clear_unitgroup(bl);
+			{
+				int range = skill_get_splash(SR_CURSEDCIRCLE, sce->val1);
+				map_foreachinarea(status_change_timer_sub, 
+					bl->m, bl->x-range, bl->y-range, bl->x+range,bl->y+range,BL_CHAR,bl,sce,SC_CURSEDCIRCLE_,gettick());
+			}
 			break;
 		case SC_RAISINGDRAGON:
 			if( sd && sce->val2 && !pc_isdead(sd) ){// After the status duration ended 5 spiritballs will only remain. [Jobbie]
@@ -8507,6 +8511,9 @@ int status_change_timer_sub(struct block_list* bl, va_list ap)
 			status_change_end(bl, SC_CLOSECONFINE2, -1);
 		}
 		break;
+	case SC_CURSEDCIRCLE_:
+		if( tsc && tsc->data[SC_CURSEDCIRCLE_] && tsc->data[SC_CURSEDCIRCLE_]->val2 == src->id )
+			status_change_end(bl, type, -1);
 	}
 	return 0;
 }

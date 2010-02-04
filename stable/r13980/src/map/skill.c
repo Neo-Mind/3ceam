@@ -7553,7 +7553,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		else
 			clif_skill_fail(sd,skillid,0,0);
 		break;
-
+	case SR_CURSEDCIRCLE:
+		sc_start2(bl,type,100,skilllv,src->id,skill_get_time(skillid,skilllv));
+		break;
 	case SR_RAISINGDRAGON:
 		if(sd && !(dstsd && dstsd->sc.data[SC_RAISINGDRAGON])){
 			clif_skill_nodamage(src, bl, skillid, skilllv,
@@ -8709,7 +8711,6 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 				sc_start4(src, SC_MAGNETICFIELD, 100, skilllv, 0, 0, sg->group_id, skill_get_time(skillid, skilllv)));
 		}
 		break;
-
 		
 	case SC_FEINTBOMB:
 		{
@@ -8719,13 +8720,12 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 			skill_addtimerskill(src,tick+skill_get_time(skillid,skilllv),src->id,src->x,src->y,skillid,skilllv,BF_MISC,flag|BCT_ENEMY|SD_ANIMATION|SD_SPLASH|1);
 		}
 		break;
+
 	case SR_CURSEDCIRCLE:
-		if( (sg = skill_unitsetting(src, skillid, skilllv, src->x, src->y, 0)) )
-		{
 			clif_skill_damage(src, src, tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
 			clif_skill_nodamage(src, src, skillid, skilllv,
-				sc_start4(src, SC_CURSEDCIRCLE, 100, skilllv, 0, 0, sg->group_id, skill_get_time(skillid, skilllv)));
-		}
+				sc_start(src, SC_CURSEDCIRCLE, 100, skilllv, skill_get_time(skillid,skilllv)));
+			map_foreachinrange(skill_area_sub,src,skill_get_splash(skillid,skilllv),BL_CHAR,src,skillid,skilllv,tick,flag|BCT_ENEMY,skill_castend_nodamage_id);
 		break;
 
 	case SR_RIDEINLIGHTNING:
@@ -9563,17 +9563,6 @@ static int skill_unit_onplace (struct skill_unit *src, struct block_list *bl, un
 		skill_blown(ss,bl,skill_get_blewcount(sg->skill_id,sg->skill_lv),unit_getdir(bl),0);
 		break;
 
-	case UNT_DUMMYSKILL:
-		{
-			switch(sg->skill_id)
-			{
-				case SR_CURSEDCIRCLE:
-					if( !sce && !(status_get_mode(bl)&MD_BOSS) )
-						sc_start4(bl,type,100,sg->skill_lv,sg->group_id,0,0,sg->limit);
-					break;
-			}
-			break;
-		}
 	}
 	return skillid;
 }
@@ -9827,10 +9816,6 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 					status_change_end(bl, SC_MELODYOFSINK, -1);
 					status_change_end(bl, SC_WARCRYOFBEYOND, -1);
 					status_change_end(bl, SC_HUMMINGVOICE, -1);
-					break;
-				case SR_CURSEDCIRCLE:
-					if( !(status_get_mode(bl)&MD_BOSS) )
-						sc_start(bl,type,100,sg->skill_lv,sg->limit);
 					break;
 				default:
 					skill_attack(skill_get_type(sg->skill_id),ss,&src->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
@@ -10321,17 +10306,7 @@ int skill_unit_onout (struct skill_unit *src, struct block_list *bl, unsigned in
 			}
 			break;
 		}
-	case UNT_DUMMYSKILL:
-		switch( sg->skill_id )
-		{
-			case SR_CURSEDCIRCLE:
-				if( sce )
-					status_change_end(bl,type,-1);
-				if( sg->src_id == bl->id )
-					status_change_end(bl,SC_CURSEDCIRCLE,-1);
-			default:
-				break;
-		}
+
 	}
 	return sg->skill_id;
 }
@@ -10386,7 +10361,6 @@ static int skill_unit_onleft (int skill_id, struct block_list *bl, unsigned int 
 		case CG_HERMODE:
 		case HW_GRAVITATION:
 		case NJ_SUITON:
-		case SR_CURSEDCIRCLE:
 			if (sce)
 				status_change_end(bl, type, -1);
 			break;
@@ -13359,10 +13333,6 @@ static int skill_unit_timer_sub (DBKey key, void* data, va_list ap)
 					case NC_MAGNETICFIELD:
 						if( tbl )
 							status_change_end(tbl, SC_MAGNETICFIELD, -1);
-						break;
-					case SR_CURSEDCIRCLE:
-						if( tbl )
-							status_change_end(tbl, SC_CURSEDCIRCLE, -1);
 						break;
 					default:
 						skill_delunit(unit);
