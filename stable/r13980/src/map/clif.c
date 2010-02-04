@@ -5788,7 +5788,7 @@ void clif_vendinglist(struct map_session_data* sd, int id, struct s_vending* ven
 	
 	count = vsd->vend_num;
 
-#if PACKETVER >= 20091208
+#if PACKETVER >= 20100105
 	cmd = 0x800;
 	offset = 4;
 #endif

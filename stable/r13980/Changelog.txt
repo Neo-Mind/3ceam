@@ -6,6 +6,10 @@
 //========================================
 
 02/04/2010
+	r179 [pakpil]
+	* Added missing code in r178.
+
+02/04/2010
 	r178 [pakpil]
 	* Fixed SR_CURSEDCIRCLE. Asume this skill is AoE. Removed its unit.
 	  This skill shouldn't affect targets that weren't in the area when was casted.
