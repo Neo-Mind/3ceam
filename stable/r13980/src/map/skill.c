@@ -6886,7 +6886,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				i = party_foreachsamemap(skill_area_sub,sd,skill_get_splash(skillid,skilllv),src,skillid,skilllv,tick,BCT_PARTY,skill_area_sub_count);
 				if( i > 1 )
 					atk += atk * (i-1);
-				sc_start2(bl,type,100,atk,aspd,skill_get_time(skillid,skilllv));
+				sc_start4(bl,type,100,atk,aspd,4*pc_checkskill(sd,RK_RUNEMASTERY),0,skill_get_time(skillid,skilllv));
 				party_foreachsamemap(skill_area_sub,sd,skill_get_splash(skillid,skilllv),
 					src,skillid,skilllv,tick,flag|BCT_PARTY|1,skill_castend_nodamage_id);
 			}
@@ -13770,7 +13770,7 @@ int skill_can_produce_mix (struct map_session_data *sd, int nameid, int trigger,
 int skill_produce_mix (struct map_session_data *sd, int skill_id, int nameid, int slot1, int slot2, int slot3, int qty)
 {
 	int slot[3];
-	int i,sc,ele,idx,equip,wlv,make_per,flag;
+	int i,sc,ele,idx,equip,wlv,make_per,flag,skill_lv,temp_qty;
 	int num = -1; // exclude the recipe
 	struct status_data *status;
 
@@ -13783,6 +13783,7 @@ int skill_produce_mix (struct map_session_data *sd, int skill_id, int nameid, in
 
 	if (qty < 1)
 		qty = 1;
+	temp_qty = qty;
 
 	if (!skill_id) //A skill can be specified for some override cases.
 		skill_id = skill_produce_db[idx].req_skill;
@@ -13806,6 +13807,25 @@ int skill_produce_mix (struct map_session_data *sd, int skill_id, int nameid, in
 			static const int ele_table[4]={3,1,4,2};
 			pc_delitem(sd,j,1,1);
 			ele=ele_table[slot[i]-994];
+		}
+	}
+
+	if( skill_id == RK_RUNEMASTERY )
+	{
+		skill_lv = pc_checkskill(sd,skill_id);
+		if( skill_lv == 10 ) temp_qty = 1 + rand()%3;
+		else if( skill_lv > 5 ) temp_qty = 1 + rand()%2;
+		else temp_qty = 1;
+		for( i = 0; i < MAX_INVENTORY; i++ )
+		{
+			if( sd->status.inventory[i].nameid == nameid )
+			{
+				if( temp_qty > MAX_RUNE - sd->status.inventory[i].amount )
+				{
+					clif_msgtable(sd->fd,1563);
+					return 0;
+				}
+			}
 		}
 	}
 
@@ -13912,11 +13932,11 @@ int skill_produce_mix (struct map_session_data *sd, int skill_id, int nameid, in
 				break;
 			case RK_RUNEMASTERY:
 				{ 
-					int skill_lv = pc_checkskill(sd,skill_id);
+					skill_lv = pc_checkskill(sd,skill_id);
 					make_per = 5 * (sd->menuskill_itemused + skill_lv) * 100;
 					if(battle_config.rune_produce_rate != 100)
 						make_per = make_per * battle_config.rune_produce_rate / 100;
-					qty = 1 + rand()%((skill_lv > 5)?3:2);
+					qty = temp_qty;
 					sd->menuskill_itemused = sd->menuskill_id = 0;
 				}
 				break;

@@ -5,6 +5,12 @@
 // 	- Details.
 //========================================
 
+02/04/2010
+	r176 [pakpil]
+	* Fixed RK_RUNEMASTERY.
+	- Fixed the max amount of each rune you can carry.
+	- Fixed the ASPD bonus while using Fighting Spirit that should add +4 ASPD if you have Rune Mastery at level 10.
+	
 02/02/2010
 	r175 [pakpil]
 	* Fixed a typo in some maps. Bug report 128.
