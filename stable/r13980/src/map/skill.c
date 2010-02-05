@@ -7554,7 +7554,17 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			clif_skill_fail(sd,skillid,0,0);
 		break;
 	case SR_CURSEDCIRCLE:
-		sc_start2(bl,type,100,skilllv,src->id,skill_get_time(skillid,skilllv));
+		if( flag&1 )
+		{
+			if( sc_start2(bl,type,100,skilllv,src->id,skill_get_time(skillid,skilllv)) )
+				clif_bladestop(src, bl->id, 1);
+		}
+		else
+		{
+			clif_skill_nodamage(src, src, skillid, skilllv,
+				sc_start(src, SC_CURSEDCIRCLE, 100, skilllv, skill_get_time(skillid,skilllv)));
+			map_foreachinrange(skill_area_sub,src,skill_get_splash(skillid,skilllv),BL_CHAR,src,skillid,skilllv,tick,flag|BCT_ENEMY|1,skill_castend_nodamage_id);
+		}
 		break;
 	case SR_RAISINGDRAGON:
 		if(sd && !(dstsd && dstsd->sc.data[SC_RAISINGDRAGON])){
@@ -8719,13 +8729,6 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 			skill_unitsetting(src,skillid,skilllv,x,y,0);
 			skill_addtimerskill(src,tick+skill_get_time(skillid,skilllv),src->id,src->x,src->y,skillid,skilllv,BF_MISC,flag|BCT_ENEMY|SD_ANIMATION|SD_SPLASH|1);
 		}
-		break;
-
-	case SR_CURSEDCIRCLE:
-			clif_skill_damage(src, src, tick, status_get_amotion(src), 0, -30000, 1, skillid, skilllv, 6);
-			clif_skill_nodamage(src, src, skillid, skilllv,
-				sc_start(src, SC_CURSEDCIRCLE, 100, skilllv, skill_get_time(skillid,skilllv)));
-			map_foreachinrange(skill_area_sub,src,skill_get_splash(skillid,skilllv),BL_CHAR,src,skillid,skilllv,tick,flag|BCT_ENEMY,skill_castend_nodamage_id);
 		break;
 
 	case SR_RIDEINLIGHTNING:

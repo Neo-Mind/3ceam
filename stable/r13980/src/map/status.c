@@ -6950,6 +6950,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			opt_flag = 0;
 			break;
 		case SC_BLADESTOP:
+		case SC_CURSEDCIRCLE: // Just confirmed [pakpil]
+		case SC_CURSEDCIRCLE_:
 			sc->opt3 |= OPT3_BLADESTOP;
 			opt_flag = 0;
 			break;
@@ -7689,6 +7691,8 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 		opt_flag = 0;
 		break;
 	case SC_BLADESTOP:
+	case SC_CURSEDCIRCLE: // Just confirmed
+	case SC_CURSEDCIRCLE_:
 		sc->opt3 &= ~OPT3_BLADESTOP;
 		opt_flag = 0;
 		break;
@@ -8513,7 +8517,11 @@ int status_change_timer_sub(struct block_list* bl, va_list ap)
 		break;
 	case SC_CURSEDCIRCLE_:
 		if( tsc && tsc->data[SC_CURSEDCIRCLE_] && tsc->data[SC_CURSEDCIRCLE_]->val2 == src->id )
-			status_change_end(bl, type, -1);
+		{
+			status_change_end(bl, type, -1);			
+			clif_bladestop(src, bl->id, 0);
+		}
+		break;
 	}
 	return 0;
 }
