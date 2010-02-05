@@ -6,6 +6,10 @@
 //========================================
 
 02/05/2010
+	r181 [pakpil]
+	* Fixed a mistake in clif_vendinglist packet.
+
+02/05/2010
 	r180 [pakpil]
 	* Fixed SR_CURSEDCIRCLE. Solved a mistake in r178 and added Blade Stop visual effect.
 		More info here: http://forums.irowiki.org/showpost.php?p=605940&postcount=914

@@ -5796,10 +5796,10 @@ void clif_vendinglist(struct map_session_data* sd, int id, struct s_vending* ven
 	WFIFOHEAD(fd, 8+count*22);
 	WFIFOW(fd,0) = cmd;
 	WFIFOW(fd,2) = 12+count*22;
+	WFIFOL(fd,4) = id;	
 #if PACKETVER >= 20100105
-	WFIFOL(fd,4) = id;
-#endif
 	WFIFOL(fd,offset + 4) = sd->status.char_id; // temporary, could be shop_id??
+#endif
 	for( i = 0; i < count; i++ )
 	{
 		int index = vending[i].index;
