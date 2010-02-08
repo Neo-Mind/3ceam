@@ -775,9 +775,9 @@ dicastes02
 job3_arch01
 job3_arch02
 job3_gen01
-job3_guild1
-job3_guild2
-job3_guild3
+job3_guil01
+job3_guil02
+job3_guil03
 job3_rang01
 job3_rang02
 job3_rune01
