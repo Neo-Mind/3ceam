@@ -4240,7 +4240,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				heal_get_jobexp = heal_get_jobexp * battle_config.heal_exp / 100;
 				if (heal_get_jobexp <= 0)
 					heal_get_jobexp = 1;
-				pc_gainexp (sd, bl, 0, heal_get_jobexp);
+				pc_gainexp (sd, bl, 0, heal_get_jobexp,0);
 			}
 		}
 		break;
@@ -4316,7 +4316,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 						if (jexp < 1) jexp = 1;
 					}
 					if(exp > 0 || jexp > 0)
-						pc_gainexp (sd, bl, exp, jexp);
+						pc_gainexp (sd, bl, exp, jexp,0);
 				}
 			}
 		}
@@ -4428,7 +4428,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 	case SA_LEVELUP:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		if (sd && pc_nextbaseexp(sd)) pc_gainexp(sd, NULL, pc_nextbaseexp(sd) * 10 / 100, 0);
+		if (sd && pc_nextbaseexp(sd)) pc_gainexp(sd, NULL, pc_nextbaseexp(sd) * 10 / 100, 0,0);
 		break;
 	case SA_INSTANTDEATH:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);

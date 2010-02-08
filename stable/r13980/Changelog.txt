@@ -6,6 +6,11 @@
 //========================================
 
 02/08/2010
+	r184 [pakpil]
+	* Fixed clif_displayexp packet. This should show won and lost experience. Follow up to r172.
+	* Minor fix in SC_CHAOSPANIC. Bug report 138.
+
+02/08/2010
 	r183 [Jobbie]
 	* Fixed missing maps in map_cache bug report #128.
 	* Added Light of El Dicastes item.

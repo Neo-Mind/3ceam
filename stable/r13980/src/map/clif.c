@@ -13844,9 +13844,11 @@ void clif_millenniumshield(struct map_session_data *sd, short shields )
 }
 
 // Display gain exp
-// flag = 1 -> base_exp
-// flag = 2 -> job_exp
-int clif_displayexp(struct map_session_data *sd, int exp, short flag)
+// type = 1 -> base_exp
+// type = 2 -> job_exp
+// flag = 0 -> normal exp gain/lost
+// flag = 1 -> quest exp gain/lost
+int clif_displayexp(struct map_session_data *sd, int exp, short type, bool gain, short flag)
 {
 #if PACKETVER >= 20091027
 	int fd;
@@ -13854,13 +13856,14 @@ int clif_displayexp(struct map_session_data *sd, int exp, short flag)
 	nullpo_retr(0, sd);
 
 	fd = sd->fd;
-
+	if( !gain )
+		exp *= -1;
 	WFIFOHEAD(fd, packet_len(0x7f6));
 	WFIFOW(fd,0) = 0x7f6;
 	WFIFOL(fd,2) = sd->bl.id;
 	WFIFOL(fd,6) = exp;
-	WFIFOW(fd,10) = flag;
-	WFIFOW(fd,12) = (exp > 0)?0:1;
+	WFIFOW(fd,10) = type; // 1: base exp, 2: job exp
+	WFIFOW(fd,12) = (flag)?1:0;// Current exp is shown in yellow, quest exp is shown in purple.
 	WFIFOSET(fd,packet_len(0x7f6));
 #endif
 	return 0;
