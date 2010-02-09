@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+02/09/2010
+	r186 [pakpil]
+	* Fixed vending.
+
 02/08/2010
 	r184 [pakpil]
 	* Fixed clif_displayexp packet. This should show won and lost experience. Follow up to r172.
