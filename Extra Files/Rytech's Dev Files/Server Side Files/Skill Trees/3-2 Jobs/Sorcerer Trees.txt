@@ -21,8 +21,15 @@ Job ID's are 4067 and 4074
 4067,2454,5,283,1,287,4,0,0,0,0,0,0 //SO_VARETYR_SPEAR#Varetyr Spear#
 4067,2455,5,2452,2,0,0,0,0,0,0,0,0 //SO_ARRULLO#Arrullo#
 
-// Skills not part of the tree
-4067,2456,,0,0,0,0,0,0,0,0,0,0 //SO_SUMMON_AGNI#Summon Agni#
+// Future Skills To Add To The Tree
+4067,2456,3,0,0,0,0,0,0,0,0,0,0 //SO_EL_CONTROL#Ordinance Control#
+4067,2457,3,0,0,0,0,0,0,0,0,0,0 //SO_SUMMON_AGNI#Summon Agni#
+4067,2458,3,0,0,0,0,0,0,0,0,0,0 //SO_SUMMON_AQUA#Summon Aqua#
+4067,2459,3,0,0,0,0,0,0,0,0,0,0 //SO_SUMMON_VENTUS#Summon Ventus#
+4067,2460,3,0,0,0,0,0,0,0,0,0,0 //SO_SUMMON_TERA#Summon Tera#
+
+// Skills That Maybe Part Of A Multi ID Skill
+4067,2472,1,0,0,0,0,0,0,0,0,0,0 //SO_ENDMARK#End Mark#
 
 // Required 2nd class skills
 //4067,90,5,283,1,0,0,0,0,0,0,0,0 //WZ_EARTHSPIKE#Earth Spike#

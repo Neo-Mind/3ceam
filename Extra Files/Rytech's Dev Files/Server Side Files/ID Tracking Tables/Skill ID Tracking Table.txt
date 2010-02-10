@@ -1,5 +1,5 @@
 Skill ID Tracking Table by Rytech
-Table Date: 1-21-2010
+Table Date: 2-10-2010
 
 To whoever holds a copy of this table: Please only use this table for reference. Do not edit this table
 and post it as your own. I put a lot of my time into makeing this and other ID tracking tables.
@@ -472,11 +472,11 @@ Skill ID / Skill Tag / Skill name / Extra Info
 2454 SO_VARETYR_SPEAR		Varetyr Spear
 2455 SO_ARRULLO			Arrullo
 //2456 SO_SUMMON_AGNI		Summon Agni		(Summon Agni's Old ID)
-2456 SO_EL_CONTROL		?????
-2457 SO_SUMMON_AGNI		?????
-2458 SO_SUMMON_AQUA		?????
-2459 SO_SUMMON_VENTUS		?????
-2460 SO_SUMMON_TERA		?????
+2456 SO_EL_CONTROL		Ordinance Control
+2457 SO_SUMMON_AGNI		Summon Agni
+2458 SO_SUMMON_AQUA		Summon Aqua
+2459 SO_SUMMON_VENTUS		Summon Ventus
+2460 SO_SUMMON_TERA		Summon Tera
 2461 ?????			?????
 2462 ?????			?????
 2463 ?????			?????

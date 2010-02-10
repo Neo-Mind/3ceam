@@ -394,7 +394,7 @@
 2465,Test_Item_24,Test Item 24,3,10,,10,,,,,,,,,,,,,{},{},{}
 2564,Test_Item_25,Test Item 25,3,10,,10,,,,,,,,,,,,,{},{},{}
 2843,Test_Item_26,Test Item 26,3,10,,10,,,,,,,,,,,,,{},{},{}
-2844,Light_of_El_Dicastes,Light of El Dicastes,5,100,,100,,,,0,0xFFFFFFFF,31,2,136,,80,0,0,{ skill "RETURN_TO_ELDICASTES",1; },{},{}
+2844,Light_of_El_Dicastes,Light of El Dicastes,5,20,,100,,0,,0,0xFFFFFFFF,31,2,136,,80,0,0,{ skill "RETURN_TO_ELDICASTES",1; },{},{}
 2853,Test_Item_28,Test Item 28,3,10,,10,,,,,,,,,,,,,{},{},{}
 2854,Test_Item_29,Test Item 29,3,10,,10,,,,,,,,,,,,,{},{},{}
 4760,Test_Item_30,Test Item 30,3,10,,10,,,,,,,,,,,,,{},{},{}
