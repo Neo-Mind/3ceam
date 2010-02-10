@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+02/10/2010
+	r188 [pakpil]
+	* Fixed clif_displayexp that was displaying same exp on Base Exp and Job Exp won. Bug report 149.
+	* Fixed GN_THORNS_TRAP that need one Thorny Seed (item_id 6210) to use it.
+
 02/09/2010
 	r186 [pakpil]
 	* Fixed vending.
