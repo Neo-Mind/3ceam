@@ -6,6 +6,10 @@
 //========================================
 
 02/11/2010
+	r191 [pakpil]
+	* Updated SCs in const.txt
+
+02/11/2010
 	r190 [pakpil]
 	* Fixed LG_REFLECTDAMAGE. Disable damage EMPERIUMS with this until we can confirm it.
 
