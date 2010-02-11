@@ -10478,17 +10478,12 @@ int skill_unit_ondamaged (struct skill_unit *src, struct block_list *bl, int dam
 	case UNT_ELECTRICSHOCKER:
 	case UNT_CLUSTERBOMB:
 	case UNT_REVERBERATION:
+	case UNT_WALLOFTHORN:
 		src->val1-=damage;
 		break;
 	case UNT_BLASTMINE:
 	case UNT_CLAYMORETRAP:
 		skill_blown(bl, &src->bl, 2, -1, 0);
-		break;
-		
-	case UNT_WALLOFTHORN:
-		src->val1-=damage;
-		if(src->val1 <= 0)
-			skill_delunit(src);
 		break;
 	default:
 		damage = 0;
@@ -13389,6 +13384,7 @@ static int skill_unit_timer_sub (DBKey key, void* data, va_list ap)
 			case UNT_FREEZINGTRAP:
 			case UNT_TALKIEBOX:
 			case UNT_ANKLESNARE:
+			case UNT_WALLOFTHORN:
 				if( unit->val1 <= 0 ) {
 					if( group->unit_id == UNT_ANKLESNARE && group->val2 > 0 )
 						skill_delunit(unit);
