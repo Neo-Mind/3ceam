@@ -3541,7 +3541,8 @@ int battle_damage_area( struct block_list *bl, va_list ap)
 	dmotion=va_arg(ap,int);
 	damage=va_arg(ap,int);
 
-	if( bl != src && battle_check_target(src,bl,BCT_ENEMY) )
+	// Temporary prevent damage to EMPERIUMS until we can confirm it. [pakpil]
+	if( bl != src && battle_check_target(src,bl,BCT_ENEMY) && !(bl->type == BL_MOB && ((TBL_MOB*)bl)->class_ == MOBID_EMPERIUM) )
 	{
 		status_damage(src,bl,damage,0,clif_damage(bl,bl,tick,amotion,dmotion,damage,1,ATK_BLOCK,0),0);
 	}

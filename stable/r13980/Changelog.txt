@@ -5,7 +5,11 @@
 // 	- Details.
 //========================================
 
-02/10/2010
+02/11/2010
+	r190 [pakpil]
+	* Fixed LG_REFLECTDAMAGE. Disable damage EMPERIUMS with this until we can confirm it.
+
+02/11/2010
 	r189 [pakpil]
 	* Fixed GN_WALLOFTHORN:
 		- Need one Thorny Seed to use it.
