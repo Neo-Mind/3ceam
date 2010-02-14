@@ -5,20 +5,30 @@
 // 	- Details.
 //========================================
 
+02/14/2010
+	r194 [Jobbie]
+	* Fixed some mechanic items.
+	* Fixed Aimedbolt not properly dealing the total damage when enemy is in immobile status.
+	* Fixed Ranger Traps activation area.
+	* When mounted into a warg you cannot use magic scrolls.
+	* Cleaned up some defines in pc_gainexp.
+	* Moved Warg Mastery and Warg Dash fail message into skill_check_condition_castbegin
+	* Removed Warg Dash movement speed calculation while dashing as it uses your current movement speed.
+	* Removed the 50% cast time reduction of Bolts seems its not really 50% as its reduction in renewal.
+	* Added a setting which you can place the skill that has a full variable and fixed cast time.
+	* Fixed the success chance of auto casting Spear Boomerang when using Hundred Spear.
+
 02/11/2010
 	r192 [pakpil]
 	* Fixed a mistake in SC_REPRODUCE.
 	* Fixed a mistake in AB_ANCILLA.
 
-02/11/2010
 	r191 [pakpil]
 	* Updated SCs in const.txt
 
-02/11/2010
 	r190 [pakpil]
 	* Fixed LG_REFLECTDAMAGE. Disable damage EMPERIUMS with this until we can confirm it.
 
-02/11/2010
 	r189 [pakpil]
 	* Fixed GN_WALLOFTHORN:
 		- Need one Thorny Seed to use it.

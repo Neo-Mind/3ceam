@@ -4220,8 +4220,6 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 				val = max( val, 10 * sc->data[SC_AVOID]->val1 );
 			if( sc->data[SC_INVINCIBLE] && !sc->data[SC_INVINCIBLEOFF] )
 				val = max( val, 75 );
-			if( sc->data[SC_WUGDASH] )
-				val = max( val, 15 );
 			if( sc->data[SC_CLOAKINGEXCEED] && (sc->data[SC_CLOAKINGEXCEED]->val4&1) == 1 )
 				val = max( val, 10 - pc_checkskill(sd, GC_CLOAKINGEXCEED) * 10 );
 			if( sc->data[SC_ACCELERATION] )
