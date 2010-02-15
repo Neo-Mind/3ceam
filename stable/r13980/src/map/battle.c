@@ -2980,7 +2980,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 300 + 100 * skill_lv;
 						break;
 					case WL_EARTHSTRAIN:
-						skillratio += 1900 + 100 * skill_lv;
+						skillratio += 1900 + 100 * skill_lv * status_get_lv(src)/100;
 						break;
 					case WL_TETRAVORTEX_FIRE:	// Tetra Vortex strikes a target 4 times, once with each element.
 					case WL_TETRAVORTEX_WATER:	// The damage is % x 4 hits. So each element will strike once with the same ratio. [Rytech]

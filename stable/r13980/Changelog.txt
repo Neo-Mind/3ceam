@@ -5,6 +5,14 @@
 // 	- Details.
 //========================================
 
+02/15/2010
+	r195 [Jobbie]
+	* Earth Strain Update.
+		- Adjusted its stripping rate to official and its stripping behavior.
+		- Adjusted its area of effect as of official info.
+	* Arrow Storm should affect hidden targets.
+	* Fixed when mounted and equipped with weapon a client error appears.
+
 02/14/2010
 	r194 [Jobbie]
 	* Fixed some mechanic items.

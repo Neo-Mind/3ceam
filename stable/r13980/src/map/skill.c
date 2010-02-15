@@ -8626,7 +8626,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, int skillid, int sk
 						x += type;
 						break;
 					default:
-						if( sd ) clif_skill_fail(sd, skillid, 0, 0);
+						if( sd ) clif_skill_fail(sd, skillid, 0x12, 0);
 						break;
 				}
 				skill_addtimerskill(src, gettick() + 250 * i, src->id, x, y, skillid, skilllv, 0, 0);
@@ -9411,8 +9411,8 @@ static int skill_unit_onplace (struct skill_unit *src, struct block_list *bl, un
 
 	sc = status_get_sc(bl);
 
-	if (sc && sc->option&OPTION_HIDE && ((sg->skill_id != WZ_HEAVENDRIVE)||(sg->skill_id != WL_EARTHSTRAIN)))
-		return 0; //Hidden characters are immune to AoE skills except Heaven's Drive and Earth Strain. [Skotlex]
+	if (sc && sc->option&OPTION_HIDE && ((sg->skill_id != WZ_HEAVENDRIVE)||(sg->skill_id != WL_EARTHSTRAIN)||(sg->skill_id != RA_ARROWSTORM)))
+		return 0; //Hidden characters are immune to AoE skills except Heaven's Drive and Earth Strain. [Skotlex] Include Arrow Storm. [Jobbie]
 
 	if( sc && sc->data[SC_HOVERING] )
 		return 0;
@@ -10087,19 +10087,27 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			break;
 
 		case UNT_EARTHSTRAIN:
-			if(
-			   (sg->skill_lv == 1 && rand()%100 <= 6 ) ||
-			   (sg->skill_lv == 2 && rand()%100 <= 13) ||
-			   (sg->skill_lv == 3 && rand()%100 <= 24) ||
-			   (sg->skill_lv == 4 && rand()%100 <= 36) ||
-			   (sg->skill_lv == 5 && rand()%100 <= 50)
-			  )
 			{
-				sc_start(bl,SC_STRIPWEAPON,100,sg->skill_lv,skill_get_time2(sg->skill_id,sg->skill_lv));
-				if( bl->type == BL_PC )
-					sc_start(bl,SC_STRIPHELM,100,sg->skill_lv,skill_get_time2(sg->skill_id,sg->skill_lv));
+				unsigned short location = 0;
+				int rate;
+				/*As the info said strip chance is increased by the caster's BLv
+				  and strip chance is decreased by the target's Dex
+				  Overall Formula: Success chance * (Blvl/100) * (1-Dex/200). [Jobbie]*/
+				switch( sg->skill_lv )
+				{
+					case 1: rate = 6*status_get_lv(ss)/100; break; //4% chance
+					case 2: rate = 14*status_get_lv(ss)/100; break; //14% chance
+					case 3: rate = 24*status_get_lv(ss)/100; break; //24% chance
+					case 4: rate = 36*status_get_lv(ss)/100; break; //36% chance
+					case 5: rate = 50*status_get_lv(ss)/100; break; //50% chance
+				}
+				rate = rate * (1-tstatus->dex/200); //Strip Chance * (1-TargetsDex/200);
+				location = EQP_SHIELD|EQP_ARMOR|EQP_ACC;
+				
+				if( rate = skill_strip_equip(bl, location, rate, sg->skill_lv, skill_get_time2(sg->skill_id,sg->skill_lv)) )
+					clif_skill_nodamage(&src->bl,bl,sg->skill_id,sg->skill_lv,rate);
+				skill_attack(skill_get_type(sg->skill_id), ss, &src->bl, bl, sg->skill_id, sg->skill_lv, tick, 0);
 			}
-			skill_attack(skill_get_type(sg->skill_id),ss,&src->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
 			break;
 
 		case UNT_SEVERE_RAINSTORM:
