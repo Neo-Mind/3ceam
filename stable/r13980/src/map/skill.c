@@ -2083,14 +2083,15 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 			clif_addskill(tsd,skillid);
 		}
 	}
-	if(damage > 0 && dmg.flag&BF_SKILL && sc && sc->data[SC__REPRODUCE] && can_copy(tsd,skillid,bl) )
+	if(damage > 0 && dmg.flag&BF_SKILL && sc && sc->data[SC__REPRODUCE] && can_copy(tsd,skillid,bl) &&
+		!tsd->status.skill[skillid].id )
 	{
-		if (tsd->reproduceskill_id && tsd->status.skill[tsd->reproduceskill_id].flag == 13)
+		if(tsd->reproduceskill_id && tsd->status.skill[tsd->reproduceskill_id].flag == 13)
 		{ // Delete previous reproduced skill.
-			clif_skillinfo_delete(tsd,tsd->reproduceskill_id);
 			tsd->status.skill[tsd->reproduceskill_id].id = 0;
 			tsd->status.skill[tsd->reproduceskill_id].lv = 0;
 			tsd->status.skill[tsd->reproduceskill_id].flag = 0;
+			clif_skillinfo_delete(tsd,tsd->reproduceskill_id);
 		}
 
 		tsd->reproduceskill_id = skillid;
@@ -11781,7 +11782,12 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 	{
 		variable_time = skill_get_cast(skill_id, skill_lv) * 80/100;// 80% of casttime is variable
 		fixed_time = skill_get_cast(skill_id, skill_lv) * 20/100;// 20% of casttime is fixed
-		
+		if( skill_id == MG_FIREBOLT || skill_id == MG_COLDBOLT || skill_id == MG_LIGHTNINGBOLT )
+		{	// 50% reduction on Bolts.
+			variable_time >>= 2;
+			fixed_time >>= 2;
+		}
+
 		// calculate variable cast time reduced by dex and int
 		if( !(skill_get_castnodex(skill_id, skill_lv)&1) )
 			scale = cap_value((status_get_dex(bl)*2 + status_get_int(bl))*10000, INT_MIN, INT_MAX);

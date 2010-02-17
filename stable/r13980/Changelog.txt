@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+02/17/2010
+	r197 [pakpil]
+	*Fixed SC_REPRODUCE. Bug report 165.
+	*Updated PACKETVER in mmo.h
+
 02/15/2010
 	r195 [Jobbie]
 	* Earth Strain Update.

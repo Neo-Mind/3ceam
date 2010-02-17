@@ -33,10 +33,10 @@
 // 20090922 - 2009-09-22aRagexeRE+ - 0x7e5, 0x7e7, 0x7e8, 0x7e9
 // 20091027 - 2009-10-27aRagexeRE+ - 0x7f6
 // 20091103 - 2009-11-03aRagexeRE+ - 0x7fb
-// 20091208 - 2009-12-08aRagexeRE+ - 0x800
+// 20100105 - 2009-12-08aRagexeRE+ - 0x800, 0x801
 #ifndef PACKETVER
 	//#define PACKETVER	20081126
-	#define PACKETVER 20091208
+	#define PACKETVER 20100105
 #endif
 // backward compatible PACKETVER 8 and 9
 #if PACKETVER == 8
@@ -311,7 +311,7 @@ struct mmo_charstatus {
 
 	short class_;
 	unsigned int status_point,skill_point;
-	int hp,max_hp,sp,max_sp/*,mech_hp,mech_sp,mado_hp,mado_sp*/;
+	int hp,max_hp,sp,max_sp;
 	unsigned int option;
 	short manner;
 	unsigned char karma;
