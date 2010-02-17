@@ -6,6 +6,12 @@
 //========================================
 
 02/17/2010
+	r200 [pakpil]
+	* Fixed fame ranking.
+	* Reverted casting reduction from bolts.
+	* Fixed SC_FREEZING and SC_BURNING that were stacking. We still need more info about it.
+
+02/17/2010
 	r197 [pakpil]
 	*Fixed SC_REPRODUCE. Bug report 165.
 	*Updated PACKETVER in mmo.h

@@ -234,17 +234,14 @@ void pc_addfame(struct map_session_data *sd,int count)
 {
 	nullpo_retv(sd);
 	sd->status.fame += count;
-	if(sd->status.fame > MAX_FAME)
+	if( sd->status.fame > MAX_FAME )
 		sd->status.fame = MAX_FAME;
-	switch(sd->class_&MAPID_THIRDMASK){// Need check if it's necesary [pakpil]
+	switch( sd->class_&MAPID_UPPERMASK )
+	{
 		case MAPID_BLACKSMITH: // Blacksmith
-		case MAPID_MECHANIC:
-		case MAPID_MECHANIC_T:
 			clif_fame_blacksmith(sd,count);
 			break;
 		case MAPID_ALCHEMIST: // Alchemist
-		case MAPID_GENETIC:
-		case MAPID_GENETIC_T:
 			clif_fame_alchemist(sd,count);
 			break;
 		case MAPID_TAEKWON: // Taekwon
@@ -6503,13 +6500,9 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 		chrif_buildfamelist();
 	} else if (sd->status.fame > 0) {
 		//It may be that now they are famous?
- 		switch (sd->class_&MAPID_THIRDMASK) {
+ 		switch (sd->class_&MAPID_BASEMASK) {
 			case MAPID_BLACKSMITH:
-			case MAPID_MECHANIC:
-			case MAPID_MECHANIC_T:
 			case MAPID_ALCHEMIST:
-			case MAPID_GENETIC:
-			case MAPID_GENETIC_T:
 			case MAPID_TAEKWON:
 				chrif_save(sd,0);
 				chrif_buildfamelist();
