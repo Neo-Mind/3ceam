@@ -606,7 +606,12 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 		if ((sce=sc->data[SC_BLOODLUST]) && flag&BF_WEAPON && damage > 0 &&
 			rand()%100 < sce->val3)
 			status_heal(src, damage*sce->val4/100, 0, 3);
+	}
 
+	if( sc && sc->data[SC__DEADLYINFECT] && damage > 0 )
+	{
+		if( rand()%100 < 50 ) // Estimated value
+			status_change_spread(bl, src);
 	}
 
 	//SC effects from caster side.
@@ -616,6 +621,12 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 	{
 		if( sc->data[SC_INVINCIBLE] && !sc->data[SC_INVINCIBLEOFF] )
 			damage += damage * 75 / 100;
+	}
+
+	if( sc && sc->data[SC__DEADLYINFECT] && damage > 0 )
+	{
+		if( rand()%100 < 50 )
+			status_change_spread(src, bl);
 	}
 
 	if (battle_config.pk_mode && sd && bl->type == BL_PC && damage)

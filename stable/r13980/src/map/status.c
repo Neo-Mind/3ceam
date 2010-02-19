@@ -496,7 +496,7 @@ void initChangeTables(void)
 	set_sc( SC_AUTOSHADOWSPELL   , SC__AUTOSHADOWSPELL   , SI_AUTOSHADOWSPELL   , SCB_NONE );
 	set_sc( SC_SHADOWFORM        , SC__SHADOWFORM        , SI_SHADOWFORM        , SCB_NONE );
 	set_sc( SC_BODYPAINT         , SC__BODYPAINT         , SI_BODYPAINTING      , SCB_ASPD );
-	set_sc( SC_INVISIBILITY      , SC__INVISIBILITY      , SI_INVISIBILITY      , SCB_ASPD );
+	set_sc( SC_INVISIBILITY      , SC__INVISIBILITY      , SI_INVISIBILITY      , SCB_ASPD|SCB_CRI|SCB_ATK_ELE );
 	set_sc( SC_DEADLYINFECT      , SC__DEADLYINFECT      , SI_DEADLYINFECT      , SCB_NONE );
 	set_sc( SC_ENERVATION        , SC__ENERVATION        , SI_MASQUERADE        , SCB_BATK  );
 	set_sc( SC_GROOMY            , SC__GROOMY            , SI_MASQUERADE        , SCB_ASPD|SCB_HIT|SCB_SPEED );
@@ -3841,6 +3841,8 @@ static signed short status_calc_critical(struct block_list *bl, struct status_ch
 		critical += 20 * sc->data[SC__INVISIBILITY]->val1;
 	if(sc->data[SC__UNLUCKY])
 		critical -= critical * sc->data[SC__UNLUCKY]->val2 / 100;
+	if(sc->data[SC__INVISIBILITY])
+		critical += critical * sc->data[SC__INVISIBILITY]->val3 / 100;
 
 	return (short)cap_value(critical,10,SHRT_MAX);
 }
@@ -6715,6 +6717,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			break;
 		case SC__INVISIBILITY:
 			val2 = 3 * val1; // Still need official value [pakpil]
+			val3 = 20 * val1;
 			val4 = tick / 1000;
 			tick = 1000;
 			val_flag |= 1|2;

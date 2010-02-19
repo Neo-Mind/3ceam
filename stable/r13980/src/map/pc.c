@@ -6500,7 +6500,7 @@ int pc_jobchange(struct map_session_data *sd,int job, int upper)
 		chrif_buildfamelist();
 	} else if (sd->status.fame > 0) {
 		//It may be that now they are famous?
- 		switch (sd->class_&MAPID_BASEMASK) {
+ 		switch (sd->class_&MAPID_UPPERMASK) {
 			case MAPID_BLACKSMITH:
 			case MAPID_ALCHEMIST:
 			case MAPID_TAEKWON:
