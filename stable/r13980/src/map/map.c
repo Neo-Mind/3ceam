@@ -458,7 +458,6 @@ int map_moveblock(struct block_list *bl, int x1, int y1, unsigned int tick)
 				}
 				else
 					((TBL_PC *)bl)->shadowform_id = 0;
-
 			}
 		}
 		skill_unit_move(bl,tick,3);

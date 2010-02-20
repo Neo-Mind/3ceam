@@ -4455,7 +4455,8 @@ int clif_skillcasting(struct block_list* bl,
 	int cmd = 0x13e;
 
 #if PACKETVER >= 20091118
-	cmd = 0x7fb;
+	if( bl->type == BL_PC ) // Seems to be used with chars only. [pakpil]
+		cmd = 0x7fb;
 #endif
 
 	WBUFW(buf,0) = cmd;
@@ -4467,7 +4468,8 @@ int clif_skillcasting(struct block_list* bl,
 	WBUFL(buf,16) = pl<0?0:pl; //Avoid sending negatives as element [Skotlex]
 	WBUFL(buf,20) = casttime;
 #if PACKETVER >= 20091118
-	WBUFB(buf,24) = 0; // flag?
+	if( bl->type == BL_PC )
+		WBUFB(buf,24) = 0; // flag?
 #endif
 	if (disguised(bl)) {
 		clif_send(buf,packet_len(cmd), bl, AREA_WOS);
@@ -5047,7 +5049,7 @@ int clif_status_change(struct block_list *bl, int type, int flag, unsigned int t
 		type == SI_READYTURN || type == SI_READYCOUNTER || type == SI_DODGE ||
 		type == SI_DEVIL || type == SI_NIGHT || type == SI_INTRAVISION || type == SI_WOLFMOUNT ||
 		type == SI_CLOAKING || type == SI_POISONINGWEAPON ||
-		type == SI_HIDING || type == SI_REPRODUCE)
+		type == SI_HIDING || type == SI_REPRODUCE || type == SI_BLOODYLUST)
 		tick=0;
 
 	if( battle_config.display_status_timers && tick>0 )
@@ -10080,6 +10082,9 @@ void clif_parse_UseSkillToId(int fd, struct map_session_data *sd)
 	if( sd->sc.data[SC_BASILICA] && (skillnum != HP_BASILICA || sd->sc.data[SC_BASILICA]->val4 != sd->bl.id) )
 		return; // On basilica only caster can use Basilica again to stop it.
 
+	if( sd->sc.data[SC__MANHOLE] )
+		return;
+
 	if( sd->menuskill_id )
 	{
 		if( sd->menuskill_id == SA_TAMINGMONSTER )
@@ -10169,6 +10174,9 @@ void clif_parse_UseSkillToPosSub(int fd, struct map_session_data *sd, short skil
 
 	if( sd->sc.data[SC_BASILICA] && (skillnum != HP_BASILICA || sd->sc.data[SC_BASILICA]->val4 != sd->bl.id) )
 		return; // On basilica only caster can use Basilica again to stop it.
+	
+	if( sd->sc.data[SC__MANHOLE] )
+		return;
 
 	if( sd->menuskill_id )
 	{
@@ -10239,6 +10247,9 @@ void clif_parse_UseSkillMap(int fd, struct map_session_data* sd)
 	mapindex_getmapname((char*)RFIFOP(fd,4), map_name);
 
 	if(skill_num != sd->menuskill_id) 
+		return;
+
+	if( sd->sc.data[SC__MANHOLE] )
 		return;
 
 	if( pc_cant_act(sd) )
@@ -13843,11 +13854,11 @@ void clif_millenniumshield(struct map_session_data *sd, short shields )
 #endif
 }
 
-// Display gain exp
-// type = 1 -> base_exp
-// type = 2 -> job_exp
-// flag = 0 -> normal exp gain/lost
-// flag = 1 -> quest exp gain/lost
+/*==========================================
+ * Display won/lost experience.
+ * type: 1 = base_exp, 2 = job_exp.
+ * flag: 0 = normal exp, 1 = quest exp.
+ *-----------------------------------------*/
 int clif_displayexp(struct map_session_data *sd, int exp, short type, bool gain, short flag)
 {
 #if PACKETVER >= 20091027

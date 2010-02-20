@@ -127,8 +127,8 @@ void clif_refreshlook(struct block_list *bl,int id,int type,int val,enum send_ta
 int clif_arrowequip(struct map_session_data *sd,int val); //self
 int clif_arrow_fail(struct map_session_data *sd,int type); //self
 int clif_arrow_create_list(struct map_session_data *sd);	//self
-int clif_rune_create_list(struct map_session_data *sd, int trigger, int rune_ore); //[pakpil]
-int clif_selectpoison_list(struct map_session_data *sd); //[pakpil]
+int clif_rune_create_list(struct map_session_data *sd, int trigger, int rune_ore); //self
+int clif_selectpoison_list(struct map_session_data *sd); //self
 int clif_spellbook_list(struct map_session_data *sd); //[LimitLine]
 int clif_magicdecoy_list(struct map_session_data *sd); //[LimitLine]
 int clif_skill_select_request( struct map_session_data *sd ); //self

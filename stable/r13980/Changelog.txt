@@ -5,6 +5,19 @@
 // 	- Details.
 //========================================
 
+02/20/2010
+	r204 [pakpil]
+	* Merged SC_MAELSTROM and SC_FATALMENACE and SC_FEINTBOMB skills from trunk.
+	* Fixed some Shadow Chaser skills.
+	* Fixed RK_DRAGONBREATH and RK_WINDCUTTER.
+	* Udated some Rune Knight status change icons.
+	* Added SC_REUSE_REFRESH as cooldown for RK_REFRESH according to the official behavior.
+	* Fixed Fear status change.
+	* Minor fix in clif_skillcasting.
+	* Fixed pc_jobchange.
+	* Minor clean in pc.h.
+	* Minor clean in Unit_ids.
+
 02/19/2010
 	r203 [pakpil]
 	* Fixed fame ranking follow up r200. Sry.

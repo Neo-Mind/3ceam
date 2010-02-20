@@ -362,8 +362,6 @@ int skill_chain_lightning_sub(struct block_list *bl, va_list ap);
 int skill_sub_chain_lightning(struct block_list *bl, intptr data);
 
 int skill_earth_strain_timer(int tid, unsigned int tick, int id, intptr data);
-int skill_fatalmenace_sub(struct block_list *bl, va_list ap);
-void skill_fatalmenace(struct block_list *src, struct block_list *target, int skilllv, unsigned int tick);
 
 // mobƒXƒLƒ‹‚Ì‚½‚ß
 int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int skillid,int skilllv,unsigned int tick,int flag );
@@ -1577,17 +1575,15 @@ enum {
 	UNT_EVILLAND,
 	UNT_DARK_RUNNER, //TODO
 	UNT_DARK_TRANSFER, //TODO
-
-	UNT_EPICLESIS = 0xca,
-	UNT_EARTHSTRAIN = 0xcb,
-	UNT_MANHOLE = 0xcc,
-	UNT_DIMENSIONDOOR = 0xcd,
-	UNT_CHAOSPANIC = 0xce,
-	UNT_MAELSTORM = 0xcf,
-	UNT_BLOODYLUST = 0xd0,
-	UNT_FEINTBOMB = 0xd1,
-	//New Trap Unit for Ranger. [Jobbie]
-	UNT_MAGENTATRAP = 0xd2,
+	UNT_EPICLESIS,
+	UNT_EARTHSTRAIN,
+	UNT_MANHOLE,
+	UNT_DIMENSIONDOOR,
+	UNT_CHAOSPANIC,
+	UNT_MAELSTROM,
+	UNT_BLOODYLUST,
+	UNT_FEINTBOMB,
+	UNT_MAGENTATRAP,
 	UNT_COBALTTRAP,
 	UNT_MAIZETRAP,
 	UNT_VERDURETRAP,
@@ -1595,25 +1591,26 @@ enum {
 	UNT_ICEBOUNDTRAP,
 	UNT_ELECTRICSHOCKER,
 	UNT_CLUSTERBOMB,
-	UNT_REVERBERATION = 0xda,
-	UNT_SEVERE_RAINSTORM = 0xdb,
-	UNT_FIREWALK = 0xdc,
-	UNT_ELECTRICWALK = 0xdd,
-	UNT_NETHERWORLD = 0xde,
-	//0xdf,
-	UNT_CLOUDKILL = 0xe0,
-	UNT_POISONSMOKE = 0xe1,
-	UNT_NEUTRALBARRIER = 0xe2,
-	UNT_STEALTHFIELD = 0xe3,
-	UNT_WARMER = 0xe4,
-	UNT_THORNS_TRAP = 0xe5,
-	UNT_WALLOFTHORN = 0xe6,
-	UNT_DEMONIC_FIRE = 0xe7,
-	UNT_DEMONIC_FIRE2 = 0xe8,
-	UNT_DEMONIC_FIRE3 = 0xe9,
-	UNT_HELLS_PLANT = 0xea,
+	UNT_REVERBERATION,
+	UNT_SEVERE_RAINSTORM,
+	UNT_FIREWALK,
+	UNT_ELECTRICWALK,
+	UNT_NETHERWORLD,
+	UNT_PSYCHIC_WAVE,
+	UNT_CLOUD_KILL,
+	UNT_POISONSMOKE,
+	UNT_NEUTRALBARRIER,
+	UNT_STEALTHFIELD,
+	UNT_WARMER,
+	UNT_THORNS_TRAP,
+	UNT_WALLOFTHORN,
+	UNT_DEMONIC_FIRE,
+	UNT_FIRE_EXPANSION_SMOKE_POWDER,
+	UNT_FIRE_EXPANSION_TEAR_GAS,
+	UNT_HELLS_PLANT,
+	UNT_VACUUM_EXTREME,
 
-	UNT_MAX = 0xff //Actually the maximun UNT id's can't exceed 0xFF [pakpil]
+	UNT_MAX = 0xec
 };
 
 enum gx_poison {

@@ -355,6 +355,14 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 			d->dmg_lv = ATK_BLOCK;
 			return 0;
 		}
+		
+		if( sc->data[SC__MAELSTROM] && (flag&BF_MAGIC) && skill_num && (skill_get_inf(skill_num)&INF_GROUND_SKILL) )
+		{
+			int sp = damage * 20 / 100; // Steel need official value.
+			status_heal(bl,0,sp,3);
+			d->dmg_lv = ATK_BLOCK;
+			return 0;
+		}
 
 		if( (sce=sc->data[SC_AUTOGUARD]) && flag&BF_WEAPON && !(skill_get_nk(skill_num)&NK_NO_CARDFIX_ATK) && rand()%100 < sce->val2 )
 		{
@@ -383,7 +391,7 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 		if(sc->data[SC_DODGE] && !sc->opt1 &&
 			(flag&BF_LONG || sc->data[SC_SPURT])
 			&& rand()%100 < 20) {
-			if (sd && pc_issit(sd)) pc_setstand(sd); //Stand it to dodge.
+				if (sd && pc_issit(sd)) pc_setstand(sd); //Stand it to dodge.
 			clif_skill_nodamage(bl,bl,TK_DODGE,1,1);
 			if (!sc->data[SC_COMBO])
 				sc_start4(bl, SC_COMBO, 100, TK_JUMPKICK, src->id, 1, 0, 2000);
@@ -1523,6 +1531,14 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				} else
 					ATK_ADD(sstatus->rhw.atk2); //Else use Atk2
 				break;
+			case RK_DRAGONBREATH:
+				wd.damage = (status_get_max_hp(src) * 80 / 1000) + (status_get_max_sp(src) * 180 / 100);
+				if( sd )
+					wd.damage += wd.damage * (5 * pc_checkskill(sd,RK_DRAGONTRAINING)-1) / 100;
+				break;
+			case RK_CRUSHSTRIKE:
+				wd.damage = sstatus->rhw.atk * 10; // Still need official value. [pakpil]
+				break;
 			case NC_AXEBOOMERANG:
 				//TODO: Need to get official value of weight % as addition to skill damage. [Jobbie]
 				if (sd) {
@@ -1537,14 +1553,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 
 				i=100+(40*(skill_lv-1));
 				ATK_ADDRATE(i);
-				break;
-			case RK_DRAGONBREATH:
-				wd.damage = (status_get_max_hp(src) * 80 / 1000) + (status_get_max_sp(src) * 180 / 100);
-				if( sd )
-					wd.damage += wd.damage * (5 * pc_checkskill(sd,RK_DRAGONTRAINING)-1) / 100;
-				break;
-			case RK_CRUSHSTRIKE:
-				wd.damage = sstatus->rhw.atk * 10; // Still need official value. [pakpil]
 				break;
 			case WM_SATURDAY_NIGHT_FEVER:
 				wd.damage = 9999;
@@ -2025,6 +2033,15 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 				case NC_AXETORNADO:
 					skillratio += (100 + 100 * skill_lv) + sstatus->vit;
 					break;
+				case SC_FATALMENACE:
+					skillratio += 100 * skill_lv;
+					break;
+				case SC_TRIANGLESHOT:
+					skillratio += 270 + 30 * skill_lv;
+					break;
+				case SC_FEINTBOMB:
+					skillratio += 100 + 100 * skill_lv;
+					break;
 				case NC_AXEBOOMERANG:
 					skillratio += 60 + 40 * skill_lv;
 					break;
@@ -2065,16 +2082,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				case WM_GREAT_ECHO:
 					skillratio += 800 + 100 * skill_lv;
-					break;
-				case SC_TRIANGLESHOT:
-					skillratio += 270 + 30 * skill_lv;
-					break;
-				case SC_FATALMENACE:
-					sd->hit_rate -= 35 - 5 * skill_lv;
-					skillratio += 10 * skill_lv;
-					break;
-				case SC_FEINTBOMB:
-					skillratio += 100 + 100 * skill_lv;
 					break;
 				case SR_DRAGONCOMBO:
 					skillratio += 80 + 20 * skill_lv;
@@ -2708,11 +2715,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 		wd.flag += md.flag;
 	}
 
-	if( (sc && sc->data[SC__DEADLYINFECT]) || (tsc && tsc->data[SC__DEADLYINFECT]) )
-	{
-		if( rand()%100 < 50 ) // Estimated value
-			status_change_spread(src, target);
-	}
 	// Increase Rage when receive physical damage [pakpil]
 	if( tsc && tsc->data[SC_FORCEOFVANGUARD] && (wd.damage || wd.damage2) && rand()%100 <= tsc->data[SC_FORCEOFVANGUARD]->val2)
 	{
@@ -3710,12 +3712,12 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 	if(sc)
 	{
 		if( sc->data[SC_THURISAZ] && sc->data[SC_THURISAZ]->val3 > 0 && wd.flag&(BF_WEAPON|BF_SHORT) )
-			{ // As I have noticed, this effect is for 1 hit.
-				int rate = rand()%100;
-				wd.damage *= 3;
-				sc->data[SC_THURISAZ]->val3 = 0;
-				if(rate < 10) // Break your weapon still need official value
-					skill_break_equip(src, EQP_WEAPON, rate, BCT_SELF);
+		{ // As I have noticed, this effect is for 1 hit.
+			int rate = rand()%100;
+			wd.damage *= 3;
+			sc->data[SC_THURISAZ]->val3 = 0;
+			if(rate < 10) // Break your weapon still need official value
+				skill_break_equip(src, EQP_WEAPON, rate, BCT_SELF);
 		}
 
 		if( sd && sc->data[SC_DUPLELIGHT] )
