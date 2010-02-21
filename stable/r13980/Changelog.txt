@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+02/21/2010
+	r205 [pakpil]
+	* Removed double entre in SC_INVISIBILITY.
+	* Fixed RK_MILLENNIUMSHIELD packet. Bug report 192.
+
 02/20/2010
 	r204 [pakpil]
 	* Merged SC_MAELSTROM and SC_FATALMENACE and SC_FEINTBOMB skills from trunk.
