@@ -5641,7 +5641,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 			i = 10 * skilllv;	// Need official rate. [LimitLine]
 		}
 		else if( skillid == SC_STRIPACCESSARY ){
-			i = 10 * 5 * skilllv + (sstatus->dex - tstatus->dex)/5; // It's an estimated rate [pakpil]
+			i = 12 + 2 * skilllv + (sstatus->dex - tstatus->dex)/5; // It's an estimated rate [pakpil]
 		} else {
 			i = 5 + 5*skilllv + (sstatus->dex - tstatus->dex)/5;
 		}

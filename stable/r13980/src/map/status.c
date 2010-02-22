@@ -3611,10 +3611,10 @@ static unsigned short status_calc_int(struct block_list *bl, struct status_chang
 		int_ += ((sc->data[SC_MARIONETTE2]->val4)>>16)&0xFF;
 	if(sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_HIGH && int_ < 50)
 		int_ = 50;
+	if(sc->data[SC__STRIPACCESSORY])
+		int_ -= int_ * sc->data[SC__STRIPACCESSORY]->val2 / 100;
 	if(sc->data[SC_HARMONIZE])
 		int_ += sc->data[SC_HARMONIZE]->val2;
-	if(bl->type == BL_MOB && sc->data[SC__STRIPACCESSORY])
-		int_ -= int_ * sc->data[SC__STRIPACCESSORY]->val2 / 100;
 
 	return (unsigned short)cap_value(int_,0,USHRT_MAX);
 }
@@ -3657,7 +3657,7 @@ static unsigned short status_calc_dex(struct block_list *bl, struct status_chang
 		dex += ((sc->data[SC_MARIONETTE2]->val4)>>8)&0xFF;
 	if(sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_HIGH && dex < 50)
 		dex  = 50;
-	if(bl->type == BL_MOB && sc->data[SC__STRIPACCESSORY])
+	if(sc->data[SC__STRIPACCESSORY])
 		dex -= dex * sc->data[SC__STRIPACCESSORY]->val2 / 100;
 	if(sc->data[SC_HARMONIZE])
 		dex += sc->data[SC_HARMONIZE]->val2;
@@ -3690,7 +3690,7 @@ static unsigned short status_calc_luk(struct block_list *bl, struct status_chang
 		luk = 50;
 	if(sc->data[SC_RAMUS])
 		luk += sc->data[SC_RAMUS]->val2;
-	if(bl->type == BL_MOB && sc->data[SC__STRIPACCESSORY])
+	if(sc->data[SC__STRIPACCESSORY])
 		luk -= luk * sc->data[SC__STRIPACCESSORY]->val2 / 100;
 	if(sc->data[SC_HARMONIZE])
 		luk += sc->data[SC_HARMONIZE]->val2;
