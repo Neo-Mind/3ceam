@@ -4,6 +4,10 @@
 // 	- Details.
 //========================================
 
+2/28/2010
+	*Removed LUB files from the changes detection as its not possiable to detect them.
+	-Their compiled in binary. No way of compareing that kind of stuff.
+
 1/28/2010
 	r165
 	*Uploaded text files and lub files from 2009-01-26 patch.
