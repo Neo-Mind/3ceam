@@ -2096,10 +2096,9 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 150 * skill_lv;
 					break;
 				case SR_RAMPAGEBLASTER:
-					skillratio = 50 * skill_lv;
 					if( sc && sc->data[SC_EXPLOSIONSPIRITS] )
 						//assumed chance of 50% to deal x2~x3 damage if in fury state. [Jobbie]
-						skillratio = skillratio*((rand()%100 < 50)?2:3);
+						skillratio = skillratio * ( (rand()%100 < 50) ? 2 : 3 );
 					break;
 				case SR_KNUCKLEARROW:
 					if( skill_lv <= 5 )
@@ -2469,8 +2468,10 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 			ATK_ADD2(wd.div_*sd->right_weapon.star, wd.div_*sd->left_weapon.star);
 		if (skill_num==MO_FINGEROFFENSIVE) { //The finger offensive spheres on moment of attack do count. [Skotlex]
 			ATK_ADD(wd.div_*sd->spiritball_old*3);
-		} else if( skill_num == SR_RAMPAGEBLASTER || skill_num == SR_RIDEINLIGHTNING ) {
+		} else if( skill_num == SR_RIDEINLIGHTNING ) {
 			ATK_ADD(wd.damage * sd->spiritball_old);
+		} else if( skill_num == SR_RAMPAGEBLASTER ) {
+			ATK_ADDRATE( sd->spiritball_old * 50 * skill_lv );
 		} else {
 			ATK_ADD(wd.div_*sd->spiritball*3);
 		}

@@ -4106,11 +4106,6 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 			skill_attack(skill_get_type(skillid), src, src, bl, skillid, skilllv, tick, flag);
 		else
 		{
-			if( sd )
-			{
-				sd->spiritball_old = sd->spiritball;
-				pc_delspiritball(sd, sd->spiritball, 0);
-			}
 			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skillid, skilllv), 
 				splash_target(src), src, skillid, skilllv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
 		}
@@ -7651,10 +7646,14 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 	case SR_RAISINGDRAGON:
 		if(sd && !(dstsd && dstsd->sc.data[SC_RAISINGDRAGON])){
+			short max = 5 + skilllv;
 			clif_skill_nodamage(src, bl, skillid, skilllv,
-				sc_start(bl, type, 100, skilllv, skill_get_time(skillid, skilllv)));
-			sc_start(bl,SC_EXPLOSIONSPIRITS,100,skilllv,skill_get_time(skillid,skilllv));
-			for(i = 0; i < 15; i++)
+				sc_start(bl, type, 100, skilllv,skill_get_time(skillid, skilllv)));
+			// Shouldn't start Explosion spirit status, only call spirit spheres.
+			//sc_start(bl,SC_EXPLOSIONSPIRITS,100,skilllv,skill_get_time(skillid,skilllv));
+			if( sd->spiritball >= max )
+				break;
+			for(i = 0; i < max; i++) // Don't call more than max available spheres.
 				pc_addspiritball(sd,skill_get_time(skillid,skilllv),5);
 		}
 		else if( sd )
@@ -11298,6 +11297,13 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 			return 0;
 		}
 		break;
+	case SR_RAMPAGEBLASTER:
+	case SR_RIDEINLIGHTNING:
+		if( sd->spiritball > 0 )
+			sd->spiritball_old = require.spiritball = sd->spiritball;
+		else
+			sd->spiritball_old = require.spiritball = 0;
+		break;
 	case SC_MANHOLE:
 	case SC_DIMENSIONDOOR:
 		if( sc && sc->data[SC_MAGNETICFIELD] )
@@ -11616,6 +11622,8 @@ int skill_consume_requirement( struct map_session_data *sd, short skill, short l
 		if(req.hp || req.sp)
 			status_zap(&sd->bl, req.hp, req.sp);
 
+		if( (skill == MO_EXPLOSIONSPIRITS || skill == MO_EXTREMITYFIST) && sd->sc.count && sd->sc.data[SC_RAISINGDRAGON] )
+			req.spiritball = sd->spiritball?sd->spiritball:15;
 		if(req.spiritball > 0)
 			pc_delspiritball(sd,req.spiritball,0);
 
@@ -11839,10 +11847,11 @@ struct skill_condition skill_get_requirement(struct map_session_data* sd, short 
 							break;
 					}
 				}
-				//All spiritballs which is casted during the state of RD will be consumed. [Jobbie]
-				else if( sc->data[SC_RAISINGDRAGON])
-					req.spiritball = sd->spiritball?sd->spiritball:15;
 			}
+			break;
+		case SR_RAMPAGEBLASTER:
+		case SR_RIDEINLIGHTNING:
+			req.spiritball = sd->spiritball?sd->spiritball:15;
 			break;
 	}
 	

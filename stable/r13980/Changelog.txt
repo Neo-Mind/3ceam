@@ -5,6 +5,13 @@
 // 	- Details.
 //========================================
 
+03/08/2010
+	r231 [pakpil]
+	* Fixed SR_RAMPAGEBLASTER, SR_RIDEINLIGHTNING, MO_EXPLOSIONSPIRITS and MO_EXTREMITYFIST skills.
+	- SR_RAMPAGEBLASTER, MO_EXPLOSIONSPIRITS and MO_EXTREMITYFIST should consume all available spirit spheres.
+	- Fixed required spirte spheres consumtion from SR_RIDEINLIGHTNING and SR_RAMPAGEBLASTER.
+	- Fixed SR_RAMPAGEBLASTER damage formula. Adds (Spirit sphere used *  50 * skill_lv)% and x2~x3 under fury state.
+
 
 03/08/2010
 	r230 [pakpil]
