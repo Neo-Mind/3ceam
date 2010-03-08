@@ -2131,8 +2131,7 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += 150; //iRO wiki 250% damage info. [Jobbie]
 					break;
 				case SR_RIDEINLIGHTNING:
-					// ~1300% dmg calculation w/ spiritball counted to its damage at lvl5. Need proper calculation. [Jobbie]
-					skillratio += (400 + 100 * skill_lv) + (sstatus->dex / 3);
+					skillratio += (100 * skill_lv) + (sstatus->dex * 5);
 					break;
 				case SR_GENTLETOUCH_QUIET:
 					skillratio *= skill_lv;

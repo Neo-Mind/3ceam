@@ -5,6 +5,14 @@
 // 	- Details.
 //========================================
 
+
+03/08/2010
+	r230 [pakpil]
+	* Fixed SC_RIDEINLIGHTNING damage formula bassed in this info: http://forums.irowiki.org/showpost.php?p=507047&postcount=642
+	- Every 20 Dex damage increase ~100 then every 1 Dex should add 5 damage.)
+	- Base damage is arround 600% increased by every spiritball.
+	- If this formula is not right plz, tell me.
+
 03/02/2010
 	r221 [pakpil]
 	* Fixed clif_guildstorageitemadded packet that was malfuntioning when you put an item in the storage with lastest client.
