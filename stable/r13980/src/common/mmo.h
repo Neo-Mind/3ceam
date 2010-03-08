@@ -21,6 +21,7 @@
 // 20070821 - 2007-08-21aSakexe+   - 0x2c5
 // 20070918 - 2007-09-18aSakexe+   - 0x2d7, 0x2d9, 0x2da
 // 20071106 - 2007-11-06aSakexe+   - 0x78, 0x7c, 0x22c
+// 20080102 - 2008-01-02aSakexe+   - 0x2ed, 0x2ee
 // 20081126 - 2008-11-26aSakexe+   - 0x1a2, 0x441
 // 20081210 - 2008-12-10aSakexe+   - 0x442
 // 20090408 - 2009-04-08aSakexe+   - 0x44a (dont use as it overlaps with RE client packets)
@@ -32,12 +33,13 @@
 // 20090805 - 2009-08-05aRagexeRE+ - 0x7e2
 // 20090922 - 2009-09-22aRagexeRE+ - 0x7e5, 0x7e7, 0x7e8, 0x7e9
 // 20091027 - 2009-10-27aRagexeRE+ - 0x7f6
-// 20091103 - 2009-11-03aRagexeRE+ - 0x7fb
-// 20100105 - 2009-12-08aRagexeRE+ - 0x800, 0x801
+// 20091103 - 2009-11-03aRagexeRE+ - 0x7f7, 0x7f8, 0x7f9, 0x7fb
+// 20100105 - 2010-01-05aRagexeRE+ - 0x800, 0x801
+// 20100217 - 2010-02-17aRagexeRE+ - 0xf4 -> 0x1c4 (guildsotrage)
 // 20100223 - 2010-02-23aRagexeRE+ - 0x80f
 #ifndef PACKETVER
-	//#define PACKETVER	20081126
-	#define PACKETVER 20100223
+	#define PACKETVER	20090922
+	//#define PACKETVER 20100223
 #endif
 // backward compatible PACKETVER 8 and 9
 #if PACKETVER == 8

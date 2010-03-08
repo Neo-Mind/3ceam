@@ -5,6 +5,15 @@
 // 	- Details.
 //========================================
 
+03/11/2010
+	r234 [pakpil]
+	* Merged some packets from trunk.
+	- Clients from 2008-01-02aSakexe or newest should use PACKETVER 20080102.
+	- Clients from 2009-11-03aRagexeRE or newest should use PACKETVER 20091103.
+	- Clients from 2010-01-05aRagexeRE or newest should use PACKETVER 20100105.
+	- Clients from 2010-02-17aRagexeRE or newest should use PACKETVER 20100217.
+	- Clients from 2009-10-13RagexeRE-Xray or newest should use PACKETVER 20090922.
+
 03/08/2010
 	r231 [pakpil]
 	* Fixed SR_RAMPAGEBLASTER, SR_RIDEINLIGHTNING, MO_EXPLOSIONSPIRITS and MO_EXTREMITYFIST skills.
