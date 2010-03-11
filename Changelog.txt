@@ -5,6 +5,12 @@
 // 	- Details.
 //========================================
 
+03/11/2010
+	r242 [Rytech]
+	*Added the "rewrite stable" branch.
+	-This branch is a copy of the rewritten data from trunk. Current eA version for this is trunk r14260.
+	-As of this time, the orginal stable (known as r13980) is now discontinued and will no longer be supported.
+
 12/27/2009
 	r80 [Rytech]
 	*Added Royal Guard V2 and Minstrel Wanderer V2 translation files to the Google Translated folder.
