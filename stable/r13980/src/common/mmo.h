@@ -38,8 +38,8 @@
 // 20100217 - 2010-02-17aRagexeRE+ - 0xf4 -> 0x1c4 (guildsotrage)
 // 20100223 - 2010-02-23aRagexeRE+ - 0x80f
 #ifndef PACKETVER
-	#define PACKETVER	20090922
-	//#define PACKETVER 20100223
+	//#define PACKETVER	20090922
+	#define PACKETVER 20100223
 #endif
 // backward compatible PACKETVER 8 and 9
 #if PACKETVER == 8
@@ -432,7 +432,7 @@ struct map_session_data;
 struct guild_member {
 	int account_id, char_id;
 	short hair,hair_color,gender,class_,lv;
-	unsigned int exp;
+	uint64 exp;
 	int exp_payper;
 	short online,position;
 	char name[NAME_LENGTH];

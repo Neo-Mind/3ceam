@@ -318,7 +318,7 @@ void initChangeTables(void)
 	set_sc( TK_READYTURN         , SC_READYTURN       , SI_READYTURN       , SCB_NONE );
 	set_sc( TK_READYCOUNTER      , SC_READYCOUNTER    , SI_READYCOUNTER    , SCB_NONE );
 	set_sc( TK_DODGE             , SC_DODGE           , SI_DODGE           , SCB_NONE );
-	add_sc( TK_SPTIME            , SC_EARTHSCROLL );
+	set_sc( TK_SPTIME            , SC_EARTHSCROLL     , SI_EARTHSCROLL     , SCB_NONE );
 	add_sc( TK_SEVENWIND         , SC_SEVENWIND ); 
 	set_sc( TK_SEVENWIND         , SC_GHOSTWEAPON     , SI_GHOSTWEAPON     , SCB_ATK_ELE ); 
 	set_sc( TK_SEVENWIND         , SC_SHADOWWEAPON    , SI_SHADOWWEAPON    , SCB_ATK_ELE ); 
@@ -7134,7 +7134,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 	}
 
 	if( opt_flag&2 && sd && sd->touching_id )
-		npc_touchnext_areanpc(sd,false);
+		npc_touchnext_areanpc(sd,false); // run OnTouch_ on next char in range
 
 	return 1;
 }
@@ -7945,7 +7945,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		break;
 
 	case SC_POISON:
-		if(status->hp <= status->max_hp>>2) //Stop damaging after 25% HP left.
+		if(status->hp <= max(status->max_hp>>2, sce->val4)) //Stop damaging after 25% HP left.
 			break;
 	case SC_DPOISON:
 		if (--(sce->val3) > 0) {
@@ -7982,13 +7982,15 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 
 	case SC_BLEEDING:
 		if (--(sce->val4) >= 0) {
-			int flag;
+			int flag, hp =  rand()%600 + 200;
 			map_freeblock_lock();
-			status_fix_damage(NULL, bl, rand()%600 + 200, 0);
+			status_fix_damage(NULL, bl, sd||hp<status->hp?hp:status->hp-1, 0);
 			flag = !sc->data[type];
 			map_freeblock_unlock();
-			if (flag) return 0; //SC already ended.
-			sc_timer_next(10000 + tick, status_change_timer, bl->id, data); 
+			if( !flag ) {
+				if( status->hp == 1 ) break;
+				sc_timer_next(10000 + tick, status_change_timer, bl->id, data);
+			}
 			return 0;
 		}
 		break;

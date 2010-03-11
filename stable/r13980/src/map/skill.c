@@ -2074,7 +2074,7 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 				tsd->status.skill[tsd->cloneskill_id].id = 0;
 				tsd->status.skill[tsd->cloneskill_id].lv = 0;
 				tsd->status.skill[tsd->cloneskill_id].flag = 0;
-				clif_skillinfo_delete(tsd,tsd->cloneskill_id);
+				clif_deleteskill(tsd,tsd->cloneskill_id);
 			}
 
 			if ((type = pc_checkskill(tsd,RG_PLAGIARISM)) < lv)
@@ -2130,7 +2130,7 @@ int skill_attack (int attack_type, struct block_list* src, struct block_list *ds
 				tsd->status.skill[tsd->reproduceskill_id].id = 0;
 				tsd->status.skill[tsd->reproduceskill_id].lv = 0;
 				tsd->status.skill[tsd->reproduceskill_id].flag = 0;
-				clif_skillinfo_delete(tsd,tsd->reproduceskill_id);
+				clif_deleteskill(tsd,tsd->reproduceskill_id);
 			}
 
 			tsd->reproduceskill_id = temp_skill;
@@ -4312,7 +4312,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				heal_get_jobexp = heal_get_jobexp * battle_config.heal_exp / 100;
 				if (heal_get_jobexp <= 0)
 					heal_get_jobexp = 1;
-				pc_gainexp (sd, bl, 0, heal_get_jobexp,0);
+				pc_gainexp (sd, bl, 0, heal_get_jobexp,false);
 			}
 		}
 		break;
@@ -4388,7 +4388,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 						if (jexp < 1) jexp = 1;
 					}
 					if(exp > 0 || jexp > 0)
-						pc_gainexp (sd, bl, exp, jexp,0);
+						pc_gainexp (sd, bl, exp, jexp,false);
 				}
 			}
 		}
@@ -4500,7 +4500,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 	case SA_LEVELUP:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		if (sd && pc_nextbaseexp(sd)) pc_gainexp(sd, NULL, pc_nextbaseexp(sd) * 10 / 100, 0,0);
+		if (sd && pc_nextbaseexp(sd)) pc_gainexp(sd, NULL, pc_nextbaseexp(sd) * 10 / 100, 0,false);
 		break;
 	case SA_INSTANTDEATH:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
@@ -5883,8 +5883,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 				case SC_READYSTORM:  case SC_READYDOWN:   case SC_READYTURN:
 				case SC_READYCOUNTER:case SC_DODGE:       case SC_WARM:
 				case SC_SPEEDUP1:    case SC_AUTOTRADE:   case SC_CRITICALWOUND:
-				case SC_JEXPBOOST:   case SC_ROLLINGCUTTER:
-				case SC__STRIPACCESSORY:   case SC_GN_CARTBOOST:
+				case SC_JEXPBOOST:   case SC_INVINCIBLE:  case SC_INVINCIBLEOFF:
+				case SC_ROLLINGCUTTER:   case SC__STRIPACCESSORY:   case SC_GN_CARTBOOST:
 					continue;
 				case SC_ASSUMPTIO:
 					if( bl->type == BL_MOB )

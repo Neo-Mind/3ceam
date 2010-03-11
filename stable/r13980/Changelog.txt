@@ -6,6 +6,10 @@
 //========================================
 
 03/11/2010
+	r240 [pakpil]
+	* Full updated to eAthena revision 14260.
+
+03/08/2010
 	r234 [pakpil]
 	* Merged some packets from trunk.
 	- Clients from 2008-01-02aSakexe or newest should use PACKETVER 20080102.
@@ -14,15 +18,12 @@
 	- Clients from 2010-02-17aRagexeRE or newest should use PACKETVER 20100217.
 	- Clients from 2009-10-13RagexeRE-Xray or newest should use PACKETVER 20090922.
 
-03/08/2010
 	r231 [pakpil]
 	* Fixed SR_RAMPAGEBLASTER, SR_RIDEINLIGHTNING, MO_EXPLOSIONSPIRITS and MO_EXTREMITYFIST skills.
 	- SR_RAMPAGEBLASTER, MO_EXPLOSIONSPIRITS and MO_EXTREMITYFIST should consume all available spirit spheres.
 	- Fixed required spirte spheres consumtion from SR_RIDEINLIGHTNING and SR_RAMPAGEBLASTER.
 	- Fixed SR_RAMPAGEBLASTER damage formula. Adds (Spirit sphere used *  50 * skill_lv)% and x2~x3 under fury state.
 
-
-03/08/2010
 	r230 [pakpil]
 	* Fixed SC_RIDEINLIGHTNING damage formula bassed in this info: http://forums.irowiki.org/showpost.php?p=507047&postcount=642
 	- Every 20 Dex damage increase ~100 then every 1 Dex should add 5 damage.)
@@ -33,7 +34,6 @@
 	r221 [pakpil]
 	* Fixed clif_guildstorageitemadded packet that was malfuntioning when you put an item in the storage with lastest client.
 
-03/02/2010
 	r220 [pakpil]
 	* Added new clif_tradeadditem packet. 0xe9 -> 0x80f.
 
@@ -44,9 +44,9 @@
 	-You can get 3rd class skills too, but only for the 3rd job your playing as.
 	-Thankyou Pakpil for the help. =D
 
-02/28/2010
 	r218 [pakpil]
 	* Fixed pc_skillup and pc_jobchange that were malfunctioning. Bug report 193.
+
 02/22/2010
 	r208 [Jobbie]
 	* Minor fix to Strip Accessory. No need for another checking if the target is BL_MOB since "(!sd)" part is already doing it.
@@ -148,7 +148,6 @@
 	* Fixed clif_displayexp packet. This should show won and lost experience. Follow up to r172.
 	* Minor fix in SC_CHAOSPANIC. Bug report 138.
 
-02/08/2010
 	r183 [Jobbie]
 	* Fixed missing maps in map_cache bug report #128.
 	* Added Light of El Dicastes item.
