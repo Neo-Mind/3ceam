@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+03/13/2010
+	r245 [Jobbie]
+	* Fixed an issue where Mechanics cannot equip mado when using NPC
+
 03/11/2010
 	r241 [pakpil]
 	* Added missing sc check in GC_POISONINGWEAPON.
