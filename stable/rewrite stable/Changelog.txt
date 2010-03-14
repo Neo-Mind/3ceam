@@ -6,7 +6,7 @@
 //========================================
 
 03/14/2010
-	r246 [Jobbie]
+	r247 [Jobbie]
 	* Corrected item id 12383 which is not usable.
 	* Corrected Highness Heal healing value formula.
 	* Corrected Coloceo Heal which not healing players although it displays the healing value.
