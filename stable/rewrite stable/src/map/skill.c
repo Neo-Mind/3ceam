@@ -9661,19 +9661,18 @@ int skill_unit_onplace_timer (struct skill_unit *src, struct block_list *bl, uns
 			break;
 
 		case UNT_ELECTRICSHOCKER:
-			if(sg->val2 == 0 && tsc)
+			if( bl->id != ss->id )
 			{
 				int sec = skill_get_time2(sg->skill_id,sg->skill_lv);
 				if(status_get_mode(bl)&MD_BOSS)
 					break;
-				if (status_change_start(bl,type,10000,sg->skill_lv,sg->group_id,0,0,sec, 20))
+				if (status_change_start(bl,type,10000,sg->skill_lv,sg->group_id,0,0,sec, 8))
 				{
 					const struct TimerData* td = tsc->data[type]?get_timer(tsc->data[type]->timer):NULL;
 					if (td) 
 						sec = DIFF_TICK(td->tick, tick);
 					map_moveblock(bl, src->bl.x, src->bl.y, tick);
 					clif_fixpos(bl);
-					sg->val2=bl->id;
 				} else
 					sec = 3000; //Couldn't trap it?
 				map_foreachinrange(skill_trap_splash,&src->bl, skill_get_splash(sg->skill_id, sg->skill_lv), sg->bl_flag, &src->bl,tick);
@@ -10397,19 +10396,15 @@ static int skill_check_condition_char_sub (struct block_list *bl, va_list ap)
 		}
 		case AB_ADORAMUS:
 		{ // Adoramus does not consume Blue Gemstone when there is at least 1 Priest class next to the caster
-			int dir = map_calc_dir(&sd->bl, tsd->bl.x, tsd->bl.y);
-			dir = (unit_getdir(&sd->bl) + dir) % 8; //This adjusts dir to account for the direction the sd is facing.
 			if( ((tsd->class_&MAPID_UPPERMASK) == MAPID_PRIEST || (tsd->class_&MAPID_UPPERMASK) == MAPID_HIGH_PRIEST ||
-				(tsd->class_&MAPID_UPPERMASK) == MAPID_ARCH_BISHOP || (tsd->class_&MAPID_UPPERMASK) == MAPID_ARCH_BISHOP_T)
+				(tsd->class_&MAPID_THIRDMASK) == MAPID_ARCH_BISHOP || (tsd->class_&MAPID_THIRDMASK) == MAPID_ARCH_BISHOP_T)
 				&& sd->status.sp >= 10 )
 				p_sd[(*c)++] = tsd->bl.id;
 			return 1;
 		}
 		case WL_COMET:
 		{ // Comet does not consume Red Gemstones when there is at least 1 Warlock class next to the caster
-			int dir = map_calc_dir(&sd->bl, tsd->bl.x, tsd->bl.y);
-			dir = (unit_getdir(&sd->bl) + dir) % 8; //This adjusts dir to account for the direction the sd is facing.
-			if( (tsd->class_&MAPID_UPPERMASK) == MAPID_WARLOCK || (tsd->class_&MAPID_UPPERMASK) == MAPID_WARLOCK_T )
+			if( (tsd->class_&MAPID_THIRDMASK) == MAPID_WARLOCK || (tsd->class_&MAPID_THIRDMASK) == MAPID_WARLOCK_T )
 				p_sd[(*c)++] = tsd->bl.id;
 			return 1;
 		}
@@ -10941,10 +10936,10 @@ int skill_check_condition_castbegin(struct map_session_data* sd, short skill, sh
 			}
 		}
 		break;
-	case AB_ADORAMUS:
 	case WL_COMET:
 		if( sc && sc->data[SC_REUSE_COMET] )
 			return 0;
+	case AB_ADORAMUS:
 		if( skill_check_pc_partner(sd, skill, &lv, 1, 0) )
 			sd->special_state.no_gemstone = 1;
 		break;
