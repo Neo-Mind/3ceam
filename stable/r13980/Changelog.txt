@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+03/15/2010
+	r252 [pakpil]
+	* Fixed an issue where the client freeze when use disguise. Bug report 252.
+
 03/11/2010
 	r240 [pakpil]
 	* Full updated to eAthena revision 14260.
