@@ -1097,7 +1097,6 @@ static void clif_setdisguise(struct block_list *bl, unsigned char *buf,int len)
 	clif_send(buf, len, bl, SELF);
 }
 
-
 /*==========================================
  * クラスチェンジ typeはMobの場合は1で他は0？
  *------------------------------------------*/
@@ -3037,7 +3036,10 @@ int clif_spellbook_list(struct map_session_data *sd)
 		WFIFOSET(fd, WFIFOW(fd, 2));
 	}
 	else
+	{
+		status_change_end(&sd->bl,SC_STOP,-1);
 		return 0;
+	}
 
 	return 1;
 }

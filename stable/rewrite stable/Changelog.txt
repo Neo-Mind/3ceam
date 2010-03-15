@@ -6,6 +6,9 @@
 //========================================
 
 03/15/2010
+	r254 [pakpil]
+	* Fixed an issue in WL_READING_SB where it wasn't removing SC_STOP status when the Warlock haven't Spellbooks on the inventory.
+
 	r252 [pakpil]
 	* Fixed an issue where the client freeze when use disguise. Bug report 252.
 
