@@ -5,6 +5,10 @@
 // 	- Details.
 //========================================
 
+03/20/2010
+	r267 [Jobbie]
+	* Fixed an issue of recent skills in eA that using skill_blockpc_start
+
 03/15/2010
 	r254 [pakpil]
 	* Fixed an issue in WL_READING_SB where it wasn't removing SC_STOP status when the Warlock haven't Spellbooks on the inventory.
