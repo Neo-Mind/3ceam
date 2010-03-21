@@ -6609,6 +6609,9 @@ int pc_setoption(struct map_session_data *sd,int type)
 	p_type = sd->sc.option;
 	status = status_get_status_data(&sd->bl);
 
+	if( p_type&OPTION_MADO && p_type&OPTION_CART) // Don't remove cart when you're removing your mado.
+		type |= (p_type&OPTION_CART);
+
 	//Option has to be changed client-side before the class sprite or it won't always work (eg: Wedding sprite) [Skotlex]
 	sd->sc.option = type;
 	clif_changeoption(&sd->bl);

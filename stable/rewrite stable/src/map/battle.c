@@ -1893,10 +1893,10 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					skillratio += ((skill_lv-1)%5+1)*100;
 					break;
 				case RK_SONICWAVE:
-					skillratio += (400 + 100 * skill_lv) + (20 * status_get_lv(src) / 4);	// Still need oficial level based damage value. [pakpil]
+					skillratio += 400 + (100 * skill_lv) + (status_get_lv(src) * 5 / 3);
 					break;
 				case RK_HUNDREDSPEAR:
-					skillratio += (500 + 40 * skill_lv) + (20 * status_get_lv(src) / 4);	// Still need oficial level based damage value [pakpil]
+					skillratio += 500 + (40 * skill_lv) + (status_get_lv(src) * 5 / 3);
 					if( sd )
 						skillratio += 50 * pc_checkskill(sd,LK_SPIRALPIERCE);
 					break;
@@ -2017,6 +2017,14 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src,struct blo
 					break;
 				case WM_SEVERE_RAINSTORM_MELEE:
 					skillratio = 50 + 50 * skill_lv;
+					break;
+				case WM_GREAT_ECHO:
+					skillratio = 900 + 100 * skill_lv;
+					if( sd )	// Still need official value [pakpil]
+					{
+						short lv = (short)skill_lv;
+						skillratio += 20 * skill_check_pc_partner(sd,skill_num,&lv,skill_get_splash(skill_num,skill_lv),0);
+					}
 					break;
 				case GN_CART_TORNADO:
 					skillratio += 50 * skill_lv;
@@ -2632,7 +2640,10 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 
 
 	//Initialize variables that will be used afterwards
-	s_ele = skill_get_ele(skill_num, skill_lv);
+	if( skill_num == WL_HELLINFERNO && mflag&1 )
+		s_ele = ELE_FIRE; // Flag&1 Fire, Flag&2 Shawdow.
+	else
+		s_ele = skill_get_ele(skill_num, skill_lv);
 
 	if (s_ele == -1) // pl=-1 : the skill takes the weapon's element
 		s_ele = sstatus->rhw.ele;
@@ -2703,7 +2714,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 				break;*/
 			case AB_RENOVATIO:
 				//Damage calculation from iRO wiki. [Jobbie]
-				ad.damage = (int)((15 * sd->status.base_level) + (1.5 * sd->status.int_));
+				ad.damage = (int)((15 * status_get_lv(src)) + (1.5 * sstatus->int_));
 				break;
 			default:
 			{
@@ -2806,10 +2817,10 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 100 +100*skill_lv +100*(skill_lv/2);
 						break;
 					case AB_JUDEX:
-						skillratio = ((skill_lv == 5) ? 400 : (280 + 20 * skill_lv)) * status_get_lv(src) / 100;
+						skillratio += -100 + ((skill_lv == 5) ? 400 : (280 + 20 * skill_lv)) * status_get_lv(src) / 100;
 						break;
 					case AB_ADORAMUS:
-						skillratio = (500 + 100 * skill_lv) * status_get_lv(src) / 100;
+						skillratio += -100 + (500 + 100 * skill_lv) * status_get_lv(src) / 100;
 						break;
 					case AB_DUPLELIGHT_MAGIC:
 						skillratio += 100 + 20 * skill_lv;
@@ -2823,7 +2834,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						}
 						break;
 					case WL_FROSTMISTY:
-						skillratio += 100 + 100 * skill_lv;
+						skillratio += -100 + (200 + 100 * skill_lv) * (status_get_lv(src) / 100);
 						break;
 					case WL_JACKFROST:
 						skillratio += 900 + 300 * skill_lv;
@@ -2835,17 +2846,15 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 1400 + 100 * skill_lv;
 						break;
 					case WL_HELLINFERNO:
-						// Now Hell Inferno deals 300% fire damage and 1200% shadow damage at level 5.
-						// Need damage modifiers for lower levels. Also, need to figure out if a new skill tag was added
-						// for the shadow part. [LimitLine]
-						skillratio += 200;
+						if( s_ele == ELE_FIRE )
+							skillratio += 60 * skill_lv;
+						else
+							skillratio += 240 * skill_lv;
 						break;
 					case WL_COMET:
+						if( sc && sc->data[SC_REUSE_COMET] )
 						{
-							struct status_change *tsc = status_get_sc(target);
-							if( !tsc )
-								break;
-							switch( distance_xy(target->x, target->y, tsc->comet_x, tsc->comet_y) )
+							switch( distance_xy(target->x, target->y, sc->data[SC_REUSE_COMET]->val2,sc->data[SC_REUSE_COMET]->val3) )
 							{
 								case 0: case 1: case 2: case 3:
 									skillratio += 2400 + 500 * skill_lv;
@@ -2861,6 +2870,8 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 									break;
 							}
 						}
+						else
+							skillratio += 2400 + 500 * skill_lv; 
 						break;
 					case WL_CHAINLIGHTNING_ATK:
 						skillratio += 300 + 100 * skill_lv;
@@ -2884,41 +2895,32 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 50 * skill_lv;
 						break;
 					case WM_REVERBERATION_MAGIC:
-						if( sd )
-							skillratio += 100 * pc_checkskill(sd, WM_REVERBERATION);
-						break;
-					case WM_GREAT_ECHO:
-						skillratio = 900 + 100 * skill_lv;
-						if( sd )	// Still need official value [pakpil]
-						{
-							short lv = (short)skill_lv;
-							skillratio += 20 * skill_check_pc_partner(sd,skill_num,&lv,skill_get_splash(skill_num,skill_lv),0);
-						}
+						skillratio += 100 * (sd ? pc_checkskill(sd, WM_REVERBERATION) : 1);
 						break;
 					case SO_FIREWALK:
 					case SO_ELECTRICWALK:
-						skillratio = 300 * ( status_get_lv(src) * 3 / 100 );
+						skillratio += -100 + 300 * ( status_get_lv(src) * 3 / 100 );
 						break;
 					case SO_EARTHGRAVE:
-						skillratio = 200 * ( sd ? pc_checkskill(sd, SA_SEISMICWEAPON) : 1 ) 
+						skillratio += -100 + 200 * ( sd ? pc_checkskill(sd, SA_SEISMICWEAPON) : 1 ) 
 									+ ( sstatus->int_ * skill_lv * status_get_lv(src) / 100 );
 						break;
 					case SO_DIAMONDDUST:
-						skillratio = 200 * ( sd ? pc_checkskill(sd, SA_FROSTWEAPON) : 1 )
+						skillratio += -100 + 200 * ( sd ? pc_checkskill(sd, SA_FROSTWEAPON) : 1 )
 									+ ( sstatus->int_ * skill_lv * status_get_lv(src) / 100 );
 						break;
 					case SO_POISON_BUSTER:	// Need official formula. [LimitLine]
 						skillratio += 300 + 100 * skill_lv;
 						break;
 					case SO_PSYCHIC_WAVE:
-						skillratio = skill_lv * 70 + ( sstatus->int_ * 3 * status_get_lv(src) / 100 );
+						skillratio += -100 + skill_lv * 70 + ( sstatus->int_ * 3 * status_get_lv(src) / 100 );
 						break;
 					case SO_VARETYR_SPEAR: //Assumed Formula.
-						skillratio = 200 * ( sd ? pc_checkskill(sd, SA_LIGHTNINGLOADER) : 1 )
+						skillratio += -100 + 200 * ( sd ? pc_checkskill(sd, SA_LIGHTNINGLOADER) : 1 )
 									+ ( sstatus->int_ * skill_lv * status_get_lv(src) / 100 );
 						break;
 					case SO_CLOUD_KILL:
-						skillratio = skill_lv * 40 * status_get_lv(src) / 100;
+						skillratio += -100 + skill_lv * 40 * status_get_lv(src) / 100;
 						break;
 					case GN_SPORE_EXPLOSION: // Need official value. [LimitLine]
 						skillratio += 400 + 100 * skill_lv;

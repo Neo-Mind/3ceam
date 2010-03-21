@@ -3984,7 +3984,7 @@ static signed char status_calc_def(struct block_list *bl, struct status_change *
 		def -= def / 10 * 3;
 	if( sc->data[SC_MARSHOFABYSS] )	// Need official formula. [LimitLine]
 		def -= def / 100 * sc->data[SC_MARSHOFABYSS]->val4;
-	if(sc->data[SC_ANALYZE])
+	if( sc->data[SC_ANALYZE] )
 		def -= def * ( 14 * sc->data[SC_ANALYZE]->val1 ) / 100;
 	if( sc->data[SC__BLOODYLUST] )
 		def -= def * 55 / 100; // Still need official value [pakpil]
@@ -5450,6 +5450,9 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			case SC_RICHMANKIM:
 			case SC_ROKISWEIL:
 			case SC_FOGWALL:
+			case SC_FREEZING:
+			case SC_BURNING:// Place here until we have info about its behavior on Boss-monsters. [pakpil]
+			case SC_MARSHOFABYSS:
 				return 0;
 		}
 	}
@@ -6582,6 +6585,8 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			break;
 		case SC_WEAPONBLOCKING:
 			val2 = 10 + 2 * val1; // Chance
+			val4 = tick / 1000;
+			tick = 1000;
 			val_flag |= 1|2;
 			break;
 		case SC_TOXIN:

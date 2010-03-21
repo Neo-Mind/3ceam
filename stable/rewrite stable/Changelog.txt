@@ -5,6 +5,23 @@
 // 	- Details.
 //========================================
 
+03/21/2010
+	r271 [pakpil]
+	* Updated to eA revision 14267.
+	* Merged skill ranges from trunk. Follow up r253.
+	* Updated skill_cast_db from trunk.
+	* Updated skill_db from trunk.
+	* Fixed GC_WEAPONBLOCKING. Follow up r266.
+	* Added some status changes that don't affect to Boss monster. Follow up r257.
+	* Fixed some skills that have variable cast time.
+	* Fixed WL_COMET. Follow up r253.
+	* Fixed WL_HELLINFERNO. Follow up r255.
+	* Fixed WM_GREAT_ECHO. Follow up r257.
+	* Minor cleanup in skill_additional_effect. Follow up r256.
+	* Updated item_db2.txt. Follow up r262.
+	* Fixed an issue where the cart was being taked off when you are removing your mado. Follow up r269.
+	* Fixed some damage formulas. Follow up r266.
+
 03/20/2010
 	r267 [Jobbie]
 	* Fixed an issue of recent skills in eA that using skill_blockpc_start

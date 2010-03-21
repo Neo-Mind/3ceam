@@ -3081,6 +3081,8 @@ int clif_skill_select_request( struct map_session_data *sd )
 	}
 #endif
 
+	status_change_end(&sd->bl,SC_STOP,-1);
+	clif_skill_fail(sd,SC_AUTOSHADOWSPELL,0x0,0,0);
 	return 0;
 }
 
@@ -10136,6 +10138,9 @@ void clif_parse_UseSkillToId(int fd, struct map_session_data *sd)
 	
 	if( target_id < 0 && -target_id == sd->bl.id ) // for disguises [Valaris]
 		target_id = sd->bl.id;
+	
+	if( sd->sc.data[SC_VOICEOFSIREN] && sd->sc.data[SC_VOICEOFSIREN]->val2 == target_id )
+		return;
 	
 	if( sd->ud.skilltimer != -1 )
 	{
