@@ -5,7 +5,13 @@
 // 	- Details.
 //========================================
 
+03/22/2010
+	r276 [Jobbie]
+	* Adjusted the behavior of Fearbreeze skill.
+	* Fixed a mistake in checking wind element for both hands when using NC_AXETORNADO.
+
 03/21/2010
+
 	r271 [pakpil]
 	* Updated to eA revision 14267.
 	* Merged skill ranges from trunk. Follow up r253.
