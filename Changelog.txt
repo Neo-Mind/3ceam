@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+03/23/2010
+	r279 [Rytech]
+	*Added the "Rewrite Doc's" folder to the 3CeAM Documnents folder.
+	-This folder contains information on the 3CeAM V2.0 job system and item settings.
+
 03/11/2010
 	r242 [Rytech]
 	*Added the "rewrite stable" branch.
