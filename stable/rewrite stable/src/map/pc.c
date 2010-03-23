@@ -6676,6 +6676,14 @@ int pc_setoption(struct map_session_data *sd,int type)
 	{
 		if( pc_checkskill(sd, NC_MADOLICENCE) < 5 )
 			status_calc_pc(sd, 0); // Apply speed penalty.
+
+		if( sd->sc.data[SC_SHAPESHIFT] || sd->sc.data[SC_HOVERING] ||
+			sd->sc.data[SC_ACCELERATION] )
+		{
+			status_change_end(&sd->bl, SC_SHAPESHIFT, -1);
+			status_change_end(&sd->bl, SC_HOVERING, -1);
+			status_change_end(&sd->bl, SC_ACCELERATION, -1);
+		}
 	}
 
 	else if (!(type&OPTION_MADO) && p_type&OPTION_MADO && ((sd->class_&MAPID_BASEMASK) == MAPID_MERCHANT) && (sd->class_&JOBL_THIRD) && sd->class_&JOBL_2_1)

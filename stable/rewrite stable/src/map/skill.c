@@ -634,6 +634,12 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 				rate=(sd->status.job_level+9)/10;
 				skill_castend_damage_id(src,bl,HT_BLITZBEAT,(skill<rate)?skill:rate,tick,SD_LEVEL);
 			}
+			// Automatic trigger of Warg Strike [Jobbie]
+			if (pc_iswarg(sd) && (sd->status.weapon == W_BOW || sd->status.weapon == W_FIST) && (skill=pc_checkskill(sd,RA_WUGSTRIKE))>0 &&
+				rand()%1000 <= sstatus->luk*10/3+1 ) {
+				rate=(sd->status.job_level+9)/10;
+				skill_castend_damage_id(src,bl,RA_WUGSTRIKE,(skill<rate)?skill:rate,tick,0);
+			}
 			// Gank
 			if(dstmd && sd->status.weapon != W_BOW &&
 				(skill=pc_checkskill(sd,RG_SNATCHER)) > 0 &&
@@ -11604,6 +11610,9 @@ int skill_castfix(struct block_list *bl, int skill_id, int skill_lv)
 			case HW_GANBANTEIN:
 			case HW_GRAVITATION:
 			case AB_RENOVATIO:
+			case NC_SELFDESTRUCTION:
+			case NC_INFRAREDSCAN:
+			case NC_ANALYZE:
 				variable_time = 0;
 				fixed_time = skill_get_cast(skill_id, skill_lv);// full fixed cast time.
 				break;

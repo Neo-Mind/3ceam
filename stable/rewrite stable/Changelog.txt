@@ -5,6 +5,13 @@
 // 	- Details.
 //========================================
 
+03/23/2010
+	r278 [Jobbie]
+	* Merge some updates/fixes from rewrite trunk. r249
+	- Corrected some SC_* in which mado is unequipped it is not ended.
+	- Fixed SC_LEECHESEND.
+	- Fixed missing auto trigger code of Warg Strike when attacking normal or with Bow.
+
 03/22/2010
 	r277 [Jobbie]
 	* Minor fix on my last commit. Follow up r276
