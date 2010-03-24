@@ -5,6 +5,14 @@
 // 	- Details.
 //========================================
 
+03/24/2010
+	r281 [pakpil]
+	* Updated const.txt to support all the latest existing NPC's. Follow up r259.
+	* Merged produce_db.txt from trunk. Follow up r274.
+	* Merged WL_WHITEIMPRISON from trunk. Follow up r262.
+	* Merged GC_WEAPONCRUSH from trunk. Follow up r273.
+	* Changed MAX_CHAR in mmo.h to 9. Follow up r279.
+
 03/23/2010
 	r278 [Jobbie]
 	* Merge some updates/fixes from rewrite trunk. r249

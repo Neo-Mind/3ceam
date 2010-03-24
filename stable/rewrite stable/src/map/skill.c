@@ -993,6 +993,9 @@ int skill_additional_effect (struct block_list* src, struct block_list *bl, int 
 	case RK_DRAGONBREATH:
 		sc_start(bl,SC_BURNING,5 + 5 * skilllv,skilllv,skill_get_time(skillid,skilllv));
 		break;
+	case GC_WEAPONCRUSH:// Rate is handled later.
+		skill_castend_nodamage_id(src,bl,skillid,skilllv,tick,BCT_ENEMY);
+		break;
 	case AB_ADORAMUS:
 		sc_start(bl, SC_BLIND, 100, skilllv, skill_get_time(skillid, skilllv));
 		sc_start(bl, SC_DECREASEAGI, 100, skilllv, skill_get_time(skillid, skilllv));
@@ -3537,7 +3540,15 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, int 
 		break;
 
 	case GC_WEAPONCRUSH:
-		skill_castend_nodamage_id(src,bl,skillid,skilllv,tick,flag);
+		{
+			if( sc && sc->data[SC_COMBO] && sc->data[SC_COMBO]->val1 == GC_WEAPONBLOCKING )
+			{
+				skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+				status_change_end(src,SC_COMBO,-1);
+			}
+			else if( sd )
+					clif_skill_fail(sd,skillid,0x1f,0,0);
+		}
 		break;
 
 	case GC_CROSSRIPPERSLASHER:
@@ -5351,7 +5362,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		}
 
 		//Attempts to strip at rate i and duration d
-		if( (i = skill_strip_equip(bl, location, i, skilllv, d)) || skillid != ST_FULLSTRIP )
+		if( (i = skill_strip_equip(bl, location, i, skilllv, d)) || skillid != ST_FULLSTRIP || skillid != GC_WEAPONCRUSH)
 			clif_skill_nodamage(src,bl,skillid,skilllv,i); 
 
 		//Nothing stripped.
@@ -6880,25 +6891,17 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, in
 		break;
 
 	case WL_WHITEIMPRISON:
-		// Need success rate at lower levels, as well as how much each job level influences the success rate. [LimitLine]
-		if( (src == bl || battle_check_target(src, bl, BCT_ENEMY)) &&
-			rand()%100 <= 15 + 10 * skilllv + (sd ? sd->status.job_level / 5 : 0) )
+		if( (src == bl || battle_check_target(src, bl, BCT_ENEMY)) )
 		{
-			if( bl->type == BL_MOB )
-				i = 1;
-			if( src != bl )
-				i = 2;
-			else
-				i = 3;
+			if( tsc && tsc->data[type] )
+			{
+				if( sd )
+					clif_skill_fail(sd, skillid, 0, 0, 0);
+				break;
+			}
 			clif_skill_nodamage(src, bl, skillid, skilllv,
-				sc_start(bl, SC_WHITEIMPRISON, 100, skilllv,
-				skill_get_time(skillid, i)));
-		}
-		else if( sd )
-		{
-			clif_skill_nodamage(src, bl, skillid, skilllv, 1);
-			clif_skill_fail(sd, skillid, 0, 0, 0);
-			break;
+				sc_start2(bl, type, (50+3*skilllv)*(1+((sd)?sd->status.job_level:1)/100), skilllv, src->id,
+				(src == bl)?skill_get_time2(skillid,skilllv):skill_get_time(skillid, skilllv)));
 		}
 		break;
 

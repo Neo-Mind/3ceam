@@ -265,9 +265,14 @@ int battle_attr_fix(struct block_list *src, struct block_list *target, int damag
 		if( tsc->data[SC_ORATIO] && atk_elem == ELE_HOLY )
 			ratio += tsc->data[SC_ORATIO]->val1 * 2;
 		if( tsc->data[SC_WHITEIMPRISON] && atk_elem != ELE_GHOST )
+		{
 			damage = 0;
-		else
+		}
+		else if( tsc->data[SC_WHITEIMPRISON] )
+		{
+			tsc->data[SC_WHITEIMPRISON]->val3 = 1;	// Don't deal damage when sc ends.
 			status_change_end(target, SC_WHITEIMPRISON, -1);
+		}
 		if( tsc->data[SC_VENOMIMPRESS] && atk_elem == ELE_POISON)
 			ratio += tsc->data[SC_VENOMIMPRESS]->val2;
 		if( atk_elem == ELE_FIRE && tsc->data[SC_THORNSTRAP] )
@@ -372,7 +377,7 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,struct Damag
 			{
 				clif_skill_nodamage(bl,src,GC_WEAPONBLOCKING,1,1);
 				d->dmg_lv = ATK_NONE;
-				sc_start(bl,SC_COMBO,100,GC_WEAPONBLOCKING,2000);
+				sc_start2(bl,SC_COMBO,100,GC_WEAPONBLOCKING,src->id,2000);
 				return 0;
 			}
 		}
