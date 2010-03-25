@@ -236,6 +236,10 @@ Job ID / Job Skill Tag Mark / Job Name / Extra Info
 4106 SR Baby Sura		(Baby Version of 3rd Job) (Named Baby Sura)
 4107 GN Baby Genetic		(Baby Version of 3rd Job) (Named Baby Genetic)
 4108 SC Baby Shadow Chaser	(Baby Version of 3rd Job) (Named Baby Chaser)
+4109 RK Baby Rune Knight Mount	(Baby Version of 3rd Job) (Named Baby Rune)
+4110 LG Baby Royal Guard Mount	(Baby Version of 3rd Job) (Named Baby Guard)
+4111 RA Baby Ranger Mount	(Baby Version of 3rd Job) (Named Baby Ranger)
+4112 NC Baby Mechanic Mount	(Baby Version of 3rd Job) (Named Baby Mechanic)
 
 ===== Job MAPID's =====
 These are the map ID's the server recognizes these jobs by...
