@@ -5,6 +5,11 @@
 // 	- Details.
 //========================================
 
+03/25/2010
+	r284 [pakpil]
+	* Fixed a mistake in PACKETVER that affec to to clif_displayexp. Sorry.
+	- This was caussing dead mobs don't dessapear correclty in clients oldest than 2009-11-10aRagexeRE.
+
 03/15/2010
 	r252 [pakpil]
 	* Fixed an issue where the client freeze when use disguise. Bug report 252.

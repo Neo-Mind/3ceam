@@ -14033,7 +14033,7 @@ void clif_millenniumshield(struct map_session_data *sd, short shields )
  *-----------------------------------------*/
 void clif_displayexp(struct map_session_data *sd, int exp, short type, bool gain, short quest)
 {
-#if PACKETVER >= 20091027
+#if PACKETVER >= 20091110
 	int fd;
 
 	nullpo_retv(sd);
@@ -14046,10 +14046,10 @@ void clif_displayexp(struct map_session_data *sd, int exp, short type, bool gain
 	WFIFOL(fd,2) = sd->bl.id;
 	WFIFOL(fd,6) = exp;
 	WFIFOW(fd,10) = type; // 1: base exp, 2: job exp
-	WFIFOW(fd,12) = quest?1:0;// Current exp is shown in yellow, quest exp is shown in purple.
+	WFIFOW(fd,12) = quest?1:0;// Normal exp is shown in yellow, quest exp is shown in purple.
 	WFIFOSET(fd,packet_len(0x7f6));
 #endif
-	return;
+    return;
 }
 
 /*==========================================
