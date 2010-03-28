@@ -6872,6 +6872,7 @@ bool pc_isriding( struct map_session_data *sd, int flag )
 		case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
 		case JOB_LORD_KNIGHT: case JOB_LORD_KNIGHT2: case JOB_PALADIN: case JOB_PALADIN2:
 		case JOB_ROYAL_GUARD: case JOB_ROYAL_GUARD2: case JOB_ROYAL_GUARD_T: case JOB_ROYAL_GUARD_T2:
+		case JOB_BABY_KNIGHT: case JOB_BABY_KNIGHT2: case JOB_BABY_CRUSADER: case JOB_BABY_CRUSADER2:
 			if( sd->sc.option&OPTION_RIDING && (flag&OPTION_RIDING) )
 				isriding = true;
 			break;
