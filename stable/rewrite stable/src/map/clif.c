@@ -3028,18 +3028,16 @@ int clif_spellbook_list(struct map_session_data *sd)
 			c ++;
 		}
 	}
+	
 	if( c > 0 )
 	{
-		sd->menuskill_id = WL_READING_SB;
-		sd->menuskill_val = c;
 		WFIFOW(fd,2) = c * 2 + 4;
 		WFIFOSET(fd, WFIFOW(fd, 2));
+		sd->menuskill_id = WL_READING_SB;
+		sd->menuskill_val = c;
 	}
 	else
-	{
 		status_change_end(&sd->bl,SC_STOP,-1);
-		return 0;
-	}
 
 	return 1;
 }
@@ -7891,13 +7889,27 @@ int clif_charnameack (int fd, struct block_list *bl)
 			}
 			memcpy(WBUFP(buf,6), ssd->status.name, NAME_LENGTH);
 			
-			if (ssd->status.party_id > 0)
-				p = party_search(ssd->status.party_id);
-
-			if( ssd->status.guild_id > 0 && (g = guild_search(ssd->status.guild_id)) != NULL )
+			// Official Server emulation to view party name. 
+			// battle configuration is added to follow eA's emulation. [Jobbie]
+			if( !battle_config.show_party_name )
 			{
-				ARR_FIND(0, g->max_member, i, g->member[i].account_id == ssd->status.account_id && g->member[i].char_id == ssd->status.char_id);
-				if( i < g->max_member ) ps = g->member[i].position;
+				if( ssd->status.guild_id > 0 && (g = guild_search(ssd->status.guild_id)) != NULL )
+				{
+					ARR_FIND(0, g->max_member, i, g->member[i].account_id == ssd->status.account_id && g->member[i].char_id == ssd->status.char_id);
+					if( i < g->max_member ) ps = g->member[i].position;
+					if( ssd->status.party_id > 0 ) p = party_search(ssd->status.party_id);
+				}
+			}
+			else
+			{
+				if( ssd->status.party_id > 0 )
+					p = party_search(ssd->status.party_id);
+				
+				if( ssd->status.guild_id > 0 && (g = guild_search(ssd->status.guild_id)) != NULL )
+				{
+					ARR_FIND(0, g->max_member, i, g->member[i].account_id == ssd->status.account_id && g->member[i].char_id == ssd->status.char_id);
+					if( i < g->max_member ) ps = g->member[i].position;
+				}
 			}
 
 			if (p == NULL && g == NULL)
@@ -8007,13 +8019,26 @@ int clif_charnameupdate (struct map_session_data *ssd)
 
 	memcpy(WBUFP(buf,6), ssd->status.name, NAME_LENGTH);
 			
-	if( ssd->status.party_id > 0 )
-		p = party_search(ssd->status.party_id);
-
-	if( ssd->status.guild_id > 0 && (g = guild_search(ssd->status.guild_id)) != NULL )
+	// Official Server emulation to view party name. 
+	// battle configuration is added to follow eA's emulation. [Jobbie]
+	if( !battle_config.show_party_name )
 	{
-		ARR_FIND(0, g->max_member, i, g->member[i].account_id == ssd->status.account_id && g->member[i].char_id == ssd->status.char_id);
-		if( i < g->max_member ) ps = g->member[i].position;
+		if( ssd->status.guild_id > 0 && (g = guild_search(ssd->status.guild_id)) != NULL )
+		{
+			ARR_FIND(0, g->max_member, i, g->member[i].account_id == ssd->status.account_id && g->member[i].char_id == ssd->status.char_id);
+			if( i < g->max_member ) ps = g->member[i].position;
+			if( ssd->status.party_id > 0 ) p = party_search(ssd->status.party_id);
+		}
+	}
+	else
+	{
+		if( ssd->status.party_id > 0 ) p = party_search(ssd->status.party_id);
+
+		if( ssd->status.guild_id > 0 && (g = guild_search(ssd->status.guild_id)) != NULL )
+		{
+			ARR_FIND(0, g->max_member, i, g->member[i].account_id == ssd->status.account_id && g->member[i].char_id == ssd->status.char_id);
+			if( i < g->max_member ) ps = g->member[i].position;
+		}
 	}
 
 	if( p )

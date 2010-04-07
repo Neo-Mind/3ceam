@@ -359,7 +359,7 @@ typedef enum sc_type {
 	SC_RECOGNIZEDSPELL,
 	SC_MARSHOFABYSS,
 	SC_STASIS,
-	SC_CHAINLIGHTNING,
+	//SC_CHAINLIGHTNING,
 	SC_SPHERE_1,
 	SC_SPHERE_2,
 	SC_SPHERE_3,
@@ -436,14 +436,16 @@ typedef enum sc_type {
 	SC_HALLUCINATIONWALK,
 	SC_HALLUCINATIONWALK_POSTDELAY,
 
-	SC_READING_SB_1,
-	SC_READING_SB_2,
-	SC_READING_SB_3,
-	SC_READING_SB_4,
-	SC_READING_SB_5,
-	SC_READING_SB_6,
-	SC_READING_SB_7,
+	SC_READING_SB, // From iROwiki : your SP slowly drains depending on the number of spells frozen
+	// SC_READING_SB_2,
+	// SC_READING_SB_3,
+	// SC_READING_SB_4,
+	// SC_READING_SB_5,
+	// SC_READING_SB_6,
+	// SC_READING_SB_7,
 
+	SC_REUSE_STASIS,
+	SC_ADORAMUS,
 	SC_MAX, //Automatically updated max, used in for's to check we are within bounds.
 } sc_type;
 
@@ -847,16 +849,16 @@ enum si_type {
 	SI_SHADOWFORM = 394,
 	SI_RAID = 395,
 	SI_SHIELDSPELL_DEF = 396,
-	SI_SHIELDSPELL_MDE = 397,
+	SI_SHIELDSPELL_MDEF = 397,
 	SI_SHIELDSPELL_REF = 398,
 	SI_BODYPAINTING = 399,	
-//  SI_EXEEDBREAK = 400,
+//	SI_EXEEDBREAK = 400,
 	SI_ADORAMUS = 401,
 	SI_PRESTIGE = 402,
 	SI_INVISIBILITY = 403,
 	SI_DEADLYINFECT = 404,
 	SI_BANDING = 405,
-//  SI_EARTHDRIVE = 406,
+//	SI_EARTHDRIVE = 406,
 	SI_INSPIRATION = 407,
 	SI_ENERVATION = 408,
 	SI_GROOMY = 409,
@@ -1245,9 +1247,6 @@ struct status_change {
 	unsigned short mp_matk_min, mp_matk_max; //Previous matk min/max for ground spells (Amplify magic power)
 	int sg_id; //ID of the previous Storm gust that hit you
 	unsigned char sg_counter; //Storm gust counter (previous hits from storm gust)
-	int cl_tid;	//ID of the next picked target for Chain Lightning. [LimitLine]
-	int cl_counter;	//Chain Lightning counter. [LimitLine]
-	int cl_counter2;//Chain Lightning counter (for the three-hit countdown when there's nobody in range). [LimitLine]
 	struct status_change_entry *data[SC_MAX];
 };
 

@@ -2669,7 +2669,6 @@ int pc_bonus2(struct map_session_data *sd,int type,int type2,int val)
 		break;
 
 	case SP_CASTRATE:
-	case SP_FIXCASTRATE:
 		if(sd->state.lr_flag == 2)
 			break;
 		ARR_FIND(0, ARRAYLENGTH(sd->skillcast), i, sd->skillcast[i].id == 0 || sd->skillcast[i].id == type2);
@@ -2685,6 +2684,23 @@ int pc_bonus2(struct map_session_data *sd,int type,int type2,int val)
 			sd->skillcast[i].val = val;
 		}
 		break;
+
+	case SP_FIXCASTRATE:
+		if(sd->state.lr_flag == 2)
+			break;
+		ARR_FIND(0, ARRAYLENGTH(sd->fixskillcast), i, sd->fixskillcast[i].id == 0 || sd->fixskillcast[i].id == type2);
+		if (i == ARRAYLENGTH(sd->fixskillcast))
+		{	//Better mention this so the array length can be updated. [Skotlex]
+			ShowDebug("run_script: bonus2 bFixCastRate reached it's limit (%d skills per character), bonus skill %d (+%d%%) lost.\n", ARRAYLENGTH(sd->fixskillcast), type2, val);
+			break;
+		}
+		if(sd->fixskillcast[i].id == type2)
+			sd->fixskillcast[i].val += val;
+		else {
+			sd->fixskillcast[i].id = type2;
+			sd->fixskillcast[i].val = val;
+ 		}
+ 		break;
 
 	case SP_HP_LOSS_RATE:
 		if(sd->state.lr_flag != 2) {

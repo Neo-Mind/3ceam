@@ -5,6 +5,17 @@
 // 	- Details.
 //========================================
 
+04/07/2010
+	r310 [Jobbie]
+	* Merge trunk rewrite update of r295.
+	* Merge trunk rewrite update of r296.
+	* Merge trunk rewrite part 1 of warlock fixes of r297.
+	* Merge trunk rewrite part 2 of warlock fixes of r299.
+	* Merge trunk rewrite part 3 of warlock fixes of r300.
+	* Merge trunk rewrite part 4 of warlock fixes of r301.
+	* Merge trunk rewrite some bug fixes.
+	* Merge trunk rewrite update of r307.
+
 03/30/2010
 	r294 [Jobbie]
 	- Disabled skills which are not yet implemented to avoid map-server warnings.
