@@ -74,13 +74,13 @@
 16003,Kalga_Mace,Kalga Mace,4,20,,1500,175,,1,2,0x0004C580,24,2,2,3,100,1,8,{},{},{}
 
 // Mechanic Mado Weapons
-1549,Pile_Bunker,Pile Bunker,4,10000,,3000,450,,1,0,0x00000400,24,2,2,3,99,0,23,{},{},{}
+1549,Pile_Bunker,Pile Bunker,4,10000,,3000,450,,1,0,0x00000400,24,2,2,3,99,0,8,{},{},{}
 
 // Mechanic Mado Side Arm Weapons
 2139,Flame_Thrower,Flame Thrower,5,20000,,2000,,5,,0,0x00000400,24,2,32,,99,0,5,{},{},{}
 2140,Energy_Rune_Guard,Energy Rune Guard,5,20,,10,,1,,1,0xFFFFFFFF,31,2,32,,70,1,5,{ bonus bMaxSPrate,2; },{},{}
 
-//2794,Magic_Stone_Ring,Magic Stone Ring,5,10,,10,,0,,0,0xFFFFFFFF,31,2,136,,0,0,0{ bonus bStr,2; },{},{}
+//2794,Magic_Stone_Ring,Magic Stone Ring,5,10,,10,,0,,0,0xFFFFFFFF,31,2,136,,0,0,0,{ bonus bStr,2; },{},{}
 //2795,Immature_Apple_Ring,Immature Apple Ring,5,10,,10,,0,,0,0xFFFFFFFE,31,2,136,,0,0,0,{},{},{}
 //2796,Rocks,Rocks,3,10,,10,,,,,,,,,,,,,{},{},{}
 //2797,Rocks,Rocks,3,10,,10,,,,,,,,,,,,,{},{},{}
@@ -119,7 +119,7 @@
 // Mechanic Mado Gear Skill Required Items
 6145,Vulcan_Bullet,Vulcan Bullet,3,10,,3,,,,,,,,,,,,,{},{},{}
 6146,Mado_Gear_Fuel,Mado Gear Fuel,3,300,,30,,,,,,,,,,,,,{},{},{}
-6147,Liquid_Cold_Bullet,Liquid Cold Bullet,3,100,,10,,,,,,,,,,,,,{},{},{}
+6147,Liquid_Cold_Bullet,Liquid Cold Bullet,3,100,,30,,,,,,,,,,,,,{},{},{}
 
 6150,House_Key,House Key,3,10,,10,,,,,,,,,,,,,{},{},{}
 6151,Huge_Bradium,Huge Bradium,3,10,,10,,,,,,,,,,,,,{},{},{}
@@ -215,10 +215,10 @@
 6297,Empty_Potion_Bottle,Empty Potion Bottle,3,10,,10,,,,,,,,,,,,,{},{},{}
 
 // Sorcerer Elemental Points
-//6360,Scarlet_Point,Scarlet Point,3,10,,5,,,,,,,,,,,,,{},{},{}
-//6361,Indigo_Point,Indigo Point,3,10,,5,,,,,,,,,,,,,{},{},{}
-//6362,Yellow_Wish_Point,Yellow Wish Point,3,10,,5,,,,,,,,,,,,,{},{},{}
-//6363,Lime_Green_Point,Lime Green Point,3,10,,5,,,,,,,,,,,,,{},{},{}
+6360,Scarlet_Point,Scarlet Point,3,100,,5,,,,,,,,,,,,,{},{},{}
+6361,Indigo_Point,Indigo Point,3,100,,5,,,,,,,,,,,,,{},{},{}
+6362,Yellow_Wish_Point,Yellow Wish Point,3,100,,5,,,,,,,,,,,,,{},{},{}
+6363,Lime_Green_Point,Lime Green Point,3,100,,5,,,,,,,,,,,,,{},{},{}
 
 // Guillotine Cross Poison Ingredients
 7931,Poison_Kit,Poison Manufacture Kit,3,1,,10,,,,,,,,,,,,,{},{},{}
@@ -283,12 +283,12 @@
 12426,SP_Increase_Potion_(Medium),SP Increase Potion (Medium),0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
 12427,SP_Increase_Potion_(Large),SP Increase Potion (Large),0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
 12428,Concentrated_White_Potion_Z,Concentrated White Potion Z,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
-12429,Savage_Full_Roast,Savage Full Roast,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
-12430,Cocktail_Warg_Blood,Cocktail Warg Blood,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
-12431,Minor_Stew,Minor Stew,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
-12432,Siroma_Iced_Tea,Siroma Iced Tea,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
-12433,Drosera_Herb_Salad,Drosera Herb Salad,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
-12434,Petite_Tail_Noodles,Petite Tail Noodles,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
+12429,Savage_Full_Roast,Savage Full Roast,2,,,50,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_SAVAGE_STEAK, 1800000, 20; },{},{}
+12430,Cocktail_Warg_Blood,Cocktail Warg Blood,2,,,50,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_COCKTAIL_WARG_BLOOD, 1800000, 20; },{},{}
+12431,Minor_Stew,Minor Stew,2,,,50,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_MINOR_BBQ, 1800000, 20; },{},{}
+12432,Siroma_Iced_Tea,Siroma Iced Tea,2,,,50,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_SIROMA_ICE_TEA, 1800000, 20; },{},{}
+12433,Drosera_Herb_Salad,Drosera Herb Salad,2,,,50,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_DROCERA_HERB_STEAMED, 1800000, 20; },{},{}
+12434,Petite_Tail_Noodles,Petite Tail Noodles,2,,,50,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_PUTTI_TAILS_NOODLES, 1800000, 20; },{},{}
 12435,Black_Mass,Black Mass,3,10,,10,,,,,,,,,,,,,{},{},{}
 12436,Vitata_500,Vitata 500,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
 12437,Concentrated_Ceromain_Soup,Concentrated Ceromain Soup,0,10,,10,,,,,0xFFFFFFFF,24,2,,,,,,{},{},{}
@@ -296,14 +296,14 @@
 12475,Cure_Photo,Cure Photo,3,10,,10,,,,,,,,,,,,,{},{},{}
 
 // Guillotine Cross Poisons
-12717,Poison_Paralysis,Paralyze,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_PARALYSE,300000,0; },{},{}
-12718,Poison_Leech,Leech End,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_LEECHESEND,300000,0; },{},{}
-12719,Poison_Oblivion,Oblivion Curse,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_OBLIVIONCURSE,300000,0; },{},{}
-12720,Poison_Disheart,Disheart,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_DEATHHURT,300000,0; },{},{}
-12721,Poison_Numb,Toxin,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_TOXIN,300000,0; },{},{}
-12722,Poison_Fever,Pyrexia,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_PYREXIA,300000,0; },{},{}
-12723,Poison_Laughing,Magic Mushroom,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_MAGICMUSHROOM,300000,0; },{},{}
-12724,Poison_Fatigue,Venom Bleed,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ sc_start SC_VENOMBLEED,15000,0; },{},{}
+12717,Poison_Paralysis,Paralyze,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_PARALYSE,300000,0; },{},{}
+12718,Poison_Leech,Leech End,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_LEECHESEND,300000,0; },{},{}
+12719,Poison_Oblivion,Oblivion Curse,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_OBLIVIONCURSE,300000,0; },{},{}
+12720,Poison_Disheart,Disheart,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_DEATHHURT,300000,0; },{},{}
+12721,Poison_Numb,Toxin,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_TOXIN,300000,0; },{},{}
+12722,Poison_Fever,Pyrexia,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_PYREXIA,300000,0; },{},{}
+12723,Poison_Laughing,Magic Mushroom,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_MAGICMUSHROOM,300000,0; },{},{}
+12724,Poison_Fatigue,Venom Bleed,0,2,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(rand(10000) < 10) sc_start SC_VENOMBLEED,15000,0; },{},{}
 
 // Rune Knight's Rune Stones
 12725,Runstone_Nosiege,Nauthiz Rune,11,100,,100,,,,,0xFFFFFFFF,24,2,,,,,,{ if(Class == Job_Rune_Knight || Class == Job_Rune_Knight_T) itemskill "RK_REFRESH",1; },{},{}
@@ -474,3 +474,7 @@
 6343,Test_Item_66,Test Item 66,3,10,,10,,,,,,,,,,,,,{},{},{}
 12492,Test_Item_67,Test Item 67,3,10,,10,,,,,,,,,,,,,{},{},{}
 12539,Test_Item_68,Test Item 68,3,10,,10,,,,,,,,,,,,,{},{},{}
+
+// Purchase Shop Items
+6377,Buy_Stall_Permit,Buy Stall Permit,3,200,,10,,,,,,,,,,,,,{},{},{}
+12548,Buy_Shabby_Stall_Permit,Buy Shabby Stall Permit,11,500,,10,,,,,0xFFFFFFFF,24,2,,,,,,{ itemskill "ALL_BUYING_STORE",1; },{},{}

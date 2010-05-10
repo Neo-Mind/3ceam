@@ -441,7 +441,7 @@ int pc_makesavestatus(struct map_session_data *sd)
 
   	//Only copy the Cart/Peco/Falcon/Dragon/Warg/Mado options, the rest are handled via
 	//status change load/saving. [Skotlex]
-	sd->status.option = sd->sc.option&(OPTION_CART|OPTION_FALCON|OPTION_RIDING|(OPTION_RIDING_DRAGON)|OPTION_WUG|OPTION_RIDING_WUG|OPTION_MADO);
+	sd->status.option = sd->sc.option&(OPTION_CART|OPTION_FALCON|OPTION_RIDING|OPTION_RIDING_DRAGON|OPTION_WUG|OPTION_RIDING_WUG|OPTION_MADO);
 		
 	if (sd->sc.data[SC_JAILED])
 	{	//When Jailed, do not move last point.
@@ -4115,6 +4115,10 @@ int pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y
 		if(!sd->mapindex || map_mapname2ipport(mapindex,&ip,&port))
 			return 2;
 
+		if (sd->npc_id)
+			npc_event_dequeue(sd);
+		npc_script_event(sd, NPCE_LOGOUT);
+
 		//remove from map, THEN change x/y coordinates
 		unit_remove_map_pc(sd,clrtype);
 		sd->mapindex = mapindex;
@@ -5268,12 +5272,35 @@ int pc_statusup2(struct map_session_data* sd, int type, int val)
 	return 0;
 }
 
+/*===================================================
+ * Returns if a certain skill belongs to a specific
+ * job skill tree.
+ ---------------------------------------------------*/
+bool pc_isSkillFromJob( int job_id, int skill_num )
+{
+	int i, c;
+
+	if( !pcdb_checkid( job_id ) ) {
+			ShowError("pc_isSkillFromJob: Invalid job ID %d.\n", job_id);
+		return false;
+	}
+
+	c = pc_class2idx(job_id);
+
+	ARR_FIND( 0, MAX_SKILL_TREE, i, skill_tree[c][i].id == 0 || skill_tree[c][i].id == skill_num );
+	if( i == MAX_SKILL_TREE || skill_tree[c][i].id == 0 )
+		return false;
+
+	return true;
+}
+
+
 /*==========================================
  * スキルポイント割り振り
  *------------------------------------------*/
 int pc_skillup(struct map_session_data *sd,int skill_num)
 {
-	int skill_point, i;
+	int skill_point, i, c;
 	nullpo_retr(0, sd);
 
 	if( skill_num >= GD_SKILLBASE && skill_num < GD_SKILLBASE+MAX_GUILDSKILL )
@@ -5292,31 +5319,30 @@ int pc_skillup(struct map_session_data *sd,int skill_num)
 		return 0;
 	
 	skill_point = pc_calc_skillpoint(sd);
+	
+	i = pc_calc_skilltree_normalize_job(sd);
+	c = pc_mapid2jobid(i, sd->status.sex);
 
-	if( (sd->class_&MAPID_THIRDMASK) >= MAPID_RUNE_KNIGHT && sd->status.skill_point >= sd->status.job_level )
+	if( c == -1 ) { //Unable to normalize job??
+		ShowError("pc_skillup: Unable to normalize job %d for character %s (%d:%d)\n", i, sd->status.name, sd->status.account_id, sd->status.char_id);
+		return 0;
+	}
+
+	if( !pc_isSkillFromJob(c, skill_num) && (sd->class_&JOBL_2) && (sd->class_&MAPID_UPPERMASK) != MAPID_SUPER_NOVICE )
 	{
-		if( (sd->change_level[0] > 0 ? ( skill_point < sd->change_level[0]+8 ): (skill_point < 58)) && skill_num >= KN_SPEARMASTERY)
-		{
+		if( sd->status.skill_point >= sd->status.job_level && (sd->change_level[0] > 0 ? ( skill_point < sd->change_level[0]+8 ): (skill_point < 58)) )
+		{	// 1st job skills are not used.	
 			i = (sd->change_level[0] > 0 ? sd->change_level[0]+8:58) - skill_point;		
 			clif_msgtable_num(sd->fd,1566,i);
 			return 0;
-		}
-		if( skill_point < (sd->change_level[1] > 0 ? sd->change_level[0] + sd->change_level[1] + 7 : (sd->class_&JOBL_THIRD_UPPER) ? 127 : 107) &&
-			skill_num >= RK_ENCHANTBLADE && skill_num <= SR_RIDEINLIGHTNING )
-		{
-			i = (sd->change_level[1] > 0 ? sd->change_level[0] + sd->change_level[1] + 7 : (sd->class_&JOBL_THIRD_UPPER) ? 127 : 107) - skill_point;
+		}		
+		if( (sd->class_&JOBL_THIRD) && (skill_num >= RK_ENCHANTBLADE && skill_num <= SR_RIDEINLIGHTNING) &&
+			skill_point < (sd->change_level[1] > 0 ? sd->change_level[0] + sd->change_level[1] + 7 : (sd->class_&JOBL_UPPER) ? 127 : 107) )
+		{	// 2nd job skill not usd.
+			i = (sd->change_level[1] > 0 ? sd->change_level[0] + sd->change_level[1] + 7 : (sd->class_&JOBL_UPPER) ? 127 : 107) - skill_point;
 			clif_msgtable_num(sd->fd,1567, i);
 			return 0;
 		}
-	}
-	else if( (sd->class_&JOBL_2) && (sd->class_&MAPID_UPPERMASK) != MAPID_SUPER_NOVICE &&
-		sd->status.skill_point >= sd->status.job_level && ((skill_num >= KN_SPEARMASTERY && skill_num < TK_RUN ) ||
-		(skill_num > TK_HIGHJUMP && skill_num < GS_GLITTERING) || skill_num > MB_B_EQUIP) && // Ignore all 1st job skills from extended class.
-		(sd->change_level[0] > 0 ? (skill_point < sd->change_level[0]+8) : skill_point < 58))
-	{
-		i = (sd->change_level[0] > 0 ? sd->change_level[0]+8:58) - skill_point;		
-		clif_msgtable_num(sd->fd,1566,i);
-		return 0;
 	}
 
 	if( sd->status.skill_point > 0 &&
