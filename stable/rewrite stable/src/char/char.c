@@ -1392,6 +1392,23 @@ char * job_name(int class_)
 	case JOB_RANGER_T2: return "Ranger Warg";
 	case JOB_MECHANIC2: return "Mechanic Mado Gear";
 	case JOB_MECHANIC_T2: return "Mechanic Mado Gear";
+	case JOB_BABY_RUNE: return "Baby Rune Knight";
+	case JOB_BABY_WARLOCK: return "Baby Warlock";
+	case JOB_BABY_RANGER: return "Baby Ranger";
+	case JOB_BABY_BISHOP: return "Baby Arch Bishop";
+	case JOB_BABY_MECHANIC: return "Baby Mechanic";
+	case JOB_BABY_CROSS: return "Baby Guillotine Cross";
+	case JOB_BABY_GUARD: return "Baby Royal Guard";
+	case JOB_BABY_SORCERER: return "Baby Sorcerer";
+	case JOB_BABY_MINSTREL: return "Baby Minstrel";
+	case JOB_BABY_WANDERER: return "Baby Wanderer";
+	case JOB_BABY_SURA: return "Baby Sura";
+	case JOB_BABY_GENETIC: return "Baby Genetic";
+	case JOB_BABY_CHASER: return "Baby Shadow Chaser";
+	case JOB_BABY_RUNE2: return "Baby Rune Knight Dragon";
+	case JOB_BABY_GUARD2: return "Baby Royal Guard Gryphon";
+	case JOB_BABY_RANGER2: return "Baby Ranger Warg";
+	case JOB_BABY_MECHANIC2: return "Baby Mechanic Mado Gear";
 	}
 	return "Unknown Job";
 }
@@ -2153,7 +2170,8 @@ int parse_fromlogin(int fd)
 					    jobclass == JOB_CLOWN || jobclass == JOB_GYPSY ||
 					    jobclass == JOB_BABY_BARD || jobclass == JOB_BABY_DANCER ||
 					    jobclass == JOB_MINSTREL || jobclass == JOB_WANDERER ||
-					    jobclass == JOB_MINSTREL_T || jobclass == JOB_WANDERER_T) {
+					    jobclass == JOB_MINSTREL_T || jobclass == JOB_WANDERER_T ||
+					    jobclass == JOB_BABY_MINSTREL || jobclass == JOB_BABY_WANDERER) {
 						// job modification
 						if (jobclass == JOB_BARD || jobclass == JOB_DANCER) {
 							char_dat[i].status.class_ = (sex) ? JOB_BARD : JOB_DANCER;
@@ -2165,6 +2183,8 @@ int parse_fromlogin(int fd)
 							char_dat[i].status.class_ = (sex) ? JOB_MINSTREL : JOB_WANDERER;
 						} else if (jobclass == JOB_MINSTREL_T || jobclass == JOB_WANDERER_T) {
 							char_dat[i].status.class_ = (sex) ? JOB_MINSTREL_T : JOB_WANDERER_T;
+						} else if (jobclass == JOB_BABY_MINSTREL || jobclass == JOB_BABY_WANDERER) {
+							char_dat[i].status.class_ = (sex) ? JOB_BABY_MINSTREL : JOB_BABY_WANDERER;
 						}
 						// remove specifical skills of classes 19, 4020 and 4042
 						for(j = 315; j <= 322; j++) {
@@ -2532,7 +2552,10 @@ void char_read_fame_list(void)
 		if (char_dat[id[i]].status.fame && (
 			char_dat[id[i]].status.class_ == JOB_BLACKSMITH ||
 			char_dat[id[i]].status.class_ == JOB_WHITESMITH ||
-			char_dat[id[i]].status.class_ == JOB_BABY_BLACKSMITH))
+			char_dat[id[i]].status.class_ == JOB_BABY_BLACKSMITH ||
+			char_dat[id[i]].status.class_ == JOB_MECHANIC ||
+			char_dat[id[i]].status.class_ == JOB_MECHANIC_T ||
+			char_dat[id[i]].status.class_ == JOB_BABY_MECHANIC))
 		{
 			fame_item.id = char_dat[id[i]].status.char_id;
 			fame_item.fame = char_dat[id[i]].status.fame;
@@ -2547,7 +2570,10 @@ void char_read_fame_list(void)
 		if (char_dat[id[i]].status.fame && (
 			char_dat[id[i]].status.class_ == JOB_ALCHEMIST ||
 			char_dat[id[i]].status.class_ == JOB_CREATOR ||
-			char_dat[id[i]].status.class_ == JOB_BABY_ALCHEMIST))
+			char_dat[id[i]].status.class_ == JOB_BABY_ALCHEMIST ||
+			char_dat[id[i]].status.class_ == JOB_GENETIC ||
+			char_dat[id[i]].status.class_ == JOB_GENETIC_T ||
+			char_dat[id[i]].status.class_ == JOB_BABY_GENETIC))
 		{
 			fame_item.id = char_dat[id[i]].status.char_id;
 			fame_item.fame = char_dat[id[i]].status.fame;

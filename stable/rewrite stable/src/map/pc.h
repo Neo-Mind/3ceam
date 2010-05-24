@@ -410,8 +410,8 @@ struct map_session_data {
 };
 
 
-//Update this max as necessary. Raised from 54 to 72 as the trans version of Mechanic needs it
-#define MAX_SKILL_TREE 72
+//Update this max as necessary. Raised from 54 to 80 as the trans version of Sorcerer needs it. [Rytech]
+#define MAX_SKILL_TREE 80
 //Total number of classes (for data storage)
 #define CLASS_COUNT (JOB_MAX - JOB_NOVICE_HIGH + JOB_MAX_BASIC)
 
@@ -526,7 +526,7 @@ extern int duel_count;
 #define pc_isinvisible(sd)    ( (sd)->sc.option&OPTION_INVISIBLE )
 #define pc_is50overweight(sd) ( (sd)->weight*100 >= (sd)->max_weight*battle_config.natural_heal_weight_rate )
 #define pc_is90overweight(sd) ( (sd)->weight*10 >= (sd)->max_weight*9 )
-#define pc_maxparameter(sd)   ( (sd)->class_&JOBL_THIRD ? battle_config.max_third_parameter : ((sd)->class_&JOBL_BABY ? battle_config.max_baby_parameter : battle_config.max_parameter) )
+#define pc_maxparameter(sd)   ( ((sd)->class_&JOBL_THIRD ? ((sd)->class_&JOBL_BABY ? battle_config.max_baby_third_paramater : battle_config.max_third_parameter) : ((sd)->class_&JOBL_BABY ? battle_config.max_baby_parameter : battle_config.max_parameter)) )
 
 #define pc_stop_walking(sd, type) unit_stop_walking(&(sd)->bl, type)
 #define pc_stop_attack(sd) unit_stop_attack(&(sd)->bl)
@@ -535,7 +535,7 @@ extern int duel_count;
 #define pc_check_weapontype(sd, type) ((type)&((sd)->status.weapon < MAX_WEAPON_TYPE? \
 	1<<(sd)->status.weapon:(1<<(sd)->weapontype1)|(1<<(sd)->weapontype2)))
 //Checks if the given class value corresponds to a player class. [Skotlex]
-#define pcdb_checkid(class_) (class_ < JOB_MAX_BASIC || (class_ >= JOB_NOVICE_HIGH && class_ <= JOB_DARK_COLLECTOR) || (class_ >= JOB_RUNE_KNIGHT && class_ < JOB_MAX))
+#define pcdb_checkid(class_) (class_ < JOB_MAX_BASIC || (class_ >= JOB_NOVICE_HIGH && class_ <= JOB_DARK_COLLECTOR) || (class_ >= JOB_RUNE_KNIGHT && class_ <= JOB_MECHANIC_T2) || (class_ >= JOB_BABY_RUNE && class_ < JOB_MAX))
 
 int pc_class2idx(int class_);
 int pc_isGM(struct map_session_data *sd);
@@ -697,6 +697,7 @@ int pc_addeventtimercount(struct map_session_data *sd,const char *name,int tick)
 int pc_calc_pvprank(struct map_session_data *sd);
 int pc_calc_pvprank_timer(int tid, unsigned int tick, int id, intptr data);
 
+int pc_calc_skillpoint(struct map_session_data* sd);
 int pc_ismarried(struct map_session_data *sd);
 int pc_marriage(struct map_session_data *sd,struct map_session_data *dstsd);
 int pc_divorce(struct map_session_data *sd);

@@ -1358,6 +1358,19 @@ int atcommand_jobchange(const int fd, struct map_session_data* sd, const char* c
 			{ "sura2",		4077 },
 			{ "genetic2",		4078 },
 			{ "shadow chaser2",	4079 },
+			{ "baby rune",		4096 },
+			{ "baby warlock",	4097 },
+			{ "baby ranger",	4098 },
+			{ "baby bishop",	4099 },
+			{ "baby mechanic",	4100 },
+			{ "baby cross",		4101 },
+			{ "baby guard",		4102 },
+			{ "baby sorcerer",	4103 },
+			{ "baby minstrel",	4104 },
+			{ "baby wanderer",	4105 },
+			{ "baby sura",		4106 },
+			{ "baby genetic",	4107 },
+			{ "baby chaser",	4108 },
 		};
 
 		for (i=0; i < ARRAYLENGTH(jobs); i++) {
@@ -1401,13 +1414,19 @@ int atcommand_jobchange(const int fd, struct map_session_data* sd, const char* c
 			clif_displaymessage(fd, "  23 Super Novice     24 Gunslinger       25 Ninja          4046 Taekwon");
 			clif_displaymessage(fd, "4047 Star Gladiator 4049 Soul Linker    4050 Gangsi         4051 Death Knight");
 			clif_displaymessage(fd, "4052 Dark Collector");
-			clif_displaymessage(fd, "---- Baby Classes ----");
+			clif_displaymessage(fd, "---- 1st And 2nd Baby Class ----");
 			clif_displaymessage(fd, "4023 Baby Novice    4024 Baby Swordsman 4025 Baby Mage      4026 Baby Archer");
 			clif_displaymessage(fd, "4027 Baby Acolyte   4028 Baby Merchant  4029 Baby Thief     4030 Baby Knight");
 			clif_displaymessage(fd, "4031 Baby Priest    4032 Baby Wizard    4033 Baby Blacksmith 4034 Baby Hunter");
 			clif_displaymessage(fd, "4035 Baby Assassin  4037 Baby Crusader  4038 Baby Monk      4039 Baby Sage");
 			clif_displaymessage(fd, "4040 Baby Rogue     4041 Baby Alchemist 4042 Baby Bard      4043 Baby Dancer");
 			clif_displaymessage(fd, "4045 Super Baby");
+			clif_displaymessage(fd, "---- 3rd Baby Class ----");
+			clif_displaymessage(fd, "4096 Baby Rune Knight    4097 Baby Warlock        4098 Baby Ranger");
+			clif_displaymessage(fd, "4099 Baby Arch Bishop    4100 Baby Mechanic       4101 Baby Guillotine Cross");
+			clif_displaymessage(fd, "4102 Baby Royal Guard    4103 Baby Sorcerer       4104 Baby Minstrel");
+			clif_displaymessage(fd, "4105 Baby Wanderer       4106 Baby Sura           4107 Baby Genetic");
+			clif_displaymessage(fd, "4108 Baby Shadow Chaser");
 			clif_displaymessage(fd, "---- Mounts, Modes, And Others ----");
 			clif_displaymessage(fd, "  13 Knight (Peco)    21 Crusader (Peco)  22 Wedding          26 Christmas");
 			clif_displaymessage(fd, "  27 Summer 4014 Lord Knight (Peco) 4022 Paladin (Peco)  4036 Baby Knight (Peco)");
@@ -1461,13 +1480,19 @@ int atcommand_jobchange(const int fd, struct map_session_data* sd, const char* c
 		clif_displaymessage(fd, "  23 Super Novice     24 Gunslinger       25 Ninja          4046 Taekwon");
 		clif_displaymessage(fd, "4047 Star Gladiator 4049 Soul Linker    4050 Gangsi         4051 Death Knight");
 		clif_displaymessage(fd, "4052 Dark Collector");
-		clif_displaymessage(fd, "---- Baby Classes ----");
+		clif_displaymessage(fd, "---- 1st And 2nd Baby Class ----");
 		clif_displaymessage(fd, "4023 Baby Novice    4024 Baby Swordsman 4025 Baby Mage      4026 Baby Archer");
 		clif_displaymessage(fd, "4027 Baby Acolyte   4028 Baby Merchant  4029 Baby Thief     4030 Baby Knight");
 		clif_displaymessage(fd, "4031 Baby Priest    4032 Baby Wizard    4033 Baby Blacksmith 4034 Baby Hunter");
 		clif_displaymessage(fd, "4035 Baby Assassin  4037 Baby Crusader  4038 Baby Monk      4039 Baby Sage");
 		clif_displaymessage(fd, "4040 Baby Rogue     4041 Baby Alchemist 4042 Baby Bard      4043 Baby Dancer");
 		clif_displaymessage(fd, "4045 Super Baby");
+		clif_displaymessage(fd, "---- 3rd Baby Class ----");
+		clif_displaymessage(fd, "4096 Baby Rune Knight    4097 Baby Warlock        4098 Baby Ranger");
+		clif_displaymessage(fd, "4099 Baby Arch Bishop    4100 Baby Mechanic       4101 Baby Guillotine Cross");
+		clif_displaymessage(fd, "4102 Baby Royal Guard    4103 Baby Sorcerer       4104 Baby Minstrel");
+		clif_displaymessage(fd, "4105 Baby Wanderer       4106 Baby Sura           4107 Baby Genetic");
+		clif_displaymessage(fd, "4108 Baby Shadow Chaser");
 		clif_displaymessage(fd, "---- Mounts, Modes, And Others ----");
 		clif_displaymessage(fd, "  13 Knight (Peco)    21 Crusader (Peco)  22 Wedding          26 Christmas");
 		clif_displaymessage(fd, "  27 Summer 4014 Lord Knight (Peco) 4022 Paladin (Peco)  4036 Baby Knight (Peco)");
@@ -4537,65 +4562,75 @@ int atcommand_mapinfo(const int fd, struct map_session_data* sd, const char* com
  *------------------------------------------*/
 int atcommand_mount(const int fd, struct map_session_data* sd, const char* command, const char* message)
 {
-	int class_, msg[4]= { 0, 0, 0, 0}, option=0, skillnum=0, val, riding_flag = 0;
+	int msg[4] = { 0, 0, 0, 0 }, option = 0, skillnum = 0, val, riding_flag = 0;
 	nullpo_retr(-1, sd);
 
-	if (!message || !*message || sscanf(message, "%d", &val) < 1 || val < 1 || val > 5)
+	if( !message || !*message || sscanf(message, "%d", &val) < 1 || val < 1 || val > 5 )
 		val = 0; // Default color to riding dragon
 
-	class_ = pc_mapid2jobid(sd->class_&MAPID_THIRDMASK, sd->status.sex);
-	if( class_ == -1 )
+	if( (sd->class_&MAPID_UPPERMASK) == MAPID_KNIGHT || (sd->class_&MAPID_UPPERMASK) == MAPID_CRUSADER )
 	{
-		ShowError("atcommand_mount: Invalid class %d for player %s (%d:%d).\n", sd->status.class_, sd->status.name, sd->status.account_id, sd->status.char_id);
-		return -1;
-	}
-
-	switch( class_ )
-	{
-		case JOB_KNIGHT: case JOB_KNIGHT2: case JOB_CRUSADER: case JOB_CRUSADER2:
-		case JOB_LORD_KNIGHT: case JOB_PALADIN: case JOB_BABY_KNIGHT: case JOB_BABY_KNIGHT2:
-		case JOB_BABY_CRUSADER: case JOB_BABY_CRUSADER2:
-			if( pc_isriding(sd, OPTION_RIDING) && !(sd->class_&JOBL_THIRD))
+		if( sd->class_&JOBL_THIRD )
+		{
+			if( (sd->class_&MAPID_UPPERMASK) == MAPID_KNIGHT )
+			{ // Rune Knight
+				if( pc_isriding(sd,OPTION_RIDING_DRAGON) )
+					riding_flag = 1;
+				msg[0] = 700; msg[1] = 702; msg[2] = 701; msg[3] = 703;
+				option = pc_isriding(sd,OPTION_RIDING_DRAGON) ? OPTION_RIDING_DRAGON :
+					(val == 2) ? OPTION_BLACK_DRAGON :
+					(val == 3) ? OPTION_WHITE_DRAGON :
+					(val == 4) ? OPTION_BLUE_DRAGON :
+					(val == 5) ? OPTION_RED_DRAGON :
+					OPTION_GREEN_DRAGON;
+				skillnum = RK_DRAGONTRAINING;
+			}
+			else
+			{ // Royal Guard
+				if( pc_isriding(sd,OPTION_RIDING) )
+					riding_flag = 1;
+				msg[0] = 714; msg[1] = 716; msg[2] = 715; msg[3] = 717;
+				option = OPTION_RIDING;
+				skillnum = KN_RIDING;
+			}
+		}
+		else
+		{ // Lord Knight - Knight - Paladin - Crusader
+			if( pc_isriding(sd,OPTION_RIDING) )
 				riding_flag = 1;
 			msg[0] = 102; msg[1] = 214; msg[2] = 213; msg[3] = 212;
 			option = OPTION_RIDING;
 			skillnum = KN_RIDING;
-			break;
-		case JOB_RUNE_KNIGHT: case JOB_RUNE_KNIGHT2: case JOB_RUNE_KNIGHT_T:  case JOB_RUNE_KNIGHT_T2:
-			if( pc_isriding(sd, OPTION_RIDING_DRAGON) )
-				riding_flag = 1;
-			msg[0] = 700; msg[1] = 702; msg[2] = 701; msg[3] = 703;
-			option = (pc_isriding(sd, OPTION_RIDING_DRAGON))?OPTION_RIDING_DRAGON:((val==2)?OPTION_BLACK_DRAGON:(val==3)?OPTION_WHITE_DRAGON:(val==4)?OPTION_BLUE_DRAGON:(val==5)?OPTION_RED_DRAGON:OPTION_GREEN_DRAGON);
-			skillnum = RK_DRAGONTRAINING;
-			break;
-		case JOB_RANGER: case JOB_RANGER2: case JOB_RANGER_T: case JOB_RANGER_T2:
+		}
+	}
+	else if( sd->class_&JOBL_THIRD )
+	{
+		if( (sd->class_&MAPID_UPPERMASK) == MAPID_HUNTER )
+		{ // Ranger
 			if( pc_iswarg(sd) )
-				pc_setoption(sd, sd->sc.option&~OPTION_WUG);
-			if( pc_isriding(sd, OPTION_RIDING_WUG) )
+				pc_setoption(sd,sd->sc.option&~OPTION_WUG);
+			if( pc_isriding(sd,OPTION_RIDING_WUG) )
 				riding_flag = 1;
 			msg[0] = 704; msg[1] = 706; msg[2] = 705; msg[3] = 707;
 			option = OPTION_RIDING_WUG;
 			skillnum = RA_WUGRIDER;
-			break;
-		case JOB_MECHANIC: case JOB_MECHANIC2: case JOB_MECHANIC_T: case JOB_MECHANIC_T2:
+		}
+		else if( (sd->class_&MAPID_UPPERMASK) == MAPID_BLACKSMITH )
+		{
 			if( pc_isriding(sd, OPTION_MADO) )
 				riding_flag = 1;
 			msg[0] = 710; msg[1] = 712; msg[2] = 711; msg[3] = 713;
 			option = OPTION_MADO;
-			break;
-		case JOB_ROYAL_GUARD: case JOB_ROYAL_GUARD2: case JOB_ROYAL_GUARD_T: case JOB_ROYAL_GUARD_T2:
-			if( pc_isriding(sd, OPTION_RIDING) && (sd->class_&JOBL_THIRD))
-				riding_flag = 1;
-			msg[0] = 714; msg[1] = 716; msg[2] = 715; msg[3] = 717;
-			option = OPTION_RIDING;
-			skillnum = KN_RIDING;
-			break;
-		default:
-			clif_displaymessage(fd, "You can not mount with your current job.");
-			return -1;
+		}
 	}
 
-	if( !pc_checkskill(sd,skillnum) && option != OPTION_MADO )
+	if( !option )
+	{
+		clif_displaymessage(fd, "You can not mount with your current job.");
+		return -1;
+	}
+
+	if( skillnum && !pc_checkskill(sd,skillnum) )
 	{ // You haven't required skill to mount
 		clif_displaymessage(fd, msg_txt(msg[2])); // You can not mount with your current job.
 		return -1;
@@ -6512,8 +6547,7 @@ int atcommand_npctalk(const int fd, struct map_session_data* sd, const char* com
 	
 	strtok(name, "#"); // discard extra name identifier if present
 	snprintf(temp, sizeof(temp), "%s : %s", name, mes);
-	clif_message(&nd->bl, temp);
-
+	
 	if(ifcolor) clif_messagecolor(&nd->bl,color,temp);
 	else clif_message(&nd->bl, temp);
 

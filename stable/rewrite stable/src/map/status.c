@@ -1844,9 +1844,9 @@ static unsigned int status_base_pc_maxhp(struct map_session_data* sd, struct sta
 
 	val += val * status->vit/100; // +1% per each point of VIT
 
-	if (sd->class_&JOBL_UPPER || sd->class_&JOBL_THIRD_UPPER)
+	if( sd->class_&JOBL_UPPER )
 		val += val * 25/100; //Trans classes get a 25% hp bonus
-	else if (sd->class_&JOBL_BABY)
+	else if( sd->class_&JOBL_BABY )
 		val -= val * 30/100; //Baby classes get a 30% hp penalty
 	return val;
 }
@@ -1858,7 +1858,7 @@ static unsigned int status_base_pc_maxsp(struct map_session_data* sd, struct sta
 	val = 10 + sd->status.base_level*sp_coefficient[pc_class2idx(sd->status.class_)]/100;
 	val += val * status->int_/100;
 
-	if (sd->class_&JOBL_UPPER || sd->class_&JOBL_THIRD_UPPER)
+	if (sd->class_&JOBL_UPPER)
 		val += val * 25/100;
 	else if (sd->class_&JOBL_BABY)
 		val -= val * 30/100;
@@ -1972,7 +1972,7 @@ int status_calc_pc_(struct map_session_data* sd, bool first)
 	status->mode = MD_MASK&~(MD_BOSS|MD_PLANT|MD_DETECTOR|MD_ANGRY);
 
 	status->size = (sd->class_&JOBL_BABY)?0:1;
-	if (battle_config.character_size && pc_isriding(sd,OPTION_RIDING|OPTION_RIDING_DRAGON)) { //[Lupus]
+	if (battle_config.character_size && pc_isriding(sd,OPTION_RIDING|OPTION_RIDING_DRAGON|OPTION_RIDING_WUG|OPTION_MADO)) { //[Lupus]
 		if (sd->class_&JOBL_BABY) {
 			if (battle_config.character_size&2)
 				status->size++;
@@ -4876,6 +4876,18 @@ void status_set_viewdata(struct block_list *bl, int class_)
 					break;
 				case JOB_MECHANIC_T:
 					class_ = JOB_MECHANIC_T2;
+					break;
+				case JOB_BABY_RUNE:
+					class_ = JOB_BABY_RUNE2;
+					break;
+				case JOB_BABY_RANGER:
+					class_ = JOB_BABY_RANGER2;
+					break;
+				case JOB_BABY_MECHANIC:
+					class_ = JOB_BABY_MECHANIC2;
+					break;
+				case JOB_BABY_GUARD:
+					class_ = JOB_BABY_GUARD2;
 					break;
 				}
 				sd->vd.class_ = class_;
