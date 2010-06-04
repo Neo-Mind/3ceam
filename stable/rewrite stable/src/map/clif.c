@@ -853,8 +853,8 @@ static int clif_set_unit_idle(struct block_list* bl, unsigned char* buffer, bool
 
 	if( bl->type == BL_NPC && vd->class_ == FLAG_CLASS )
 	{	//The hell, why flags work like this?
-		WBUFL(buf,22) = status_get_guild_id(bl);
-		WBUFL(buf,26) = status_get_emblem_id(bl);
+		WBUFL(buf,22) = status_get_emblem_id(bl);
+		WBUFL(buf,26) = status_get_guild_id(bl);
 	}
 
 	WBUFW(buf,28) = vd->hair_color;
@@ -961,8 +961,8 @@ static int clif_set_unit_idle2(struct block_list* bl, unsigned char* buffer, boo
 	WBUFW(buf,31) = vd->head_mid;
 	if( bl->type == BL_NPC && vd->class_ == FLAG_CLASS )
 	{
-		WBUFL(buf,27) = status_get_guild_id(bl);
-		WBUFL(buf,31) = status_get_emblem_id(bl);
+		WBUFL(buf,27) = status_get_emblem_id(bl);
+		WBUFL(buf,31) = status_get_guild_id(bl);
 	}
 	WBUFW(buf,33) = vd->hair_color;
 	WBUFW(buf,35) = vd->cloth_color;
@@ -14309,9 +14309,9 @@ static int packetdb_readdb(void)
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 #if PACKETVER <= 20081217
-	    0,  0,  0,  0, 55, 17,  3, 37,  46, -1, 23, -1,  3,110,  3,  2,
+	    0,  0,  0,  0, 55, 17,  3, 37, 46, -1, 23, -1,  3,110,  3,  2,
 #else
-	    0,  0,  0,  0, 55, 17,  3, 37,  46, -1, 23, -1,  3,114,  3,  2,
+	    0,  0,  0,  0, 55, 17,  3, 37, 46, -1, 23, -1,  3,114,  3,  2,
 #endif
 #if PACKETVER < 2
 	    3, 28, 19, 11,  3, -1,  9,  5, 52, 51, 56, 58, 41,  2,  6,  6,
@@ -14487,9 +14487,11 @@ static int packetdb_readdb(void)
 	    6,  2, -1,  4,  4,  4,  4,  8,  8,268,  6,  8,  6, 54, 30, 54,
 #endif
 	    0,  0,  8,  0,  0,  8,  8, 32, -1,  5,  0,  0,  0,  0,  0,  0,
-	    0,  0,  0,  0,  0,  0, 14, -1, -1, -1,  8, 25,  0,  0,  0,  0,
+	    0,  0,  0,  0,  0,  0, 14, 93, 86, 87,  8, 25,  0,  0,  0,  0,
 	  //#0x0800
 	   -1, -1, 18,  4, 14, -1,  2,  4, 14, 50, 18,  6,  2,  0, 14, 20,
+	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	};
 	struct {
