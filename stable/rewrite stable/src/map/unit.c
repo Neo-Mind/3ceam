@@ -1020,13 +1020,13 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 		return 0;
 
 	//Normally not needed because clif.c checks for it, but the at/char/script commands don't! [Skotlex]
-	if(ud->skilltimer != -1 && skill_num != SA_CASTCANCEL)
+	if( ud->skilltimer != -1 && skill_num != SA_CASTCANCEL )
 		return 0;
 
 	if(skill_get_inf2(skill_num)&INF2_NO_TARGET_SELF && src->id == target_id)
 		return 0;
 
-	if(!status_check_skilluse(src, target, skill_num, 0))
+	if( !status_check_skilluse(src, target, skill_num, 0) )
 		return 0;
 
 	tstatus = status_get_status_data(target);
@@ -1189,7 +1189,7 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 		casttime = 0;
 
 	if( casttime > 0 || temp )
-	{ 
+	{
 		unit_stop_walking(src,1);
 		clif_skillcasting(src, src->id, target_id, 0,0, skill_num, skill_get_ele(skill_num, skill_lv), casttime);
 
@@ -1242,7 +1242,7 @@ int unit_skilluse_id2(struct block_list *src, int target_id, short skill_num, sh
 	ud->skillid      = skill_num;
 	ud->skilllv      = skill_lv;
 
- 	if( sc && sc->data[SC_CLOAKING] && !(sc->data[SC_CLOAKING]->val4&4) && skill_num != AS_CLOAKING )
+	if( sc && sc->data[SC_CLOAKING] && !(sc->data[SC_CLOAKING]->val4&4) && skill_num != AS_CLOAKING )
 	{ // Need confirm if Cloaking Exceed ends it.
 		status_change_end(src,SC_CLOAKING,-1);
 		if (!src->prev) return 0; //Warped away!
@@ -2173,6 +2173,7 @@ int unit_free(struct block_list *bl, int clrtype)
 			pc_inventory_rental_clear(sd);
 			if( sd->state.bg_id ) bg_team_leave(sd,1);
 			pc_delspiritball(sd,sd->spiritball,1);
+			skill_blockpc_clear(sd);
 
 			if( sd->reg )
 			{	//Double logout already freed pointer fix... [Skotlex]

@@ -84,7 +84,7 @@ struct s_skill_db {
 	char desc[40];
 	int range[MAX_SKILL_LEVEL],hit,inf,element[MAX_SKILL_LEVEL],nk,splash[MAX_SKILL_LEVEL],max;
 	int num[MAX_SKILL_LEVEL];
-	int cast[MAX_SKILL_LEVEL],walkdelay[MAX_SKILL_LEVEL],delay[MAX_SKILL_LEVEL],cooldown[MAX_SKILL_LEVEL];
+	int cast[MAX_SKILL_LEVEL],walkdelay[MAX_SKILL_LEVEL],delay[MAX_SKILL_LEVEL],cooldown[MAX_SKILL_LEVEL],fixed_cast[MAX_SKILL_LEVEL];
 	int upkeep_time[MAX_SKILL_LEVEL],upkeep_time2[MAX_SKILL_LEVEL];
 	int castcancel,cast_def_rate;
 	int inf2,maxcount[MAX_SKILL_LEVEL],skill_type;
@@ -345,6 +345,9 @@ int skillnotok(int skillid, struct map_session_data *sd);
 int skillnotok_hom(int skillid, struct homun_data *hd);
 int skillnotok_mercenary(int skillid, struct mercenary_data *md);
 
+int skill_blockpc_clear(struct map_session_data *sd);
+int skill_blockpc_end(int tid, unsigned int tick, int id, intptr data);
+
 int skill_chastle_mob_changetarget(struct block_list *bl,va_list ap);
 
 // ÉAÉCÉeÉÄçÏê¨
@@ -364,6 +367,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skilllv,unsigned int tick,int flag);
 
 int skill_blockpc_start (struct map_session_data*,int,int);
+int skill_blockpc_get(struct map_session_data *sd, int skillid);
 int skill_blockhomun_start (struct homun_data*,int,int);
 int skill_blockmerc_start (struct mercenary_data*,int,int);
 
@@ -1166,6 +1170,7 @@ enum e_skill {
 	RK_FIGHTINGSPIRIT,
 	RK_ABUNDANCE,
 	RK_PHANTOMTHRUST,
+
 	GC_VENOMIMPRESS,
 	GC_CROSSIMPACT,
 	GC_DARKILLUSION,
@@ -1183,6 +1188,7 @@ enum e_skill {
 	GC_HALLUCINATIONWALK,
 	GC_ROLLINGCUTTER,
 	GC_CROSSRIPPERSLASHER,
+
 	AB_JUDEX,
 	AB_ANCILLA,
 	AB_ADORAMUS,
@@ -1236,6 +1242,7 @@ enum e_skill {
 	WL_RELEASE,
 	WL_READING_SB,
 	WL_FREEZE_SP,
+
 	RA_ARROWSTORM,
 	RA_FEARBREEZE,
 	RA_RANGERMAIN,
@@ -1258,6 +1265,7 @@ enum e_skill {
 	RA_VERDURETRAP,
 	RA_FIRINGTRAP,
 	RA_ICEBOUNDTRAP,
+
 	NC_MADOLICENCE,
 	NC_BOOSTKNUCKLE,
 	NC_PILEBUNKER,
@@ -1287,6 +1295,7 @@ enum e_skill {
 	NC_SILVERSNIPER,
 	NC_MAGICDECOY,
 	NC_DISJOINT,
+
 	SC_FATALMENACE,
 	SC_REPRODUCE,
 	SC_AUTOSHADOWSPELL,
@@ -1328,6 +1337,7 @@ enum e_skill {
 	LG_EARTHDRIVE,
 	LG_HESPERUSLIT,
 	LG_INSPIRATION,
+
 	SR_DRAGONCOMBO,
 	SR_SKYNETBLOW,
 	SR_EARTHSHAKER,

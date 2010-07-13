@@ -1330,17 +1330,18 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 
 	can_move = (mode&MD_CANMOVE)&&unit_can_move(&md->bl);
 
-	if (md->target_id)
+	if( md->target_id )
 	{	//Check validity of current target. [Skotlex]
 		tbl = map_id2bl(md->target_id);
-		if (!tbl || tbl->m != md->bl.m ||
+		if( !tbl || tbl->m != md->bl.m ||
 			(md->ud.attacktimer == -1 && !status_check_skilluse(&md->bl, tbl, 0, 0)) ||
 			(md->ud.walktimer != -1 && !(battle_config.mob_ai&0x1) && !check_distance_bl(&md->bl, tbl, md->min_chase)) ||
 			(
 				tbl->type == BL_PC &&
 				((((TBL_PC*)tbl)->state.gangsterparadise && !(mode&MD_BOSS)) ||
 				((TBL_PC*)tbl)->invincible_timer != INVALID_TIMER)
-		)) {	//Unlock current target.
+		) )
+		{	//Unlock current target.
 			if (mob_warpchase(md, tbl))
 				return true; //Chasing this target.
 			mob_unlocktarget(md, tick-(battle_config.mob_ai&0x8?3000:0)); //Imediately do random walk.

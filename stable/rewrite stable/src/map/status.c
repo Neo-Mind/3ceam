@@ -408,17 +408,15 @@ void initChangeTables(void)
 	add_sc( SA_ELEMENTWIND       , SC_ELEMENTALCHANGE );
 
 	set_sc( RK_ENCHANTBLADE      , SC_ENCHANTBLADE    , SI_ENCHANTBLADE    , SCB_NONE );
-	set_sc( RK_WINDCUTTER        , SC_FEAR            , SI_BLANK           , SCB_FLEE|SCB_HIT );
 	set_sc( RK_DEATHBOUND        , SC_DEATHBOUND      , SI_DEATHBOUND      , SCB_NONE );
-	set_sc( RK_DRAGONHOWLING     , SC_FEAR            , SI_BLANK           , SCB_FLEE|SCB_HIT );
+	set_sc( RK_WINDCUTTER        , SC_FEAR            , SI_BLANK           , SCB_FLEE|SCB_HIT );
 	add_sc( RK_DRAGONBREATH      , SC_BURNING         );
-	set_sc( RK_MILLENNIUMSHIELD  , SC_BERKANA         , SI_REUSE_MILLENNIUMSHIELD      , SCB_NONE );
-	set_sc( RK_CRUSHSTRIKE       , SC_RAIDO           , SI_REUSE_CRUSHSTRIKE           , SCB_NONE );
+	set_sc( RK_DRAGONHOWLING     , SC_FEAR            , SI_BLANK           , SCB_FLEE|SCB_HIT );
+	set_sc( RK_MILLENNIUMSHIELD  , SC_BERKANA         , SI_MILLENNIUMSHIELD   , SCB_NONE );
 	set_sc( RK_REFRESH           , SC_NAUTHIZ         , SI_REFRESH            , SCB_NONE );
 	set_sc( RK_GIANTGROWTH       , SC_THURISAZ        , SI_GIANTGROWTH        , SCB_STR );
 	set_sc( RK_STONEHARDSKIN     , SC_HAGALAZ         , SI_STONEHARDSKIN      , SCB_NONE );
 	set_sc( RK_VITALITYACTIVATION       , SC_ISA      , SI_VITALITYACTIVATION , SCB_REGEN );
-	//set_sc( RK_STORMBLAST        , SC_WYRD            , SI_REUSE_STORMBLAST   , SCB_NONE );
 	set_sc( RK_FIGHTINGSPIRIT    , SC_OTHILA          , SI_FIGHTINGSPIRIT     , SCB_WATK|SCB_ASPD );
 	set_sc( RK_ABUNDANCE         , SC_URUZ            , SI_ABUNDANCE          , SCB_NONE );
 
@@ -606,8 +604,6 @@ void initChangeTables(void)
 	StatusIconChangeTable[SC_MERC_HPUP] = SI_MERC_HPUP;
 	StatusIconChangeTable[SC_MERC_SPUP] = SI_MERC_SPUP;
 	StatusIconChangeTable[SC_MERC_HITUP] = SI_MERC_HITUP;
-
-	StatusIconChangeTable[SC_REUSE_REFRESH] = SI_REUSE_REFRESH;
 
 	StatusIconChangeTable[SC_HALLUCINATIONWALK_POSTDELAY] = SI_HALLUCINATIONWALK_POSTDELAY;
 	// Warlock Spheres
@@ -1307,8 +1303,8 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 			}
 		}
 	}
-
-	if (sc && sc->option)
+	// Check for src's status changes
+	if( sc && sc->option )
 	{
 		if (sc->option&OPTION_HIDE)
 		switch (skill_num) { //Usable skills while hiding.
@@ -1341,9 +1337,9 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 				default:
 					return 0;
 			}
-		if (sc->option&OPTION_MADO && ((TBL_PC*)src)->skillitem != skill_num)
+		if( sc->option&OPTION_MADO && ((TBL_PC*)src)->skillitem != skill_num )
 		{
-			switch(skill_num)
+			switch( skill_num )
 			{ //Blacksmiths and Mastersmiths skills are unusable when Mado is equipped. [Jobbie]
 				case BS_REPAIRWEAPON:  case WS_MELTDOWN:
 				case BS_HAMMERFALL:    case WS_CARTBOOST:
@@ -1360,24 +1356,25 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 			}
 		}
 	}
-	if (target == NULL || target == src) //No further checking needed.
+	if( target == NULL || target == src ) //No further checking needed.
 		return 1;
 
 	tsc = status_get_sc(target);
 	
-	if(tsc && tsc->count)
+	// Check for target's status changes.
+	if( tsc && tsc->count )
 	{	
-		if(!skill_num && !(status->mode&MD_BOSS) && tsc->data[SC_TRICKDEAD])
+		if( !skill_num && !(status->mode&MD_BOSS) && tsc->data[SC_TRICKDEAD] )
 			return 0;
-		if((skill_num == WZ_STORMGUST || skill_num == NJ_HYOUSYOURAKU)
-			&& tsc->data[SC_FREEZE])
+		if( (skill_num == WZ_STORMGUST || skill_num == NJ_HYOUSYOURAKU)
+			&& tsc->data[SC_FREEZE] )
 			return 0;
-		if(skill_num == PR_LEXAETERNA && (tsc->data[SC_FREEZE] || (tsc->data[SC_STONE] && tsc->opt1 == OPT1_STONE)))
+		if( skill_num == PR_LEXAETERNA && (tsc->data[SC_FREEZE] || (tsc->data[SC_STONE] && tsc->opt1 == OPT1_STONE)) )
 			return 0;
 	}
 
 	//If targetting, cloak+hide protect you, otherwise only hiding does.
-	hide_flag = flag?OPTION_HIDE:(OPTION_HIDE|OPTION_CLOAK|OPTION_CHASEWALK);
+	hide_flag = flag ? OPTION_HIDE : (OPTION_HIDE|OPTION_CLOAK|OPTION_CHASEWALK);
 		
  	//You cannot hide from ground skills.
 	if( skill_get_ele(skill_num,1) == ELE_EARTH ) //TODO: Need Skill Lv here :/
@@ -1388,7 +1385,7 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 	case BL_PC:
 		{
 			struct map_session_data *sd = (TBL_PC*) target;
-			if (pc_isinvisible(sd))
+			if( pc_isinvisible(sd) )
 				return 0;
 			if ( tsc->data[SC_CLOAKINGEXCEED] && !(status->mode&MD_BOSS) )
 				return 0;
@@ -1401,7 +1398,7 @@ int status_check_skilluse(struct block_list *src, struct block_list *target, int
 		break;
 	case BL_ITEM:	//Allow targetting of items to pick'em up (or in the case of mobs, to loot them).
 		//TODO: Would be nice if this could be used to judge whether the player can or not pick up the item it targets. [Skotlex]
-		if (status->mode&MD_LOOTER)
+		if( status->mode&MD_LOOTER )
 			return 1;
 		return 0;
 	case BL_HOM: 
@@ -1635,16 +1632,18 @@ int status_calc_mob_(struct mob_data* md, bool first)
 	{	//Max HP setting from Summon Flora/marine Sphere
 		struct unit_data *ud = unit_bl2ud(mbl);
 		//Remove special AI when this is used by regular mobs.
-		if (mbl->type == BL_MOB && !((TBL_MOB*)mbl)->special_state.ai)
+		if( mbl->type == BL_MOB && !((TBL_MOB*)mbl)->special_state.ai )
 			md->special_state.ai = 0;
-		if (ud)
+		if( ud )
 		{	// different levels of HP according to skill level
-			if (ud->skillid == AM_SPHEREMINE) {
+			if (ud->skillid == AM_SPHEREMINE)
 				status->max_hp = 2000 + 400*ud->skilllv;
-			} else { //AM_CANNIBALIZE
+			else
+			{ //AM_CANNIBALIZE
 				status->max_hp = 1500 + 200*ud->skilllv + 10*status_get_lv(mbl);
 				status->mode|= MD_CANATTACK|MD_AGGRESSIVE;
 			}
+
 			status->hp = status->max_hp;
 		}
 	}
@@ -3714,8 +3713,6 @@ static unsigned short status_calc_batk(struct block_list *bl, struct status_chan
 		batk += sc->data[SC_GATLINGFEVER]->val3;
 	if(sc->data[SC_MADNESSCANCEL])
 		batk += 100;
-	if(sc->data[SC_HAGALAZ] && sc->data[SC_HAGALAZ]->val3)
-		batk -= batk / 100 * 25;
 	if(sc->data[SC_GN_CARTBOOST])
 		batk += sc->data[SC_GN_CARTBOOST]->val1 * 10;
 	if(sc->data[SC_STRIKING])
@@ -4364,7 +4361,7 @@ static short status_calc_aspd_rate(struct block_list *bl, struct status_change *
 	if( sc->data[SC_FREEZING] )
 		aspd_rate += 300;
 	if( sc->data[SC_OTHILA] && sc->data[SC_OTHILA]->val2 )
-		aspd_rate -= (aspd_rate * sc->data[SC_OTHILA]->val2 / 100) + sc->data[SC_OTHILA]->val3;
+		aspd_rate -= sc->data[SC_OTHILA]->val2;
 	if( sc->data[SC_PARALYSE] )
 		aspd_rate += sc->data[SC_PARALYSE]->val2 / 100;
 	if( sc->data[SC__BODYPAINT] )
@@ -5237,9 +5234,33 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 	if( !sc )
 		return 0; //Unable to receive status changes
 
-	if( sc->data[SC_NAUTHIZ] && type != SC_STUN && type != SC_FREEZING )
-		return 0;
-	
+	if( sc->data[SC_NAUTHIZ] )
+	{
+		if( type >= SC_COMMON_MIN && type <= SC_COMMON_MAX && type != SC_STUN )
+			return 0; // Inmune
+		switch( type )
+		{
+		case SC_HALLUCINATION:
+		case SC_QUAGMIRE:
+		case SC_SIGNUMCRUCIS:
+		case SC_DECREASEAGI:
+		case SC_SLOWDOWN:
+		case SC_MINDBREAKER:
+		case SC_WINKCHARM:
+		//case SC_STOP: Some tests have determined that this status is not blocked by Nauthiz Rune
+		case SC_ORCISH:
+		case SC_STRIPWEAPON:
+		case SC_STRIPSHIELD:
+		case SC_STRIPARMOR:
+		case SC_STRIPHELM:
+		case SC_BITE:
+		case SC_ADORAMUS:
+		case SC_BURNING:
+		case SC_FEAR:
+		case SC_DEEPSLEEP:
+			return 0;
+		}
+	}
 	if( status_isdead(bl) )
 		return 0;
 
@@ -5469,9 +5490,10 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 
 	//Check for BOSS resistances
 	if(status->mode&MD_BOSS && !(flag&1)) {
-		 if (type>=SC_COMMON_MIN && type <= SC_COMMON_MAX)
+		 if( type >= SC_COMMON_MIN && type <= SC_COMMON_MAX )
 			 return 0;
-		 switch (type) {
+		 switch( type )
+		 {
 			case SC_BLESSING:
 			  if (!undead_flag && status->race!=RC_DEMON)
 				  break;
@@ -6602,18 +6624,12 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 		case SC_DEATHBOUND:
 			val2 = 500 + 100 * val1;
 			break;
-		case SC_BERKANA:
-			val3 = 1000 * val2;
-			break;
 		case SC_OTHILA:
 			val_flag |= 1|2;
 			break;
 		case SC_URUZ:
 			val4 = tick / 10000;
 			tick = 10000;
-			break;
-		case SC_THURISAZ:
-			val4 = tick / 1000;
 			break;
 		case SC_VENOMIMPRESS:
 			val2 = 10 * val1;
@@ -6949,6 +6965,7 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 			if (battle_config.sc_castcancel&bl->type)
 				unit_skillcastcancel(bl, 0);
 		case SC_STOP:
+		case SC_FEAR:
 		case SC_CONFUSION:
 		case SC_CLOSECONFINE:
 		case SC_CLOSECONFINE2:
@@ -7175,10 +7192,6 @@ int status_change_start(struct block_list* bl,enum sc_type type,int rate,int val
 
 	switch( type )
 	{
-		// Skills Delay controled by SC
-		case SC_REUSE_STASIS:   if( sd ) clif_skill_cooldown(sd,WL_STASIS,tick);    break;
-		case SC_REUSE_COMET:    if( sd ) clif_skill_cooldown(sd,WL_COMET,tick);     break;
-		// ----------------------------
 		case SC_BERSERK:
 		case SC_SATURDAYNIGHTFEVER:
 			sce->val2 = 5*status->max_hp/100;
@@ -7263,8 +7276,6 @@ int status_change_clear(struct block_list* bl, int type)
 		case SC_HELLPOWER:
 		case SC_JEXPBOOST:
 		case SC_AUTOTRADE:
-		case SC_REUSE_STASIS:
-		case SC_REUSE_COMET:
 			continue;
 		}
 
@@ -7579,7 +7590,8 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 			break;
 		case SC_WARM:
 		case SC__MANHOLE:
-			if (sce->val4) { //Clear the group.
+			if( sce->val4 )
+			{ //Clear the group.
 				struct skill_unit_group* group = skill_id2group(sce->val4);
 				sce->val4 = 0;
 				skill_delunitgroup(group);
@@ -7626,8 +7638,7 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 			}
 			break;
 		case SC_BERKANA:
-			if( sce->val2 )
-				clif_millenniumshield(sd,0);
+			clif_millenniumshield(sd,0);
 			break;
 		case SC_HALLUCINATIONWALK:
 			sc_start(bl,SC_HALLUCINATIONWALK_POSTDELAY,100,sce->val1,skill_get_time2(GC_HALLUCINATIONWALK,sce->val1));
@@ -8234,26 +8245,11 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr data)
 		}
 		break;
 
-	case SC_THURISAZ:
-		if(--(sce->val4) > 0)
-		{
-			if(sce->val3 > 0)
-				sce->val3 *= -1; // mark it to be consumed.
-			else
-				sce->val3 = 0; // Consume it.
-			sc_timer_next(1000+tick, status_change_timer, bl->id, data);
-			return 0;
-		}
-		break;
-
 	case SC_URUZ:
 		if(--(sce->val4) > 0)
 		{
-			if( status_heal(bl,0,60,0) )
-			{
-				sc_timer_next(10000+tick, status_change_timer, bl->id, data);
-				return 0;
-			}
+			status_heal(bl,0,60,0);
+			sc_timer_next(10000+tick, status_change_timer, bl->id, data);
 		}
 		break;
 
@@ -8622,8 +8618,8 @@ int status_change_timer_sub(struct block_list* bl, va_list ap)
 		}
 		break;
 	case SC_SIGHTBLASTER:
-		if (battle_check_target( src, bl, BCT_ENEMY ) > 0 &&
-			status_check_skilluse(src, bl, WZ_SIGHTBLASTER, 2))
+		if( battle_check_target( src, bl, BCT_ENEMY ) > 0 &&
+			status_check_skilluse(src, bl, WZ_SIGHTBLASTER, 2) )
 		{
 			skill_attack(BF_MAGIC,src,src,bl,WZ_SIGHTBLASTER,1,tick,0);
 			if (sce) sce->val2 = 0; //This signals it to end.
@@ -8696,8 +8692,7 @@ int status_change_clear_buffs (struct block_list* bl, int type)
 			case SC_ELECTRICSHOCKER:
 			case SC__MANHOLE:
 			case SC__MAELSTROM:
-			// Extra large skills cooldowns
-			case SC_REUSE_REFRESH:
+			// Extra large skills 
 			case SC_WEAPONBLOCKING_POSTDELAY:
 			case SC_REUSE_COMET:
 			case SC_REUSE_STASIS:
@@ -8720,6 +8715,8 @@ int status_change_clear_buffs (struct block_list* bl, int type)
 			case SC_STRIPHELM:
 			case SC_BITE:
 			case SC_ADORAMUS:
+			case SC_BURNING:
+			case SC_FEAR:
 				if (!(type&2))
 					continue;
 				break;

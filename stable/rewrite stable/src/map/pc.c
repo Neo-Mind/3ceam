@@ -814,22 +814,17 @@ int pc_isequip(struct map_session_data *sd,int n)
 	//if(!(1<<((sd->class_&JOBL_THIRD)?3:(sd->class_&JOBL_BABY)?2:(sd->class_&JOBL_UPPER)?1:0)&item->class_upper))
 	//	return 0;
 
+	//As Jobbie told me that in kro items for 'trans classes only' are availbable for 3rd classes as well.
 	//Always do something with backward compatiblity. You needn't have done massive db modifications. [Inkfish]
+	while( 1 )
 	{
-		int i = 0;
-
-		// Well, you can uncomment this if you wanna make 1 mean 'Normal jobs' instead of 'All jobs'
-		// If so the upper column needs to be updated from 7 to 15 to mean 'All jobs'.
-		// Since there is usually no special treatmeant for 'Normal jobs', i suggest we leave it as it is to have compatibility with old eA DB.
-		//if( !(sd->class_&MAPID_JOBMASK) ) 
-			i |= 1;
-
-		if( sd->class_&JOBL_UPPER ) i |= 2;
-		if( sd->class_&JOBL_BABY ) i |= 4;
-		if( sd->class_&JOBL_THIRD ) i |= 8;
-
-		if( !(i&item->class_upper) )
-			return 0;
+		if( item->class_upper&1 && !(sd->class_&(JOBL_UPPER|JOBL_THIRD|JOBL_BABY)) ) break;
+		if( item->class_upper&2 && sd->class_&(JOBL_UPPER|JOBL_THIRD) ) break;
+		if( item->class_upper&4 && sd->class_&JOBL_BABY ) break;
+		if( item->class_upper&8 && sd->class_&JOBL_THIRD ) break;
+		if( item->class_upper&16 && sd->class_&JOBL_THIRD && sd->class_&JOBL_UPPER ) break;
+		if( item->class_upper&24 && sd->class_&JOBL_THIRD && sd->class_&JOBL_BABY ) break;
+		return 0;
 	}
 
 	return 1;
@@ -1114,6 +1109,7 @@ int pc_reg_received(struct map_session_data *sd)
 	status_calc_pc(sd,1);
 	chrif_scdata_request(sd->status.account_id, sd->status.char_id);
 #ifndef TXT_ONLY
+	chrif_skillcooldown_request(sd->status.account_id, sd->status.char_id);
 	intif_Mail_requestinbox(sd->status.char_id, 0); // MAIL SYSTEM - Request Mail Inbox
 	intif_request_questlog(sd);
 #endif
@@ -3630,27 +3626,17 @@ int pc_isUseitem(struct map_session_data *sd,int n)
 		(item->class_base[sd->class_&JOBL_2_1?1:(sd->class_&JOBL_2_2?2:0)])
 	))
 		return 0;
-	
-	//Not equipable by upper class. [Skotlex]
-	//if(!(1<<((sd->class_&JOBL_THIRD)?3:(sd->class_&JOBL_BABY)?2:(sd->class_&JOBL_UPPER)?1:0)&item->class_upper))
-	//	return 0;
 
 	//Always do something with backward compatiblity. You needn't have done massive db modifications. [Inkfish]
+	while( 1 )
 	{
-		int i = 0;
-
-		// Well, you can uncomment this if you wanna make 1 mean 'Normal jobs' instead of 'All jobs'
-		// If so the upper column needs to be updated from 7 to 15 to mean 'All jobs'.
-		// Since there is usually no special treatmeant for 'Normal jobs', i suggest we leave it as it is to have compatibility with old eA DB.
-		//if( !(sd->class_&MAPID_JOBMASK) ) 
-			i |= 1;
-
-		if( sd->class_&JOBL_UPPER ) i |= 2;
-		if( sd->class_&JOBL_BABY ) i |= 4;
-		if( sd->class_&JOBL_THIRD ) i |= 8;
-
-		if( !(i&item->class_upper) )
-			return 0;
+		if( item->class_upper&1 && !(sd->class_&(JOBL_UPPER|JOBL_THIRD|JOBL_BABY)) ) break;
+		if( item->class_upper&2 && sd->class_&(JOBL_UPPER|JOBL_THIRD) ) break;
+		if( item->class_upper&4 && sd->class_&JOBL_BABY ) break;
+		if( item->class_upper&8 && sd->class_&JOBL_THIRD ) break;
+		if( item->class_upper&16 && sd->class_&JOBL_THIRD && sd->class_&JOBL_UPPER ) break;
+		if( item->class_upper&24 && sd->class_&JOBL_THIRD && sd->class_&JOBL_BABY ) break;
+		return 0;
 	}
 
 	//Dead Branch & Bloody Branch & Porings Box
@@ -3677,24 +3663,20 @@ int pc_useitem(struct map_session_data *sd,int n)
 	// In this case these sc are OFFICIALS cooldowns for these skills
 	if( itemdb_is_rune(sd->status.inventory[n].nameid) )
 	{
-		struct status_change *sc = status_get_sc(&sd->bl);
-		if( sc )
+		switch(sd->status.inventory[n].nameid)
 		{
-			switch(sd->status.inventory[n].nameid)
-			{
-				case ITEMID_NAUTHIZ:
-					if( sc->data[SC_REUSE_REFRESH] )
-						return 0;
-					break;
-				case ITEMID_RAIDO:
-					if( sc->data[SC_RAIDO] )
-						return 0;
-					break;
-				case ITEMID_BERKANA:
-					if( sc->data[SC_BERKANA] )
-						return 0;
-					break;
-			}
+			case ITEMID_NAUTHIZ:
+				if( skill_blockpc_get(sd,RK_REFRESH) != -1 )
+					return 0;
+				break;
+			case ITEMID_RAIDO:
+				if( skill_blockpc_get(sd,RK_CRUSHSTRIKE) != -1 )
+					return 0;
+				break;
+			case ITEMID_BERKANA:
+				if( skill_blockpc_get(sd,RK_MILLENNIUMSHIELD) != -1 )
+					return 0;
+				break;
 		}
 	}
 

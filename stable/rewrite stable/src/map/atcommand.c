@@ -4489,7 +4489,6 @@ int atcommand_mapinfo(const int fd, struct map_session_data* sd, const char* com
 		strcat(atcmd_output, "GuildLock | ");
 	clif_displaymessage(fd, atcmd_output);
 
-
 	switch (list) {
 	case 0:
 		// Do nothing. It's list 0, no additional display.
