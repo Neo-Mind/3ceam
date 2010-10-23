@@ -28,20 +28,29 @@
 //= 8. Notes - Any extra note about the diff.
 //============================================================================================
 //======= Diff Index =========================================================================
-//= 1. Balance's
+//= 1. Balance Fixes
 //=
 //= - 3rd Job Skill Base/Job Ratio Effect Removal
+//= - SC_MANDRAGORA Status Resist
 //=
-//= 2. Bug Fix's
+//= 2. Bug Fixes
+//=
+//= - LG Reflect Damage Icon Fix
+//= - Emergency Cool Behavior Change
+//= - SC_PARALYSE Speed Penalty Fix
 //=
 //= 3. Exploit Fixes
 //=
-//= 4. Custom Addon's
+//= - MVP Status Resistance Fix
+//=
+//= 4. Custom Addons
+//=
+//= - Release Cooldown Apply
 //=
 //= 5. Alpha/Beta Testing
 //=
 //============================================================================================
-//===== Balance's ============================================================================
+//===== Balance Fixes ========================================================================
 //= 3rd Job Skill Base/Job Ratio Effect Removal
 //=
 //= Diff File Name - 3rdSkillBJR
@@ -61,13 +70,116 @@
 //=
 //=-------------------------------------------------------------------------------------------
 //=
+//= SC_MANDRAGORA Status Resist
+//=
+//= Diff File Name - MandrRes
+//=
+//= Diff Type - Balanceing
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r525 Trunk
+//=
+//= Last Known Good Rev - r525 Trunk
+//=
+//= Description - This diff adds unoficial status resist to SC_MANDRAGORA.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
 //============================================================================================
-//===== Bug Fix's ============================================================================
+//===== Bug Fixes ============================================================================
+//=
+//= LG Reflect Damage Icon Fix
+//=
+//= Diff File Name - damreficon
+//=
+//= Diff Type - Bug fix
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r525 Trunk
+//=
+//= Last Known Good Rev - r525 Trunk
+//=
+//= Description - This diff adds status icon to LG_REFLECTDAMAGE skill.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
+//= Emergency Cool Behavior Change
+//=
+//= Diff File Name - emgrcool
+//=
+//= Diff Type - Bug fix
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r525 Trunk
+//=
+//= Last Known Good Rev - r525 Trunk
+//=
+//= Description - After applying this diff Emergency Cool will remove Overheat status.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
+//= SC_PARALYSE Speed Penalty Fix
+//=
+//= Diff File Name - parlspeed
+//=
+//= Diff Type - Bug fix
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r525 Trunk
+//=
+//= Last Known Good Rev - r525 Trunk
+//=
+//= Description - After applying this diff SC_PARALYSE will have speed penalty on targets.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
+//============================================================================================
+//===== Exploit Fixes ========================================================================
 //= 
+//= MVP Status Resistance Fix
+//=
+//= Diff File Name - statMVPim
+//=
+//= Diff Type - Exploit fix
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r525 Trunk
+//=
+//= Last Known Good Rev - r525 Trunk
+//=
+//= Description - With some new status killing MVPs is easy. With this diff you can make
+//= MPVs to be immune to new statuses.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
+//===== Custom Addons ========================================================================
 //============================================================================================
-//===== Exploit Fix's ========================================================================
-//= 
-//===== Custom Addon's =======================================================================
+//=
+//= Release Cooldown Apply
+//=
+//= Diff File Name - RelCDApl
+//=
+//= Diff Type - Custom Feature
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r525 Trunk
+//=
+//= Last Known Good Rev - r525 Trunk
+//=
+//= Description - After applying this diff release will apply the cooldown of the released
+//= spell to the spell itself. Moreover if you used comet with release, the cooldown will be
+//= also applied to the reading spellbook skill.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
 //============================================================================================
+//============================================================================================
+//===== Alpha/Beta Testing ===================================================================
 //= 
 //============================================================================================
