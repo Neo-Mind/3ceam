@@ -1,0 +1,73 @@
+//===== 3CeAM Diff Archive ==================================================================
+//= This is a special archive of Diff's created by the dev's to mod your server.
+//= These mods are mostly unofficial changes, but can help improve your server in different
+//= ways. To know what each diff does, read the description for each diff to get a
+//= understanding on what kind of diff it is, how it affects your server, and if its official
+//= or not. Some diff might conflict with others and require manual code editing.
+//=
+//= All diff's are for use on trunk only.
+//===========================================================================================
+//===== Information Format ==================================================================
+//= 1. Name of Diff - Name of the diff.
+//=
+//= 2. Diff File Name - Name of the diff file.
+//=
+//= 3. Diff Type - Type of diff. Types range from Balance, Bug Fix, Exploit Fix, Custom Feature
+//= Addon, And Alpha/Beta Testing.
+//=
+//= 4. Official ? - Marks if the diff makes official or unofficial changes. Official will be used
+//= for testing special kinds of fixes. Remember that most of these diff's will be to make unofficial
+//= changes.
+//=
+//= 5. Diff Revision Creation - Revision of 3CeAM the diff was made on.
+//=
+//= 6. Last Known Good Rev - Last known revision the diff was known to work on.
+//=
+//= 7. Description - Gives a description on what the diff does.
+//=
+//= 8. Notes - Any extra note about the diff.
+//============================================================================================
+//======= Diff Index =========================================================================
+//= 1. Balance's
+//=
+//= - 3rd Job Skill Base/Job Ratio Effect Removal
+//=
+//= 2. Bug Fix's
+//=
+//= 3. Exploit Fixes
+//=
+//= 4. Custom Addon's
+//=
+//= 5. Alpha/Beta Testing
+//=
+//============================================================================================
+//===== Balance's ============================================================================
+//= 3rd Job Skill Base/Job Ratio Effect Removal
+//=
+//= Diff File Name - 3rdSkillBJR
+//=
+//= Diff Type - Balanceing
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r517 Trunk
+//=
+//= Last Known Good Rev - r517 Trunk
+//=
+//= Description - This diff modifies all the 3rd jobs skills so a players Base/Job level will
+//= no longer affect the skill's damage ratios.
+//=
+//= Notes - This diff is highly recommended for server's using classic game mechanics.
+//=
+//=-------------------------------------------------------------------------------------------
+//=
+//============================================================================================
+//===== Bug Fix's ============================================================================
+//= 
+//============================================================================================
+//===== Exploit Fix's ========================================================================
+//= 
+//===== Custom Addon's =======================================================================
+//============================================================================================
+//= 
+//============================================================================================
