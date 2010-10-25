@@ -72,3 +72,15 @@ Index: status.c
  /*==========================================
   * ステータス異常終了
   *------------------------------------------*/
+Index: status.h
+===================================================================
+--- status.h	(revision 529)
++++ status.h	(working copy)
+@@ -1540,6 +1540,7 @@
+ int status_change_clear(struct block_list* bl, int type);
+ int status_change_clear_buffs(struct block_list* bl, int type);
+ int status_change_spread( struct block_list *src, struct block_list *bl );
++int status_change_3rdclear(struct block_list* bl);
+ 
+ #define status_calc_bl(bl, flag) status_calc_bl_(bl, flag, false)
+ #define status_calc_mob(md, first) status_calc_bl_(&(md)->bl, SCB_ALL, first)
