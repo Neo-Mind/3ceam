@@ -52,6 +52,7 @@
 //=
 //= 5. Alpha/Beta Testing
 //=
+//= - Fix for Maelstrom/Bloodylust/Chaospanic
 //============================================================================================
 //===== Balance Fixes ========================================================================
 //= 3rd Job Skill Base/Job Ratio Effect Removal
@@ -244,5 +245,21 @@
 //============================================================================================
 //============================================================================================
 //===== Alpha/Beta Testing ===================================================================
-//= 
+//=
+//= Fix for Maelstrom/Bloodylust/Chaospanic
+//=
+//= Maelstrom_Bloodylust_Chaospanic.diff
+//=
+//= Diff Type - Alpha/Beta Testing.
+//=
+//= Official ? - Official
+//=
+//= Diff Revision Creation - 532 Trunk.
+//=
+//= Last Known Good Rev - 532 Trunk.
+//=
+//= Description - Better behavior of these skills, closer to official behavior and more effective.
+//=
+//= Notes - Could be a solution for certain skills with a behavior similar to Pneuma.
+//--------------------------------------------------------------------------------------------
 //============================================================================================
