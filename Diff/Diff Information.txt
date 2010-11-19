@@ -160,7 +160,20 @@
 //= It is usefull with the combination of Disable Passive Skills patch.
 //=
 //=-------------------------------------------------------------------------------------------
+//= 
+//= Status Overflow prevention
+//= 
+//= Diff File Name - status_overflow_prevention
 //=
+//= Diff Type - Bug fix
+//=
+//= Official ? - Unofficial
+//=
+//= Diff Revision Creation - r554 Trunk
+//=
+//= Description - After applying this diff: In servers with high level or high stats, some of
+//= these get overflow and get negative or inappropriate values. This patch fixes this by
+//= setting these values to the maximum value that they can take.
 //============================================================================================
 //===== Exploit Fixes ========================================================================
 //= 
