@@ -58,15 +58,16 @@
 //===== Balance Fixes ========================================================================
 //= 3rd Job Skill Base/Job Ratio Effect Removal
 //=
-//= Diff File Name - 3rdSkillBJR
+//= Diff File Name - 3rdSkillBJR = for r517
+//= 		     3rdSkillBJR588 = for r588
 //=
 //= Diff Type - Balanceing
 //=
 //= Official ? - Unofficial
 //=
-//= Diff Revision Creation - r517 Trunk
+//= Diff Revision Creation - r588 Trunk
 //=
-//= Last Known Good Rev - r517 Trunk
+//= Last Known Good Rev - r588 Trunk
 //=
 //= Description - This diff modifies all the 3rd jobs skills so a players Base/Job level will
 //= no longer affect the skill's damage ratios.
@@ -275,7 +276,7 @@
 //=
 //= Notes - Could be a solution for certain skills with a behavior similar to Pneuma.
 //--------------------------------------------------------------------------------------------
-//= Enhanced Super Novice
+//= Extended Super Novice
 //= 
 //= ESNoviceTest.diff
 //= 
@@ -283,13 +284,12 @@
 //= 
 //= Official ? - Official
 //= 
-//= Diff Revision Creation - 579 Trunk
+//= Diff Revision Creation - 587 Trunk
 //= 
-//= Last Known Good Rev - 579 Trunk
+//= Last Known Good Rev - 587 Trunk
 //= 
-//= Description - This code adds in support for the Enhanced Super Novice job. The behavior of
-//= this code is very close to official. Only lacking max job level which is set to 50 for now
-//= until more info its official max.
+//= Description - This code adds in support for the Extended Super Novice job. The behavior of
+//= this code is very close to official.
 //= 
 //= Note - WARNING!!!!
 //= This code is highly experimental as it requires changing how the server's job management
@@ -297,7 +297,7 @@
 //= as it may be bugged.
 //= 
 //= The code makes the server fully treat the Super Novice as a real 1st job instead of a 2-1.
-//= The Enhanced Super Novice is treated as a 2-1 job now. Special Super Novice features and
+//= The Extended Super Novice is treated as a 2-1 job now. Special Super Novice features and
 //= bonuses still needs testing to ensure everything is properly. Equips, inheriting, and other
 //= things needs more testing to ensure all is working properly. If your testing this, please
 //= be sure to give me detailed reports on any bugs you find.
