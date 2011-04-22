@@ -35,8 +35,6 @@
 //=
 //= 2. Bug Fixes
 //=
-//= - LG Reflect Damage Icon Fix
-//= - Emergency Cool Behavior Change
 //= - SC_PARALYSE Speed Penalty Fix
 //= - Restricted Mapflag Fix
 //=
@@ -53,7 +51,6 @@
 //= 5. Alpha/Beta Testing
 //=
 //= - Fix for Maelstrom/Bloodylust/Chaospanic
-//= - Enhanced Super Novice
 //============================================================================================
 //===== Balance Fixes ========================================================================
 //= 3rd Job Skill Base/Job Ratio Effect Removal
@@ -94,38 +91,6 @@
 //=
 //============================================================================================
 //===== Bug Fixes ============================================================================
-//=
-//= LG Reflect Damage Icon Fix
-//=
-//= Diff File Name - damreficon
-//=
-//= Diff Type - Bug fix
-//=
-//= Official ? - Unofficial
-//=
-//= Diff Revision Creation - r525 Trunk
-//=
-//= Last Known Good Rev - r525 Trunk
-//=
-//= Description - This diff adds status icon to LG_REFLECTDAMAGE skill.
-//=
-//=-------------------------------------------------------------------------------------------
-//=
-//= Emergency Cool Behavior Change
-//=
-//= Diff File Name - emgrcool
-//=
-//= Diff Type - Bug fix
-//=
-//= Official ? - Unofficial
-//=
-//= Diff Revision Creation - r525 Trunk
-//=
-//= Last Known Good Rev - r525 Trunk
-//=
-//= Description - After applying this diff Emergency Cool will remove Overheat status.
-//=
-//=-------------------------------------------------------------------------------------------
 //=
 //= SC_PARALYSE Speed Penalty Fix
 //=
@@ -276,40 +241,4 @@
 //=
 //= Notes - Could be a solution for certain skills with a behavior similar to Pneuma.
 //--------------------------------------------------------------------------------------------
-//= Extended Super Novice
-//= 
-//= ESNoviceTest.diff
-//= 
-//= Diff Type - Alpha/Beta Testing
-//= 
-//= Official ? - Official
-//= 
-//= Diff Revision Creation - 587 Trunk
-//= 
-//= Last Known Good Rev - 587 Trunk
-//= 
-//= Description - This code adds in support for the Extended Super Novice job. The behavior of
-//= this code is very close to official.
-//= 
-//= Note - WARNING!!!!
-//= This code is highly experimental as it requires changing how the server's job management
-//= and item masks systems handles Super Novices. Please do not use this code on public server's
-//= as it may be bugged.
-//= 
-//= The code makes the server fully treat the Super Novice as a real 1st job instead of a 2-1.
-//= The Extended Super Novice is treated as a 2-1 job now. Special Super Novice features and
-//= bonuses still needs testing to ensure everything is properly. Equips, inheriting, and other
-//= things needs more testing to ensure all is working properly. If your testing this, please
-//= be sure to give me detailed reports on any bugs you find.
-//= 
-//= Tested with a 2010_06_16aRagexeRE client. Note that I had to use this client since its the
-//= most stable. Using it will give a default fallback sprite (Novice) and job title (Poring).
-//= A 2010_12_21aRagexeRE client is needed to properly see the job sprite and job title name
-//= which at this time is unusable on eAthena or 3CeAM. 2010_12_21 date or higher skillinfoz LUB
-//= files set are required to see the skill tree.
-//= 
-//= Thankyou.
-//= 
-//= Rytech.
-//= 
 //============================================================================================
