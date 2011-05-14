@@ -47,10 +47,12 @@
 //= - Release Cooldown Apply
 //= - Disable Passive Skills
 //= - New Status Remove Script Command
+//= - Ability to disable nonunit AoE skills on Land Protector via skill_db
 //=
 //= 5. Alpha/Beta Testing
 //=
 //= - Fix for Maelstrom/Bloodylust/Chaospanic
+//= - Add new mounts
 //============================================================================================
 //===== Balance Fixes ========================================================================
 //= 3rd Job Skill Base/Job Ratio Effect Removal
@@ -166,7 +168,7 @@
 //=
 //= Release Cooldown Apply
 //=
-//= Patch File Name - RelCDApl
+//= Patch File Name - RelCDApl.patch
 //=
 //= Patch Type - Custom Feature
 //=
@@ -184,7 +186,7 @@
 //=
 //= Disable Passive Skills
 //=
-//= Patch File Name - PasSkilDis
+//= Patch File Name - PasSkilDis.patch
 //=
 //= Patch Type - Custom Feature
 //=
@@ -198,14 +200,14 @@
 //= 
 //= Note - There is a side effect: the disabled skills are invisible to the skill tree,
 //= so your players can not distribute their skill points properly when they are in those
-//= restricted areas.It is very usefull for servers who wants to restrict 3rd job skills 
+//= restricted areas.It is very useful for servers who wants to restrict 3rd job skills 
 //= on some events or woe.
 //=
 //=-------------------------------------------------------------------------------------------
 //=
 //= New Status Remove Script Command
 //=
-//= Patch File Name - NewStatEnd
+//= Patch File Name - NewStatEnd.patch
 //=
 //= Patch Type - Custom Feature
 //=
@@ -222,12 +224,28 @@
 //=
 //=-------------------------------------------------------------------------------------------
 //=
+//= Ability to disable nonunit AoE skills on Land Protector via skill_db
+//=
+//= Patch File Name - landprot.patch
+//=
+//= Patch Type - Custom Feature
+//=
+//= Official ? - Unofficial
+//=
+//= Patch Revision Creation - r605 Trunk
+//=
+//= Last Known Good Rev - r605 Trunk
+//=
+//= Description - Gives you the ability to disable certain skill effect on land protector in skill_db.txt
+//= 
+//= Note - After applying the diff check SO_EARTHGRAVE as an example.
+//=
 //============================================================================================
 //===== Alpha/Beta Testing ===================================================================
 //=
 //= Fix for Maelstrom/Bloodylust/Chaospanic
 //=
-//= Maelstrom_Bloodylust_Chaospanic.patch
+//= Patch File Name - Maelstrom_Bloodylust_Chaospanic.diff
 //=
 //= Patch Type - Alpha/Beta Testing.
 //=
@@ -241,4 +259,21 @@
 //=
 //= Notes - Could be a solution for certain skills with a behavior similar to Pneuma.
 //--------------------------------------------------------------------------------------------
+//=
+//= Add new mounts
+//=
+//= Patch File Name - mounts.patch
+//=
+//= Patch Type - Alpha/Beta Testing.
+//=
+//= Official ? - Not fully official
+//=
+//= Patch Revision Creation - 605 Trunk.
+//=
+//= Last Known Good Rev - 605 Trunk.
+//=
+//= Description - Add new mounts support.
+//=
+//= Notes - They are only supported in new clients, that may have some compatibility issues
+//= with our current code. This patch is not tested yet, but any feedback are welcome.
 //============================================================================================
