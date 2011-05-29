@@ -53,6 +53,8 @@
 //=
 //= - Fix for Maelstrom/Bloodylust/Chaospanic
 //= - Add new mounts
+//= - Rental Mounts - Rytech's Code
+//= - Packet Version 26
 //============================================================================================
 //===== Balance Fixes ========================================================================
 //= 3rd Job Skill Base/Job Ratio Effect Removal
@@ -280,4 +282,45 @@
 //= You need a client above 2011-02-08.
 //= You need updated lua files to make this work.
 //= You need updated grfs to make this patch work.
+//--------------------------------------------------------------------------------------------
+//=
+//= Rental Mounts - Rytech's Code
+//=
+//= Patch File Name - rentalmount.patch
+//=
+//= Patch Type - Alpha/Beta
+//=
+//= Official ? - Kinda, but not fully confirmed.
+//=
+//= Patch Revision Creation - r615
+//=
+//= Last Known Good Rev - r615
+//=
+//= Description - Adds support for the rental mounts. 
+//=
+//= Notes - The ALL_RIDING status ID cannot be triggered simply like the other ones and
+//= something special to make it work on OPT3 properly, but we dont know what. So if you come
+//= into anyone's view range they wont see your mount, even if your on it. The item is thought
+//= to be the way to get on and off the mount. I wont be doing anymore coding for this system
+//= until we get official info and packet captures.
+//=
+//= Clinet 2010-11-24 or higher required.
+//--------------------------------------------------------------------------------------------
+//=
+//= Packet Version 26
+//=
+//= Patch File Name - packetv26.patch
+//=
+//= Patch Type - Alpha/Beta
+//=
+//= Official ? - Yes
+//=
+//= Patch Revision Creation - r612
+//=
+//= Last Known Good Rev - r612
+//=
+//= Description - Adds support for packet version 26 for newer clients. Clients March of 2011
+//= are not supported at this time since the PIN number system isnt coded yet.
+//=
+//= Notes - None I can think of.
 //============================================================================================
